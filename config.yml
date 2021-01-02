@@ -1,0 +1,47 @@
+# SITE CONFIGURATION
+baseurl: ""
+url: "https://hamin2065.github.io"
+title: "Hamin's blog"
+description: "Team Websolute"
+
+# THEME-SPECIFIC CONFIGURATION
+# Meta
+avatar: assets/img/avatars/websolute_square.jpg
+color_image: /assets/img/lineart.png # In post when you set color
+favicon: assets/favicon.ico
+
+# Header and footer text
+header_text: Pave the Way Websolute!
+header_feature_image: assets/img/pexels/CoreValue.jpg
+footer_text: Copyright 2020
+
+# Blog
+excerpt: truncate
+
+# Scripts / Features
+google_analytics: "UA-142123817-1"
+katex: true # Enable if using math markup
+mermaid: true
+
+# Post navigation
+post_navigation: true
+
+# Colours, typography and padding
+# Open the "_sass > base" folder, and open "_variables.scss"
+
+# PAGINATION
+paginate: 10
+paginate_path: "blog/page:num"
+
+# PORTFOLIO
+collections:
+  portfolio:
+    output: true
+    permalink: /:collection/:name
+
+# BUILD SETTINGS
+plugins: [jekyll-paginate, jekyll-seo-tag]
+exclude: [".jekyll-cache", "Gemfile", "Gemfile.lock", "type-on-strap.gemspec", "*.gem", ".idea", ".github", "SECURITY.md",
+          "LICENSE", "README.md", "screenshot.png", "assets/package.json", "assets/node_modules", "assets/gulpfile.js", "themes"]
+remote_theme: sylhare/Type-on-Strap
+theme: type-on-strap # Sends warnings on github pages
