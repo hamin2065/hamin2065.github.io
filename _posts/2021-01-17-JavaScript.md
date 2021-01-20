@@ -47,13 +47,14 @@ tags: [JavaScript]
 
 > `1+1`은 숫자이고 `"1+1"` 은 문자열이다.
 > `1+1`을 출력하면 `2`가 나오고 `"1"+"1"`을 출력하면 `"11"`가 나온다.
+
 - - -
 ## 변수와 대입 연산자
 
 > `var x = 1;`
-`var`은 변수라는 뜻이고 `x`는 변수의 이름이다. `=`는 대입연산자이다. 
- >
- >: x라는 변수에 1이라는 값을 대입한다는 뜻이다. 
+>`var`은 변수라는 뜻이고 `x`는 변수의 이름이다. `=`는 대입연산자이다. 
+>
+>: x라는 변수에 1이라는 값을 대입한다는 뜻이다. 
 
  `1 = 2;` 는 에러이다. -> 상수에는 상수를 대입할 수 없다.
 - - -
@@ -95,6 +96,7 @@ boolean : `True`와 `False`의 2개의 값을 갖는 데이터 타입
 > 2
 > 
 > 4
+
 ```
 <script>
   document.write("1<br>");
@@ -106,14 +108,18 @@ boolean : `True`와 `False`의 2개의 값을 갖는 데이터 타입
   document.write("4<br>");
 </script>
 ```
+
 출력:
+
 > 1
 >
 > 3
 >
 > 4
+
 - - -
 ## 조건문의 활용
+
 ```
  <input id="night_day" type="button" value="night" onclick="
     if(document.querySelector('#night_day').value === 'night'){
@@ -127,6 +133,7 @@ boolean : `True`와 `False`의 2개의 값을 갖는 데이터 타입
     }
   ">
   ```
+
   : `night`라는 버튼을 만들고 그것을 클릭했을 때, `if문`이 실행되면서 배경을 검정색, 글씨를 하얀색으로 바꾸고 버튼의 이름을 `day`로 바꾼다. 
   `day`로 만든 버튼을 다시 클릭하면 `else구문`이 실행이되면서 배경을 하얀색, 글씨를 검정색으로 바꾸고 버튼의 이름은 다시 `night`가 된다. 
 
@@ -145,9 +152,13 @@ boolean : `True`와 `False`의 2개의 값을 갖는 데이터 타입
     }
   ">
   ```
+
 - - -
+
   ## 배열
+  
   `var arr = ["a", "b"];`는 arr라는 배열을 초기화 한것이다.
+
   1. 각 요소에 접근하는 방법
 
     document.write(arr[0]); -> a를 출력
@@ -166,7 +177,9 @@ boolean : `True`와 `False`의 2개의 값을 갖는 데이터 타입
     var arr = ["a", "b", "c", "d"];
 
  - - -
+
  ## 반복문
+
  `while문`과 `for문`이 있다. 
  `while문`의 경우 괄호안의 조건이 `true`인 경우에 실행된다. 
  ```
@@ -179,7 +192,9 @@ boolean : `True`와 `False`의 2개의 값을 갖는 데이터 타입
  ```
  : 1과 2가 총 3번 반복해서 출력이 된다.
 - - -
+
  ## 반복문과 배열의 예시
+
  ```
  var arr = ['a','b','c','d'];
  var i = 0;
@@ -193,15 +208,20 @@ boolean : `True`와 `False`의 2개의 값을 갖는 데이터 타입
 >    * b
 >    * c
 >    * d
+
 - - -
+
 ## 함수
+
 : 입력과 출력으로 이루어졌다. 
 코드의 반복이 필요한데 연속적인 반복이 아닌 경우에 어떻게 처리를 해야하는가? -> 함수를 이용한다.
+
 ```
 function '함수이름'(){
     //코드
 }
 ```
+
 ```
 function two(){
     document.write('<li>2-1</li>');
@@ -212,6 +232,7 @@ two();
 document.write('<li>3</li>');
 two();
 ```
+
 > 출력:
 > * 1
 > * 2-1
@@ -221,6 +242,7 @@ two();
 > * 2-2
 
 - 매개변수와 인자
+
 ```
 function sum(left, right){
     document.write(left+right+'<br>');
@@ -228,6 +250,7 @@ function sum(left, right){
 sum(2,3);
 sum(3,4);
 ```
+
 : 여기서 `left`와 `right`는 매개변수라고 부르고 sum함수를 호출할때 `2,3` `3,4`는 인자라고 부른다. 
 
 > 출력:
@@ -236,6 +259,7 @@ sum(3,4);
 
 - return
   : 결과값을 단순히 출력하는 것이 아니라 더 많은 작업을 수행해야 하는 경우 이용한다.
+
 ```
 function sum2(left, right){
     return left+right;
@@ -245,15 +269,20 @@ document.write(sum2(2,3)+'<br>');
 document.write('<div style="color:red">'+sum2(2,3)+'</div>');
 document.write('<div style = "font-size:3rem";>+sum2(2,3)+'</div>');
 ```
+
 - - -
+
 ## 객체
+
 - 객체의 읽고 쓰기
+
 ``` 
 var cowerkers = {
   "programmer" : "A",
   "designer" : "B"
 };
 ```
+
 ```
 document.write("programmer : " + cowerkers.programmer + "<br>");
 document.write("designer : " + cowerkers.designer + "<br>");
@@ -262,13 +291,16 @@ document.write("bookkeeper : " + cowerkers.bookkeeper + "<br>");
 cowerkers["data scientist"] = "C";
 document.write("data scientist : " + cowerkers["data scientist"] + "<br>");
 ```
+
 - 객체와 반복문
  : data를 다 가져와야 하는 경우
+
 ```
 for (var key in cowerkers){
   document.write(key + ' : ' + cowerkers[key] + '<br>');
 }
 ```
+
 출력 : 
 ```
 programmer : A
@@ -276,7 +308,9 @@ designer : B
 bookkeeper : C
 data scientist : D
 ```
+
 - 객체프로퍼티와 메소드
+
 ```
 cowerkers.showAll = function(){
   for(var key in this){
@@ -284,7 +318,8 @@ cowerkers.showAll = function(){
   }
 }
 ```
-출력
+출력 : 
+
 ```
 programmer : A
 designer : B
@@ -293,12 +328,16 @@ data scientist : D
 showAll : function(){for(var key in this){document.write(key + ' : ' + this[key] + '<br>');}}
 ```
 - - -
+
 ## 파일로 쪼개서 정리 정돈하기
+
 - Javascript 파일을 다른 파일로 저장한 후에 HTML 파일에서 쓸 수 있다. 
 
 `<script src = "Javascript_file_name.js"></script>`
 - - -
+
 ## 라이브러리와 프레임워크
+
 - 라이브러리 : 활용가능한 도구들의 집합
 - 프레임워크 : 소프트웨어의 특정 문제를 해결하기 위해서 상호 협력하는 클래스와 인터페이스의 집합
 
@@ -308,7 +347,7 @@ showAll : function(){for(var key in this){document.write(key + ' : ' + this[key]
 > `<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>`
 > `$('a')` : 이 웹페이지의 모든 `a태그`를 `jQuery`로 제어하겠다. -> 반복문을 쓰지 않아도된다.
 
-
+1번 코드 :
 ```
 var Links = {
   setColor:function(color){
@@ -321,7 +360,9 @@ var Links = {
   }
 }
 ```
-와
+
+
+2번 코드 : 
 ```
 var Links = {
   setColor:function(color){
@@ -329,4 +370,5 @@ var Links = {
   }
 }
 ```
-는 같은 코드이다. 
+
+1번 코드와 2번 코드는 동일한 코드이다.
