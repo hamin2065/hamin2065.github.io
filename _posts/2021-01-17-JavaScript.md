@@ -279,19 +279,19 @@ document.write('<div style = "font-size:3rem";>+sum2(2,3)+'</div>');
 - 객체의 읽고 쓰기
 
 ``` 
-var cowerkers = {
+var coworkers = {
   "programmer" : "A",
   "designer" : "B"
 };
 ```
 
 ```
-document.write("programmer : " + cowerkers.programmer + "<br>");
-document.write("designer : " + cowerkers.designer + "<br>");
-cowerkers.bookkeeper = "duru";
-document.write("bookkeeper : " + cowerkers.bookkeeper + "<br>");
-cowerkers["data scientist"] = "C";
-document.write("data scientist : " + cowerkers["data scientist"] + "<br>");
+document.write("programmer : " + coworkers.programmer + "<br>");
+document.write("designer : " + coworkers.designer + "<br>");
+coworkers.bookkeeper = "duru";
+document.write("bookkeeper : " + coworkers.bookkeeper + "<br>");
+coworkers["data scientist"] = "C";
+document.write("data scientist : " + coworkers["data scientist"] + "<br>");
 ```
 
 - 객체와 반복문
@@ -299,7 +299,7 @@ document.write("data scientist : " + cowerkers["data scientist"] + "<br>");
 
 ```
 for (var key in cowerkers){
-  document.write(key + ' : ' + cowerkers[key] + '<br>');
+  document.write(key + ' : ' + coworkers[key] + '<br>');
 }
 ```
 
@@ -314,7 +314,7 @@ data scientist : D
 - 객체프로퍼티와 메소드
 
 ```
-cowerkers.showAll = function(){
+coworkers.showAll = function(){
   for(var key in this){
     document.write(key + ' : ' + this[key] + '<br>');
   }
