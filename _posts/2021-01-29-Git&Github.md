@@ -113,8 +113,6 @@ tags: [Git, Github, Repository, Commit, Stage, Branch, CheckOut, Merge, Clone, P
 
  - Hotfix Branch(긴급 오류 수정) : 배포된 Master Branch의 갑작스런 버그가 발생하였을 때, 급하게 Develop, Feature 단계를 거치지 않고 버그를 수정하는 단계로 수정이 완료되면 Master&Develop으로 병합이 된다.
 
-![coding](../../../assets/img/posts/Git_Flow.png)
-
 
 
 
