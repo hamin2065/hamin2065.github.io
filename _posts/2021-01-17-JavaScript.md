@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 2021-01-17-JavaScript
+title: JavaScript
 color: rgb(242,85,44)
 tags: [JavaScript]
 ---

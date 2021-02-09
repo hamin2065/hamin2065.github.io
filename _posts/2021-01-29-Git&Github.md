@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 2021-01-28-Git&Github
+title: Git & Github
 color: rgb(242,85,44)
 tags: [Git, Github, Repository, Commit, Stage, Branch, CheckOut, Merge, Clone, Push, Pull]
 ---
