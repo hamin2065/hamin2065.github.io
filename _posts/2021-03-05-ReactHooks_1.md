@@ -2,23 +2,8 @@
 layout: post
 title: ReactHooks 1. UseState
 color: rgb(242,85,44)
-tags: [UseState, UseInput, UseTabs]
+tags: [ReactHooks]
 ---
-
-- [] useTitle : react document의 title을 hooks로 바꾸는 것
-- [] useInput : input역할
-- [] usePageLeave : 유저가 페이지를 벗어나는 시점을 발견하고 함수를 실행
-- [] useClick : 유저가 어떤 요소를 클릭하는 시점을 발견
-- [] useFadeIn : 어떤 요소에서 FadeIn 애니메이션을 실행
-- [] useFullScreen : 어떤 요소든지 풀스크린으로 만들거나 일반화면으로 돌아가게해줌
-- [] useHover : 어떤 것에 마우스를 올렸을 때 감지
-- [] useNetwork : online인지 offline인지 상태를 감지
-- [] useNotification : notification API를 사용할 때 유저에게 알림을 보냄
-- [] useScroll : 스크롤을 사용할 때 감지해서 알려줌
-- [] useTabs : 웹사이트에서 tab을 사용하기 매우 쉽게 만들어주는 것
-- [] usePreventLeave : 유저가 변경사항등을 저장하지 않고 페이지를 벗어날 때 확인을 하는 것
-- [] useConfirm  : usePreventLeave와 비슷하지만 다른 특정 기능이 존재
-- [] useAxios : HTTP requests client axios을 위한 wrapper와 같은 것
 
 실습 방법 : 
 [Code SandBox]
