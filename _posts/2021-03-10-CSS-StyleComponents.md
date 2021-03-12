@@ -121,7 +121,7 @@ const Anchor = Button.withComponent("a").extend`
   text-decoration: none;
 `;
 ```
-# Animation
+# placeholder
 
 ```javascript
 import React, {Component} from 'react';
