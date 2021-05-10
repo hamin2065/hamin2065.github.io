@@ -95,6 +95,6 @@ for epoch in range(nb_epochs+1):
         
         print('Epoch {:4d}/{} Batch {}/{} Cost: {:.6f}'.format(epoch, nb_epochs, batch_idx+1, len(dataloader), cost.item()))
 ```
-- enumerate(dataloader) -> minibatch 인덱스오 데이터를 받음
+- enumerate(dataloader) -> minibatch 인덱스의 데이터를 받음
 - len(dataloader) -> 한 epoch당 minibatch 개수
 
