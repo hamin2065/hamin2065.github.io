@@ -23,6 +23,7 @@ tags: [AI, PyTorch]
 - - -
 # Softmax 함수
  : 확률의 총합이 1이 되도록 각 클래스에 확률을 할당하는 함수로, 분류해야 하는 정답지(클래스)의 총 개수를 k라고 할 때 k차원의 벡터를 입력받아 각 클래스에 대한 확률을 추정한다.
+ 
 ![coding](../../../assets/img/posts/Lab-06SoftmaxClassification-05.jpg)
 
 
