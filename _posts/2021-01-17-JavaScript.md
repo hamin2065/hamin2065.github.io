@@ -1,8 +1,9 @@
 ---
 layout: post
-title: JavaScript
-color: rgb(242,85,44)
-tags: [JavaScript]
+title:  "Javascript"
+subtitle:   "Javascript에 대해서 알아보자."
+categories:  web
+tags: other
 ---
 
 # JavaScript란?

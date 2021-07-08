@@ -1,8 +1,9 @@
 ---
 layout: post
-title: Shell&Shell_Editors (Hufs Missing Semester)
-color: rgb(242,85,44)
-tags: [Shell, Shell Editors, CLI, WSL, vi]
+title:  "Shell&Shell_Editors"
+subtitle:   
+categories:  Hufs
+tags: Hufs Missing Semester
 ---
 
  `Hufs Missing Semester` 강의 내용 정리

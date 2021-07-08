@@ -1,8 +1,9 @@
 ---
 layout: post
-title: Git & Github
-color: rgb(242,85,44)
-tags: [Git, Github, Repository, Commit, Stage, Branch, CheckOut, Merge, Clone, Push, Pull]
+title:  "Git & Github"
+subtitle:   "깃과 깃허브에 대해 알아보자"
+categories:  git&github
+tags: Git & Github
 ---
 
 # Git

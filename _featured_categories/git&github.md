@@ -1,7 +1,7 @@
 ---
 layout: list
 title: Git & Github
-slug: git
+slug: git&github
 menu: true
 submenu: true
 order: 6
