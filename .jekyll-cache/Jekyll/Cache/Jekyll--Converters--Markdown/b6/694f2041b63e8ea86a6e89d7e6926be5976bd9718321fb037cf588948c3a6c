@@ -1,0 +1,78 @@
+I"D<p>From the journey to tcp connection at <a href="https://github.com/sylhare/tcp">sylhare/tcp</a>.
+I thought it would ne nice to store it all here.</p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p><a href="https://fr.wikipedia.org/wiki/Transmission_Control_Protocol">TCP</a> stands for Transfer Control Protocol.</p>
+
+<p>TCP is connection-oriented, 
+meaning an exclusive connection must first be established between client and server for communication to take place.
+The other one is UDP User Datagram Protocol, no connection for this one, it’s sending data and hoping for the best.</p>
+
+<p>TCP’s job is to ensure that all data sent in a stream moves from Point A to Point B in correct order and intact.</p>
+
+<h3 id="difference-between-tcp-and-http">Difference between TCP and HTTP</h3>
+
+<p>While TCP contains information about what data has or has not yet been received, 
+<a href="https://www.extrahop.co.uk/company/blog/2018/tcp-vs-http-differences-explained/">HTTP</a> contains specific instructions on how to read and process this data once it arrives.</p>
+
+<p>HTTP is located at <em>Layer 7</em> (data, application) of the OSI model (<a href="https://fr.wikipedia.org/wiki/Mod%C3%A8le_OSI">Open Systems Interconnection</a>), 
+TCP is at <em>Layer 4</em> (segment, transport).</p>
+
+<h3 id="tcp-and--sockets">TCP and  <a href="https://docs.oracle.com/javase/tutorial/networking/sockets/definition.html">Sockets</a></h3>
+
+<p>Socket is an internal endpoint for sending or receiving data between two different processes on the same or different machines. 
+It’s a way to talk to other computers using standard Unix file descriptors.</p>
+
+<p>There are 4 types of sockets (stream, datagram, raw, sequenced packet).</p>
+
+<p>Socket is layer 5 (data, Session), two computer should have a socket connection to exchange data. 
+You can use TCP for the transport of that data.</p>
+
+<h2 id="bytes-and-bits">Bytes and bits</h2>
+
+<p>So you send bytes with tcp, however depending on the protocol you are using, 
+you need to specify certain bits, header and you might be confused when reading the rfc.
+So here is a bit of a refresher.</p>
+
+<h3 id="representation">Representation</h3>
+
+<p>A bit is the most basic unit and can be either 1 or 0. 
+A <a href="https://www.thethingsnetwork.org/docs/devices/bytes.html">byte</a> is a group of 8 bits (256 permutations 0000 0000 to 1111 1111)</p>
+
+<p>Thus, one byte can represent a decimal number between 0 and 255. 
+Usually computers handles bytes instead of bits.</p>
+
+<p>Then there is <a href="https://introcs.cs.princeton.edu/java/61data/">hexadecimal</a> of base 16, using both numbers: 0 to 9 and letters: A to F.
+Usually you see hex values using <code class="language-plaintext highlighter-rouge">0x</code> in order not to confuse them with decimal values in certain cases.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hex     byte        dec  
+0x11 	0001 0001   17  
+
+</code></pre></div></div>
+<p>However I find it easier to use hex to represent bytes.</p>
+
+<div class="row">
+    
+    <div class="column">
+        <img class="single" src="/assets/img/bits.png" alt="bits.png" />
+    </div>
+    
+</div>
+
+<h3 id="signed-bits">Signed bits</h3>
+
+<p>You can also handle negative number with bits using <a href="https://en.wikipedia.org/wiki/Two%27s_complement">Two complements</a>.
+With 3 bits from <code class="language-plaintext highlighter-rouge">000</code> to <code class="language-plaintext highlighter-rouge">111</code> can give:</p>
+<ul>
+  <li>from 0 to 7 (<code class="language-plaintext highlighter-rouge">000</code> is 0 and <code class="language-plaintext highlighter-rouge">111</code> is seven)</li>
+  <li>from -4 to 3 using two’s complement (<code class="language-plaintext highlighter-rouge">100</code> is -4 and <code class="language-plaintext highlighter-rouge">011</code> is 3)</li>
+</ul>
+
+<p>The two’s complement of an N-bit number is defined as its complement with respect to 2N. 
+For instance, for the three-bit number 010, the two’s complement is 110, because 1000 - 010 = 110 with 1000 a 4bits number and 010 is 0x2.
+The two’s complement is calculated by inverting the digits and adding one:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">010</code> inverted gives <code class="language-plaintext highlighter-rouge">101</code> plus <code class="language-plaintext highlighter-rouge">001</code> gives <code class="language-plaintext highlighter-rouge">110</code>.</li>
+  <li>So from 2 (<code class="language-plaintext highlighter-rouge">010</code>), you get -2 (<code class="language-plaintext highlighter-rouge">110</code>).</li>
+</ul>
+:ET

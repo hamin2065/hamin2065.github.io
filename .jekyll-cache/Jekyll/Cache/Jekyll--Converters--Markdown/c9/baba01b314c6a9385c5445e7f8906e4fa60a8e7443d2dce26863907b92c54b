@@ -1,0 +1,94 @@
+I"<<h1 id="shell-editors">Shell Editors</h1>
+
+<p>Intended for Centos or Redhat.</p>
+
+<h2 id="shell-text-editor-nano">Shell text editor nano</h2>
+<p>nano is the basic text editor that should already be installed in your distribution, it is the most simple editor.</p>
+
+<p>Launch the editor</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nano 
+</code></pre></div></div>
+
+<ul>
+  <li><kbd>ctrl</kbd> + <kbd>x</kbd> to exit (it will ask to save before quiting)</li>
+  <li><kbd>ctrl</kbd> + <kbd>r</kbd> to open a file, write down the path</li>
+  <li><kbd>ctrl</kbd> + <kbd>w</kbd> will search for a word</li>
+  <li><kbd>ctrl</kbd> + <kbd>k</kbd> will copy the line</li>
+  <li><kbd>ctrl</kbd> + <kbd>u</kbd> will paste the line</li>
+  <li><kbd>alt</kbd> + <kbd>/</kbd> to go at the end of the file</li>
+  <li><kbd>alt</kbd> + <kbd>\</kbd> to go at the beginning of the file</li>
+  <li><kbd>ctrl</kbd> + <kbd>o</kbd> to write or save in a new or old file</li>
+</ul>
+
+<h2 id="vim">VIM</h2>
+<p>VIM is a shell editor similar to Emacs that can be used in command line. It has multiple features and can be very powerful for text editing. There are more <a href="http://www.radford.edu/~mhtay/CPSC120/VIM_Editor_Commands.htm">here</a> for the commands.</p>
+
+<p>To launch the command line editing tool</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim 
+</code></pre></div></div>
+
+<p>To open filename in this depository</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim /home/usr/filename
+</code></pre></div></div>
+
+<h4 id="insert-mode">insert mode</h4>
+
+<ul>
+  <li><kbd>Insert</kbd> press insert key on the key board to start editing the file</li>
+  <li><kbd>Esc.</kbd> pres the esc. key to quit the insert mode</li>
+  <li><code class="language-plaintext highlighter-rouge">:help</code> for Help</li>
+  <li><code class="language-plaintext highlighter-rouge">:%s/word/test/i</code> to replace <code class="language-plaintext highlighter-rouge">word</code> by <code class="language-plaintext highlighter-rouge">test</code>, <code class="language-plaintext highlighter-rouge">i</code> means that it is not case sensitive</li>
+  <li><code class="language-plaintext highlighter-rouge">:w /home/usr/filename</code> to write with <code class="language-plaintext highlighter-rouge">w</code> the newly created <code class="language-plaintext highlighter-rouge">filename</code> in <code class="language-plaintext highlighter-rouge">/home/usr</code></li>
+  <li><code class="language-plaintext highlighter-rouge">:wq</code> to write (save) the file and then quit</li>
+  <li><code class="language-plaintext highlighter-rouge">:q</code> to exit</li>
+  <li><code class="language-plaintext highlighter-rouge">:q!</code> to force quit without saving</li>
+</ul>
+
+<h4 id="command-mode">command mode</h4>
+
+<ul>
+  <li><kbd>d</kbd> <kbd>d</kbd> delete the selected line</li>
+  <li><kbd>y</kbd> <kbd>y</kbd> Copy the selected line</li>
+  <li><kbd>p</kbd> past the line where the cursor is or at the end by default</li>
+</ul>
+
+<h2 id="emacs">Emacs</h2>
+<p>Emacs is a shell editor similar to VIM that can be used in command line. It has multiple features and can be very powerful for text editing.</p>
+
+<p>Install emacs text file editor, because it’s not by default on all distribution</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get install emacs 
+</code></pre></div></div>
+
+<ul>
+  <li><kbd>ctrl</kbd> + <kbd>x</kbd> then <kbd>1</kbd> enlarges the editing window</li>
+  <li><kbd>ctrl</kbd> + <kbd>x</kbd> then <kbd>ctrl</kbd> + <kbd>w</kbd> allows to write the content in a different file</li>
+  <li><kbd>ctrl</kbd> + <kbd>k</kbd> then <kbd>y</kbd> allows to cut and past the line</li>
+</ul>
+
+<h2 id="stream-editor---sed">Stream Editor - sed</h2>
+<p>sed is a stream editor for RedHat and CentOS, it reads a file line by line and displays the output on the screen (does not save by default in the input file). Mainly use for search and replace a term in a file</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">-n</code> stop lines from being written, <code class="language-plaintext highlighter-rouge">'1~2p'</code> will print every 2 lines for file</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sed -n '1~2p' file
+</code></pre></div></div>
+
+<p>this ill delete every second line</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sed '1~2d' file
+</code></pre></div></div>
+
+<p>It will with <code class="language-plaintext highlighter-rouge">s</code> substitute/change <code class="language-plaintext highlighter-rouge">word</code> by <code class="language-plaintext highlighter-rouge">test</code>, the <code class="language-plaintext highlighter-rouge">g</code> is for all occurrences</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sed 's/word/test/g'
+</code></pre></div></div>
+
+<p>Start at the beginning of the line (<code class="language-plaintext highlighter-rouge">^</code>) then look at any (<code class="language-plaintext highlighter-rouge">.</code>) characters starting by 0 (<code class="language-plaintext highlighter-rouge">*0</code>) Then substitute it by nothing (<code class="language-plaintext highlighter-rouge">//</code>).</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sed 's/^.*0//'
+</code></pre></div></div>
+:ET

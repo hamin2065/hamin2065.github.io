@@ -1,0 +1,89 @@
+I"�<h1 id="configuring-and-controlling-open-ssh-service">Configuring and controlling Open SSH Service</h1>
+
+<h2 id="creating-a-ssh-key">Creating a SSH key</h2>
+
+<p>You can check out <a href="https://help.github.com/en/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">Github documentation</a> for that.
+Creating a new ssh key with <code class="language-plaintext highlighter-rouge">ssh-keygen</code> you need to enter a passphrase if you went your ssh key to be encrypted:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh-keygen <span class="nt">-t</span> rsa <span class="nt">-b</span> 4096 <span class="nt">-C</span> <span class="s2">"your_email@example.com"</span>
+</code></pre></div></div>
+
+<p>A pair of ssh keys will be created in <code class="language-plaintext highlighter-rouge">~/.ssh/</code>:</p>
+
+<ul>
+  <li>Public one: <code class="language-plaintext highlighter-rouge">id_rsa.pub</code> that you can share with others</li>
+  <li>Private one: <code class="language-plaintext highlighter-rouge">id_rsa</code> that you need to keep private</li>
+</ul>
+
+<p>If you get an error like that:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Permissions 0777 for '/Users/username/.ssh/id_rsa' are too open.
+It is recommended that your private key files are NOT accessible by others.
+This private key will be ignored.
+</code></pre></div></div>
+
+<p>You should change the key permission using:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">chmod </span>600 ~/.ssh/id_rsa
+</code></pre></div></div>
+
+<h2 id="make-a-ssh-connection">Make a SSH connection</h2>
+
+<p>To make a ssh connection:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh &lt;user&gt;@&lt;remotehost&gt; <span class="nt">-p</span> &lt;port&gt;
+</code></pre></div></div>
+
+<p>When you connect for the first time to a host, it will print its finger print and you can add it to your <code class="language-plaintext highlighter-rouge">~/.ssh/known_hosts</code>
+To check what happen for ssh connection, you can see at <code class="language-plaintext highlighter-rouge">/etc/ssh</code></p>
+
+<p>When ssh into a server the command executed is the bash shell so while it is running you stay connected. You can quit by using <code class="language-plaintext highlighter-rouge">ctrl + d</code> or by typing <code class="language-plaintext highlighter-rouge">exit</code>.</p>
+
+<h2 id="add-a-ssh-key-to-a-remote-host">Add a SSH key to a remote host</h2>
+
+<h3 id="with-ssh-copy-id">With ssh-copy-id</h3>
+
+<p>To add yourself to a host as an authorized remote user <code class="language-plaintext highlighter-rouge">ssh-copy-id root@desktopY</code>
+There is a daemon called <code class="language-plaintext highlighter-rouge">ssh-agent</code> that makes a copy of the private key to facilitate the ssh connection.</p>
+
+<h3 id="using-authorized_keys">Using authorized_keys</h3>
+
+<p>You can also go to the remote server and add the public key <code class="language-plaintext highlighter-rouge">my_key.pub</code> inside the <code class="language-plaintext highlighter-rouge">/home/user/.ssh/authorized_keys</code> folder.
+So that the next time you connect to that server you won’t be prompt for the password for that <code class="language-plaintext highlighter-rouge">user</code>. Using:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh <span class="nt">-i</span> my_key.pem user@server
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">my _key.pem</code> and <code class="language-plaintext highlighter-rouge">my_key.pub</code> are a matching public and private key pair.</p>
+
+<h2 id="ssh-spoofing">SSH spoofing</h2>
+
+<p>You can get this message if for example someone is messing with the DNS or the IP of the site you want to access has changed.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@       WARNING: POSSIBLE DNS SPOOFING DETECTED!          @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+The RSA host key for github.com has changed,
+and the key for the corresponding IP address 145.185.15.15
+is unknown. This could either mean that
+DNS SPOOFING is happening or the IP address for the host
+and its host key have changed at the same time.
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that a host key has just been changed.
+The fingerprint for the RSA key sent by the remote host is
+SHA256:0p4WBUiBh1+oS2y0OkLBvNd3fyYw30N31iDRxOlGHPg.
+Please contact your system administrator.
+Add correct host key in /Users/user/.ssh/known_hosts to get rid of this message.
+Offending RSA key in /Users/user/.ssh/known_hosts:10
+RSA host key for &lt;remote host&gt; has changed and you have requested strict checking.
+Host key verification failed.
+</code></pre></div></div>
+
+<p>You can remove the host from your <code class="language-plaintext highlighter-rouge">known_hosts</code> and try connecting. You will be prompted with <code class="language-plaintext highlighter-rouge">unkwon_host</code> and you’ll need to add the new <code class="language-plaintext highlighter-rouge">fingerprint</code> to your <code class="language-plaintext highlighter-rouge">known_hosts</code>.</p>
+
+<p>However if you’ve seen that message above, you should think twice before doing that.</p>
+:ET

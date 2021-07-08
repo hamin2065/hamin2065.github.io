@@ -1,0 +1,52 @@
+I"<ul>
+  <li><strong>Category:</strong> forensic</li>
+  <li><strong>Points:</strong> 3</li>
+  <li><strong>Description:</strong> Can you decrypt the message on that picture?</li>
+</ul>
+
+<p><img src="/assets/img/message.png" alt="challenge" /></p>
+
+<h2 id="write-up">Write-up</h2>
+
+<p>For this challenge, you had to download the font displayed in the image and decrypt the message. 
+Here is a table for the translation</p>
+
+<p><img src="/assets/img/decrypt.png" alt="decrypt" /></p>
+
+<p>And here is the message:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tivvgrmt hglk gsv urihh szou lu
+gsv uozt rh gsv mfnyvi gdl
+nfmwivw zmw hvevm ulooldvw yb
+gsv gdvougs ovggvi lu gsv
+zokszyvg. hglk mvcg rh gsv
+mfnyvi 3 zmw gsvm gsv hrcgs
+ovggvi lu gsv zlkszyvg ulooldvw
+yb gsv mrmvgvvmgs ovggvi hglk
+zoo oldvixzhv
+</code></pre></div></div>
+
+<p>You can decode it using an <code class="language-plaintext highlighter-rouge">atbash</code> <a href="http://crypto.interactive-maths.com/atbash-cipher.html">decipher</a> to get the message that lets you create the flag:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>greeting stop the firss half of
+the flag is the number two
+mundred and seven followed by
+the twelfth letter of the
+alphabet. stop next is the
+number 3 and then the sixth
+letter of the aophabet followed
+by the nineteenth letter stop
+all lowercase
+</code></pre></div></div>
+
+<p>which gives the flag <code class="language-plaintext highlighter-rouge">207l3fs</code>.
+<a href="https://en.wikipedia.org/wiki/Atbash">Atbash</a> is a substitution cypher used apparently to encrypt hebrew alphabet.</p>
+
+<h2 id="other-write-ups-and-resources">Other write-ups and resources</h2>
+
+<ul>
+  <li><a href="http://crypto.interactive-maths.com/atbash-cipher.html">atbash decipher</a></li>
+  <li><a href="http://www.1001fonts.com/bit-blocks-ttf-brk-font.html">The challenge’s font</a></li>
+  <li><a href="https://github.com/ctfs/write-ups-2018">ctf repository</a></li>
+</ul>
+:ET

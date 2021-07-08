@@ -1,0 +1,195 @@
+I"�7<p><a href="https://docs.spring.io/spring/docs/current/spring-framework-reference/overview.html">Spring</a> 
+is a popular framework to develop java application for enterprise with support to Groovy and 
+Kotlin as alternative language.</p>
+
+<h2 id="spring-and-spring-boot">Spring and Spring Boot</h2>
+
+<p>Spring Framework was made to remove the boilerplate necessary to build an application, and have some
+nice features like dependency injection and templates that reduce the amount of lines of code necessary to get started.</p>
+
+<p>Spring Boot on the other hand is an extension of the spring framework which removes the configurations
+required for setting up a Spring application. Eliminating the boilerplate’s configuration of a framework that was 
+eliminating the boilerplate’s code require to get your application started.</p>
+
+<h3 id="boilerplate">Boilerplate</h3>
+
+<p><a href="https://en.wikipedia.org/wiki/Boilerplate_code">Boilerplate code</a> refers to code that needs to be added in multiple application with little to no alteration.
+“Verbose” language needs a lot of so called Boilerplate to add a minor functionality.</p>
+
+<p>It comes from the printing industry where boiler plates referred to sturdy printing plate that looked issued from the metal of a boiler.</p>
+
+<p>On the side of the code, I see it in a kitchen where you want to make pasta.
+The boilerplate (spring in this case) would bring the stove to do so, but you would still need to add the pan, water and type of pasta.
+Springboot is this case would be spring (the stove) which comes with already prepared pans and water (the boot part of it, ready to start).</p>
+
+<p>You only need to add the pasta which would be your feature in this comparison.</p>
+
+<h3 id="springboot-features">Springboot features</h3>
+
+<p>From <a href="https://www.baeldung.com/spring-vs-spring-boot">baeldung’s spring boot article</a>, Here are just a few of the features in Spring Boot:</p>
+
+<ul>
+  <li>Opinionated ‘starter’ dependencies to simplify build and application configuration</li>
+  <li>Embedded server to avoid complexity in application deployment</li>
+  <li>Metrics, Health check, and externalized configuration</li>
+  <li>Automatic config for Spring functionality – whenever possible</li>
+</ul>
+
+<p>Spring Boot removes most of the code you need to get started, so that you can actually start coding features faster.</p>
+
+<h2 id="getting-started">Getting started</h2>
+
+<p>As spring boot is an extension of spring, it has all of the dependencies you might need already packed together.
+With some of them that might no be necessary in Kotlin or for your specific project, you can manage that in your build.gradle.kts.</p>
+
+<p>I have let what’s related to spring boot:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">plugins</span> <span class="p">{</span>
+    <span class="nf">id</span><span class="p">(</span><span class="s">"org.springframework.boot"</span><span class="p">)</span> <span class="n">version</span> <span class="s">"2.2.7.RELEASE"</span>
+    <span class="nf">id</span><span class="p">(</span><span class="s">"io.spring.dependency-management"</span><span class="p">)</span> <span class="n">version</span> <span class="s">"1.0.7.RELEASE"</span>
+<span class="p">}</span>
+
+<span class="nf">dependencies</span> <span class="p">{</span>
+    <span class="nf">compile</span><span class="p">(</span><span class="s">"org.springframework.boot:spring-boot-starter"</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">exclude</span><span class="p">(</span><span class="n">module</span> <span class="p">=</span> <span class="s">"spring-aop"</span><span class="p">)</span> <span class="c1">// Excude what you don't need, for example spring Aspect-Oriented Programming module</span>
+    <span class="p">}</span>
+    <span class="nf">compile</span><span class="p">(</span><span class="s">"org.springframework.boot:spring-boot-starter-web"</span><span class="p">)</span> 
+    <span class="nf">testCompile</span><span class="p">(</span><span class="s">"org.springframework.boot:spring-boot-starter-test"</span><span class="p">)</span> <span class="c1">// Comes with Junit4, Mockito, Hamcrest</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>You can see the spring plugins there in your gradle file that will automatically manage will version of each spring dependency
+you need in order for the whole to work.</p>
+
+<h2 id="annotations">Annotations</h2>
+
+<p>Because spring is using annotation that can look like magic. 
+Let’s go through the main ones with Kotlin examples. I won’t go in too much details, just to have a high level overview.</p>
+
+<h3 id="bean">@Bean</h3>
+
+<p>The Beans in spring are what your application is based upon, it’s backbone. 
+They are managed by the Spring IoC (Inversion of Control) Container, the one that is doing all the dependency injection
+which is at the base of the “spring magic”.</p>
+
+<p>By magic, it’s because you define the object dependencies without creating them and let the construction of those dependency
+be made by spring (ie the Spring IoC container) on start up. (You might have errors with Application Context, etc …)</p>
+
+<p>Basically a Bean is an object that is going to be instantiated, assembled and managed by spring.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.springframework.context.annotation.Bean</span>
+<span class="k">import</span> <span class="nn">org.springframework.context.annotation.Configuration</span>
+<span class="k">import</span> <span class="nn">org.springframework.web.client.RestTemplate</span>
+
+
+<span class="nd">@Configuration</span>
+<span class="kd">class</span> <span class="nc">Config</span> <span class="p">{</span>
+    <span class="nd">@Bean</span>
+    <span class="k">fun</span> <span class="nf">restTemplate</span><span class="p">()</span> <span class="p">=</span> <span class="nc">RestTemplate</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>On this basic example, you can see a <code class="language-plaintext highlighter-rouge">restTemplate</code> Bean in a <code class="language-plaintext highlighter-rouge">@Configuration</code> class where the configuration annotation, 
+means that it’s a configuration class which may contain bean definitions.</p>
+
+<h3 id="component">@Component</h3>
+
+<h4 id="difference-with-bean">Difference with Bean</h4>
+
+<p>Since everything is Bean in spring, it can be hard to see what difference it makes to use those different annotations.
+From what I see the main differences between Bean and Component are:</p>
+
+<ul>
+  <li>Component
+    <ul>
+      <li>Used on Classes</li>
+      <li>Enable scanning and automatic wiring to create the object</li>
+      <li>one-to-one mapping between the annotated class and the Bean (coupled)</li>
+    </ul>
+  </li>
+  <li>Bean
+    <ul>
+      <li>Used on a method</li>
+      <li>Object instantiation is handled within the method and can be decoupled (one-to-many, one bean multiple possible objects)</li>
+      <li>Returns an explicit single object and marked as a Bean for Spring</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="example-and-autowired">Example and @Autowired</h4>
+
+<p>So by adding a <code class="language-plaintext highlighter-rouge">@Component</code> to a class we create a Bean</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.springframework.beans.factory.annotation.Autowired</span>
+<span class="k">import</span> <span class="nn">org.springframework.stereotype.Component</span>
+
+<span class="nd">@Component</span>
+<span class="k">internal</span> <span class="kd">class</span> <span class="nc">MyComponent</span> <span class="p">{</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="k">private</span> <span class="k">lateinit</span> <span class="kd">var</span> <span class="py">restTemplate</span><span class="p">:</span> <span class="nc">RestTemplate</span>
+    
+    <span class="k">fun</span> <span class="nf">doStuff</span><span class="p">()</span> <span class="p">=</span> <span class="s">"doing stuff"</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>You can see the <code class="language-plaintext highlighter-rouge">@Autowired</code> annotation used there on our restTemplate field. 
+Basically at the component creation, spring which will look for a Bean for restTemplate, and then inject it into our Component.
+The <code class="language-plaintext highlighter-rouge">@Autowired</code> annotation marks a constructor, field, or setter method to be autowired by Spring dependency injection.</p>
+
+<p>It will use reflection in order to look for annotated field and then instantiate them at run time. 
+Thus the “lateinit var” in Kotlin, you might need in some case add <code class="language-plaintext highlighter-rouge">kotlin-reflect</code> to your gradle file, if you get reflection dependency exception.</p>
+
+<h4 id="component-specification-service-controller">Component specification @Service, @Controller</h4>
+
+<p>To better separate and differentiate the Bean and parts of the code, you can use specified Component annotation.
+For example <code class="language-plaintext highlighter-rouge">@Service</code> which represents also a Component is one of them. 
+It describe an object that’s holding the business logic and is used the same way as <code class="language-plaintext highlighter-rouge">@Component</code> is used.</p>
+
+<p>Then you have <code class="language-plaintext highlighter-rouge">@Controller</code> which indicates that the class is a “Controller”. It’s mostly known by its own specified version 
+the <code class="language-plaintext highlighter-rouge">@RestController</code> which is used to <a href="(https://www.baeldung.com/spring-controller-vs-restcontroller)">simplify</a> the implementation Rest API applications.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.springframework.http.HttpStatus</span>
+<span class="k">import</span> <span class="nn">org.springframework.http.ResponseEntity</span>
+<span class="k">import</span> <span class="nn">org.springframework.web.bind.annotation.*</span>
+
+<span class="nd">@RestController</span>
+<span class="nd">@RequestMapping</span><span class="p">(</span><span class="s">"/v1"</span><span class="p">)</span>
+<span class="k">internal</span> <span class="kd">class</span> <span class="nc">Endpoints</span> <span class="p">{</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="k">private</span> <span class="k">lateinit</span> <span class="kd">var</span> <span class="py">myComponent</span><span class="p">:</span> <span class="nc">MyComponent</span>
+
+    <span class="nd">@GetMapping</span><span class="p">(</span><span class="n">value</span> <span class="p">=</span> <span class="p">[</span><span class="s">"/example"</span><span class="p">])</span>
+    <span class="k">internal</span> <span class="k">fun</span> <span class="nf">getExample</span><span class="p">()</span> <span class="p">=</span> <span class="nc">ResponseEntity</span><span class="p">(</span><span class="n">myComponent</span><span class="p">.</span><span class="nf">doStruff</span><span class="p">(),</span> <span class="nc">HttpStatus</span><span class="p">.</span><span class="nc">ACCEPTED</span><span class="p">)</span>
+    
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>You can see that the <code class="language-plaintext highlighter-rouge">@RestController</code> can also <code class="language-plaintext highlighter-rouge">@Autowire</code> any Bean (from any Bean, Component, … annotation).</p>
+
+<h3 id="springbootapplication">@SpringBootApplication</h3>
+
+<p>Create and run your application with the <code class="language-plaintext highlighter-rouge">@SpringBootApplication</code>. Here is how you would do it in Kotlin.
+And don’t forget that main method in Kotlin outside of class are to be called <em>“BootStrapApplicationKt”</em> in case you need 
+to package it into an application and you need your</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.springframework.boot.SpringApplication</span>
+<span class="k">import</span> <span class="nn">org.springframework.boot.autoconfigure.SpringBootApplication</span>
+
+<span class="nd">@SpringBootApplication</span>
+<span class="kd">class</span> <span class="nc">BootStrapApplication</span>
+
+<span class="k">fun</span> <span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="nc">Array</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">&gt;)</span> <span class="p">{</span>
+    <span class="nc">SpringApplication</span><span class="p">.</span><span class="nf">run</span><span class="p">(</span><span class="nc">BootStrapApplication</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span><span class="p">,</span> <span class="p">*</span><span class="n">args</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The <em>SpringBootApplication</em> annotation is what enables Spring Boot auto configuration and component scanning.
+So that’s for the Spring IoC Container / Dependency injection to get in play load the application context, etc …
+The <code class="language-plaintext highlighter-rouge">SpringApplication.run(...)</code> method is a <a href="https://docs.spring.io/spring-boot/docs/2.1.10.RELEASE/reference/html/boot-features-spring-application.html">convenient way to bootstrap</a> 
+the Spring application that is started from the <code class="language-plaintext highlighter-rouge">main()</code> method.</p>
+
+<p>In the end the final tips, is when you have a doubt, you can always look into Spring javadoc to better 
+understand what it does. (command, click on the word in IntelliJ).</p>
+:ET

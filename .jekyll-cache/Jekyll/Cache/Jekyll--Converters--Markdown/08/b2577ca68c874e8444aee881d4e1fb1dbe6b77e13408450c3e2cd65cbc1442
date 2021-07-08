@@ -1,0 +1,282 @@
+I"�+<h2 id="agile-project-management">Agile Project Management</h2>
+
+<p>Agile remove the bullying from the process, scope is the only thing that gets discussed in an Agile methodology.
+Agile is:</p>
+
+<ul>
+  <li>Iterative</li>
+  <li>Incremental</li>
+  <li>Flexible</li>
+  <li>Interactive</li>
+</ul>
+
+<h3 id="agile-manifesto-values">Agile Manifesto values:</h3>
+
+<ul>
+  <li>Individuals and interactions over processes and tools</li>
+  <li>Working software (solution) over comprehensive documentation</li>
+  <li>Customer collaboration over contract negotiation</li>
+  <li>Responding to change over following a plan</li>
+</ul>
+
+<h3 id="the-12-agile-principles-">The 12 Agile principles :</h3>
+
+<ol>
+  <li>Our highest priority is to satisfy the customer through early and continuous delivery of valuable software.</li>
+  <li>Welcome changing requirements, even late in development. Agile processes harness change for the customer’s competitive advantage.’</li>
+  <li>Deliver working software frequently, from a couple of weeks to a couple of months, with a preference to the shorter timescale.</li>
+  <li>Business people and developers must work together daily throughout the project.</li>
+  <li>Build projects around motivated individuals. Give them the environment and support they need, and trust them to get the job done.</li>
+  <li>The most efficient and effective method of conveying information to and within a development team is face-to-face conversation.</li>
+  <li>Value (Working software) is the primary measure of progress.</li>
+  <li>Agile processes promote sustainable development. The sponsors, developers, and users should be able to maintain a constant pace indefinitely.</li>
+  <li>Continuous attention to technical excellence and good design enhances agility.</li>
+  <li>Simplicity — the art of maximizing the amount of work not done — is essential.</li>
+  <li>The best architectures, requirements, and designs emerge from self-organizing teams.</li>
+  <li>At regular intervals, the team reflects on how to become more effective, then tunes and adjusts its behavior accordingly.</li>
+</ol>
+
+<h3 id="agile-and-wbs">Agile and WBS</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>Agile</strong></th>
+      <th><strong>WBS</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>for more changing or unknown environment</td>
+      <td>Predictable environment same technology, few changes))</td>
+    </tr>
+    <tr>
+      <td>Always changing, change is natural, adaptation</td>
+      <td>doing the same thing expecting a same response</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>WBS is referred as <a href="https://en.wikipedia.org/wiki/Work_breakdown_structure">Work Breakdown Structure</a> 
+used in Waterfall project management.</p>
+
+<h2 id="agile-frameworks">Agile frameworks</h2>
+
+<h3 id="scrum">Scrum</h3>
+
+<p>See the <a href="/2015/11/10/Overview-Scrum-framework.html">Overview of the Scrum Framework</a> article.</p>
+
+<p><strong>tldr</strong>: 
+A framework where your plan work iteratively that is committed to be done during a specified time called sprint.
+At the end of each sprint value is delivered, feedback is received and delivery process gets improved.</p>
+
+<h3 id="kanban">Kanban</h3>
+
+<p>Kanban is a way to show work and if it is well done
+For example you can set a limit of things that can be in progress (WIP) inside the Kanban</p>
+
+<p>Value stream is a flow of activities and work units that introduce value for the cutomer
+Work unit is a specific measurable amount of work that can be cistomized and treated as a whole</p>
+
+<p>WIP: Work in progress
+work in progress should be short, and you should control cycle time (time to do WIP)</p>
+
+<p>work queue is the back log for example
+lead time is how much work is in progress divided by average completion rate</p>
+
+<h3 id="xp-xtrem-programming">XP Xtrem programming</h3>
+
+<p>XP Xtrem programming invented by .Kent.Beck mid 1990’s is a Lightweight, Efficient, Low-Risk, Flexible, “predictable”, Scientific and Fun displine of software development. It leverage pair programming, pair negotiation.</p>
+
+<p>With self organizing, team are empowered and motivated by trust to their own decisions and commitment.
+It’s consensus driven with constant constructive desagreement driving the team development and success.</p>
+
+<blockquote>
+  <p>Give faster results, right results, astonishing results</p>
+</blockquote>
+
+<h4 id="5-core-values">5 core Values:</h4>
+
+<ul>
+  <li>Simplicity</li>
+  <li>Feedback</li>
+  <li>Communication</li>
+  <li>Courage</li>
+  <li>Respect</li>
+</ul>
+
+<h4 id="roles">Roles</h4>
+<p>We can map some of them with SCRUM roles:</p>
+
+<ul>
+  <li><strong>Customer</strong> is like the Product Owner</li>
+  <li><strong>Programmer</strong> is like the team but share ownership, does not test but deliver something fully functional (unit testing)</li>
+  <li><strong>Tester</strong> is understanding the behaviour of a the solution</li>
+  <li><strong>Coach</strong> is part of Scrum Master also called <em>“batman”</em> referenced to british officer domestic at the front. The role diminish as the team mature</li>
+  <li><strong>Tracker</strong> is part of Scrum Master that tracks time</li>
+</ul>
+
+<h4 id="individual-practices">Individual practices</h4>
+
+<ul>
+  <li>Refactoring clean solution and keep functionality</li>
+  <li>Simple Design</li>
+  <li>Test-Driven Development create an automated test case that defines a desired new or improved functionality</li>
+  <li>Pair Programming real time pair review. live analysis, negotiation, collaboration, one is on the computer and the other one give you directions</li>
+</ul>
+
+<h4 id="team-practices">Team practices:</h4>
+
+<ul>
+  <li>Collective Ownership add value, no one is blamed, they care</li>
+  <li>Coding Standard Make sure everyone use the same language</li>
+  <li>Sustainable Pace 40 hours week</li>
+  <li>Metaphor a guiding vision to build innovation and create vocabulary of something that doesn’t exist’</li>
+  <li>Continuous integration All the developer are building and test coded software many times a day.</li>
+</ul>
+
+<h4 id="organizational-practices">Organizational practices:</h4>
+
+<ul>
+  <li>Small Releases equivalent of the increment</li>
+  <li>Customer close collaboration between everyone with Customer answering questions</li>
+  <li>Planning Game</li>
+</ul>
+
+<h3 id="agile-lean">Agile Lean</h3>
+
+<p>Lean says that activities that adds anything else but value for your “GOAL” are wasteful and thus need to be eliminated to keep only the value adding activities.</p>
+<ul>
+  <li>Improve process velocity</li>
+  <li>Shorten cycle times</li>
+</ul>
+
+<p>ADHOC - is a unique solution that can not be generalized. It lead to risks</p>
+
+<h4 id="7-lean-principles">7 Lean principles</h4>
+
+<ul>
+  <li>Eliminate waste</li>
+  <li>Amplify learning</li>
+  <li>Decide as late as possible</li>
+  <li>Deliver as fast as possible</li>
+  <li>Empower the team</li>
+  <li>Build integrity in</li>
+  <li>See the whole</li>
+</ul>
+
+<h4 id="8-waste-types">8 Waste types</h4>
+<p>The waste types are referred as D.O.W.N.T.I.M.E.</p>
+
+<ul>
+  <li><strong>D</strong>efects</li>
+  <li><strong>O</strong>ver production</li>
+  <li><strong>W</strong>aiting</li>
+  <li><strong>N</strong>on-under utilized talent</li>
+  <li><strong>T</strong>ransportation</li>
+  <li><strong>I</strong>nventory</li>
+  <li><strong>M</strong>otion</li>
+  <li><strong>E</strong>xcess processing</li>
+</ul>
+
+<h2 id="other-frameworks">Other frameworks</h2>
+
+<p>These framework can easily be integrated with other.</p>
+
+<h3 id="tdd-test-driven-development">TDD. Test driven development</h3>
+
+<p>In Test Driven Development you create the test first for that will be passed or the features that you want.</p>
+
+<p>First you write the test cases, the boundaries of your system.
+Then you write the tests that verify the expected results of the test cases.</p>
+
+<p>It’s mostly a development “framework” or rather a state of mind.
+Where you start simple by creating a failing test, then implement the easiest / fastest way you can.
+And finally you refactor so your code stays clean and maintainable.</p>
+
+<h3 id="fdd-feature-driven-development">FDD. Feature driven development</h3>
+
+<p>It is the art to have feature that add values (like pbi in the backlog)</p>
+
+<ul>
+  <li>Domains
+    <ul>
+      <li>Subject areas
+        <ul>
+          <li>Feature lists
+            <ul>
+              <li>Features ‘like user story in SCRUM’</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>MVP</strong> (minimum viable product) is what the product owner is given and that meets his need
+<strong>MMF</strong> (minimal marketable features) is what answers the product owner needs and that can be sold</p>
+
+<h3 id="dsdm-dynamic-systems-development-method">DSDM. Dynamic Systems Development Method</h3>
+
+<p>It’s the dynamic systems development method and it comes from RAD (rapid application development)</p>
+
+<h2 id="other-agile-principles">Other Agile Principles</h2>
+
+<h3 id="kiss-principle">KISS principle</h3>
+
+<p>The KISS principle stands for:</p>
+
+<ul>
+  <li><strong>K</strong>eep <strong>I</strong>t <strong>S</strong>imple &amp; <strong>S</strong>traightforward</li>
+</ul>
+
+<p>Instead of looking for an over complicated solution, you should look for the easiest most direct way. 
+Thus avoiding unnecessary complexity if possible. 
+Have a simple version first, optimising it when every piece is working.</p>
+
+<h3 id="kaizen">Kaizen</h3>
+
+<p>Kaizen (改善) means “change good”.
+It is a principle to continuously improve, and set up practices to allow that improvement to happen.</p>
+
+<p>All the process generated from Kaizen be sum up into these steps:</p>
+
+<ul>
+  <li>Define</li>
+  <li>Measure</li>
+  <li>Analyze</li>
+  <li>Improve</li>
+  <li>Control</li>
+</ul>
+
+<p>Out of the kaizen you can find those famous frameworks:</p>
+
+<ul>
+  <li>Toyota kata which is a subset of PDCA (Plan, Do, Check, Act)</li>
+  <li>Kaizen 5S (Sort, Straighten / Set in order, Shine, Standardize, Sustain)</li>
+</ul>
+
+<h3 id="am-agile-modeling">AM. Agile Modeling</h3>
+<p>Also called Xtreme Modeling, it was made by. Scott. Ambler</p>
+
+<ul>
+  <li>Active Stakeholder to get feedback</li>
+  <li>Architecture Envisioning clear vision for the future</li>
+  <li>Iteration Modeling</li>
+  <li>JBGE (just barely good enough) simple, small documentation (mock up, picture)</li>
+  <li>Parkinson Law (Work more than 50% on something, over analysing makes it lose value)</li>
+  <li>Model Storming spike methodology</li>
+</ul>
+
+<h3 id="aup-agile-unified-process">AUP. Agile Unified Process</h3>
+<p>This process is the lightweight version of the Rational Unified Process developed by Scott Ambler. 
+The AUP applies agile techniques including test-driven development (TDD), agile modeling (AM), agile change management, and database refactoring to improve productivity.</p>
+
+<ul>
+  <li>Step 1 inception 1 iteration</li>
+  <li>Step 2 elaboration iteration 1 to N goal to have architecture</li>
+  <li>Step 3 construction iteration 1 to N until you have enough value</li>
+  <li>Step 4 transition validate that everything is working, deploy and make transition toward solution</li>
+</ul>
+:ET

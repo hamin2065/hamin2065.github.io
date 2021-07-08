@@ -1,0 +1,194 @@
+I"y/<h2 id="introduction">Introduction</h2>
+
+<p>So here a bit of details:</p>
+
+<ul>
+  <li>Gradle is an open source build automation system.</li>
+  <li>Kotlin is a general purpose, open source, statically typed programming language for both functional and object oriented programming.</li>
+  <li>A DSL (domain-specific language) is a language specialized to a particular application domain. For example <code class="language-plaintext highlighter-rouge">Groovy</code> that was created for Gradle’s build scripts.</li>
+</ul>
+
+<p>Kotlin dsl with gradle means to use the kotlin <code class="language-plaintext highlighter-rouge">build.gradle.kts</code> instead of the groovy <code class="language-plaintext highlighter-rouge">build.gradle</code>.
+Kotlin is so general that it reaches specific programming niche.</p>
+
+<blockquote>
+  <p>Everything is hosted on Github: <a href="https://github.com/sylhare/Kotlin/tree/master/hello-kotlin">sylhare/kotlin</a></p>
+</blockquote>
+
+<h2 id="basic-set-up">Basic set up</h2>
+
+<p>Basic set up for your kotlin project with Gradle &gt; <strong>4.8</strong>:</p>
+
+<ul>
+  <li>group: the top level package(s) under <code class="language-plaintext highlighter-rouge">src.main</code></li>
+  <li>version: the version of your application</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">allprojects</span> <span class="p">{</span>
+    <span class="n">group</span> <span class="p">=</span> <span class="s">"hello"</span>
+    <span class="n">version</span> <span class="p">=</span> <span class="s">"1.0"</span>
+    <span class="nf">repositories</span> <span class="p">{</span>
+        <span class="nf">jcenter</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>You want to specify the kotlin version and plugin you wish to use:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">plugins</span> <span class="p">{</span>
+    <span class="nf">kotlin</span><span class="p">(</span><span class="s">"jvm"</span><span class="p">)</span> <span class="n">version</span> <span class="s">"1.3.21"</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>And add the basic dependencies:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">dependencies</span> <span class="p">{</span>
+    <span class="nf">compile</span><span class="p">(</span><span class="nf">kotlin</span><span class="p">(</span><span class="s">"stdlib-jdk8"</span><span class="p">))</span>
+    <span class="c1">// Or compile("org.jetbrains.kotlin:kotlin-stdlib:1.3.21")</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>You can also add this for source compatibility:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tasks</span><span class="p">.</span><span class="n">withType</span><span class="p">&lt;</span><span class="nc">KotlinCompile</span><span class="p">&gt;</span> <span class="p">{</span>
+  <span class="n">kotlinOptions</span><span class="p">.</span><span class="n">jvmTarget</span> <span class="p">=</span> <span class="s">"1.8"</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="code-coverage">Code Coverage</h2>
+
+<h3 id="junit">JUnit</h3>
+
+<p>To look at coverage that means you have unit test.
+Don’t forget to add something like JUnit into your dependencies:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">dependencies</span> <span class="p">{</span>
+    <span class="nf">testCompile</span><span class="p">(</span><span class="s">"junit:junit:4.12"</span><span class="p">)</span>
+<span class="p">}</span>    
+</code></pre></div></div>
+
+<h3 id="jacoco">Jacoco</h3>
+
+<h4 id="create-code-coverage-task">Create code coverage task</h4>
+
+<p>Code coverage with jacoco plugin</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">plugins</span> <span class="p">{</span>
+    <span class="n">jacoco</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Then add the task</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tasks</span><span class="p">.</span><span class="n">withType</span><span class="p">&lt;</span><span class="nc">JacocoReport</span><span class="p">&gt;</span> <span class="p">{</span>
+    <span class="nf">reports</span> <span class="p">{</span>
+        <span class="n">xml</span><span class="p">.</span><span class="n">isEnabled</span> <span class="p">=</span> <span class="k">true</span>
+        <span class="n">csv</span><span class="p">.</span><span class="n">isEnabled</span> <span class="p">=</span> <span class="k">false</span>
+        <span class="n">html</span><span class="p">.</span><span class="n">destination</span> <span class="p">=</span> <span class="nf">file</span><span class="p">(</span><span class="s">"${buildDir}/reports/jacoco"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>You can now roll the test code coverage with jacoco using <code class="language-plaintext highlighter-rouge">gradle test jacocoTestReport</code>.</p>
+
+<h4 id="ignore-a-class-from-coverage">Ignore a class from coverage</h4>
+
+<p>If you have a <code class="language-plaintext highlighter-rouge">main</code> class which can’t be tested and you’d rather remove it from coverage, you would do it like:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tasks</span><span class="p">.</span><span class="n">withType</span><span class="p">&lt;</span><span class="nc">JacocoReport</span><span class="p">&gt;</span> <span class="p">{</span>
+    <span class="nf">doFirst</span> <span class="p">{</span>
+        <span class="n">classDirectories</span> <span class="p">=</span> <span class="nf">fileTree</span><span class="p">(</span><span class="s">"build/classes/kotlin/main"</span><span class="p">).</span><span class="nf">apply</span> <span class="p">{</span>
+            <span class="nf">exclude</span><span class="p">(</span><span class="s">"**/MainKt.class"</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="c1">// ... your other stuff</span>
+    
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>And <code class="language-plaintext highlighter-rouge">MainKt</code> is not considered for the coverage anymore!</p>
+
+<h2 id="execute-the-project">Execute the project</h2>
+
+<h3 id="with-the-application-gradle-plugin">With the Application gradle plugin</h3>
+
+<p>It is a plugin available with gradle, add it to your gradle script like:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">plugins</span> <span class="p">{</span>
+    <span class="n">application</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Then set your application main file:</p>
+
+<ul>
+  <li>It has to be outside of a class</li>
+  <li>The <code class="language-plaintext highlighter-rouge">Kt</code> at the end is normal, Kotlin automatically generates it for backward compatibility with Java classes</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">application</span> <span class="p">{</span>
+    <span class="n">mainClassName</span> <span class="p">=</span> <span class="s">"hello.MainKt"</span>
+<span class="p">}</span>
+
+<span class="c1">// Or you can use</span>
+<span class="n">application</span><span class="p">.</span><span class="n">mainClassName</span> <span class="p">=</span> <span class="s">"hello.MainKt"</span>
+</code></pre></div></div>
+
+<p>Now you can run your program with:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gradle run
+</code></pre></div></div>
+
+<h3 id="make-the-fat-jar">Make the fat Jar</h3>
+
+<p>So the basic Jar file generated <a href="https://stackoverflow.com/a/61373175/7747942">doesnt include all you need</a> to run.
+You need to include them manually by adding this (gradle 5+):</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tasks</span><span class="p">.</span><span class="n">withType</span><span class="p">&lt;</span><span class="nc">Jar</span><span class="p">&gt;</span> <span class="p">{</span>
+    <span class="c1">// Otherwise you'll get a "No main manifest attribute" error</span>
+    <span class="nf">manifest</span> <span class="p">{</span>
+        <span class="n">attributes</span><span class="p">[</span><span class="s">"Main-Class"</span><span class="p">]</span> <span class="p">=</span> <span class="s">"com.example.MainKt"</span>
+    <span class="p">}</span>
+
+    <span class="c1">// To add all of the dependencies otherwise a "NoClassDefFoundError" error</span>
+    <span class="nf">from</span><span class="p">(</span><span class="n">sourceSets</span><span class="p">.</span><span class="n">main</span><span class="p">.</span><span class="k">get</span><span class="p">().</span><span class="n">output</span><span class="p">)</span>
+
+    <span class="nf">dependsOn</span><span class="p">(</span><span class="n">configurations</span><span class="p">.</span><span class="n">runtimeClasspath</span><span class="p">)</span>
+    <span class="nf">from</span><span class="p">({</span>
+        <span class="n">configurations</span><span class="p">.</span><span class="n">runtimeClasspath</span><span class="p">.</span><span class="k">get</span><span class="p">().</span><span class="nf">filter</span> <span class="p">{</span> <span class="n">it</span><span class="p">.</span><span class="n">name</span><span class="p">.</span><span class="nf">endsWith</span><span class="p">(</span><span class="s">"jar"</span><span class="p">)</span> <span class="p">}.</span><span class="nf">map</span> <span class="p">{</span> <span class="nf">zipTree</span><span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="p">}</span>
+    <span class="p">})</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The jar will be created as <code class="language-plaintext highlighter-rouge">{project.name}-{version}.jar</code> like <code class="language-plaintext highlighter-rouge">hello-kotlin-1.0.jar</code>.
+You can then run it using:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java <span class="nt">-jar</span> hello-kotlin-1.0.jar
+</code></pre></div></div>
+
+<p>You can also create another task <code class="language-plaintext highlighter-rouge">fatJar</code> that would create the jar with all of your dependencies.
+Follow the documentation on <a href="https://docs.gradle.org/current/userguide/working_with_files.html#sec:creating_uber_jar_example">gradle</a>.</p>
+
+<h3 id="make-the-wrapper">Make the wrapper</h3>
+
+<p>For your project to work almost anywhere, you can use the wrapper:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gradle wrapper
+</code></pre></div></div>
+
+<p>Then you’ll be able to use <code class="language-plaintext highlighter-rouge">./gradlew</code> instead of gradle and your project should run fine 👍</p>
+
+<blockquote>
+  <p>Now if you have the opportunity to use a newer version of gradle, do it.</p>
+</blockquote>
+
+<h2 id="sources">Sources</h2>
+
+<ul>
+  <li><a href="https://en.wikipedia.org/wiki/Domain-specific_language">Wikipedia DSL</a></li>
+  <li><a href="http://ilities.co/2017/07/19/kotlin-gradle-DSL/">ilities kotlin gradle dsl</a></li>
+  <li><a href="https://docs.gradle.org/current/userguide/application_plugin.html#sec:application_usage">gradle.org</a></li>
+  <li><a href="https://github.com/sylhare/Kotlin/tree/master/hello-kotlin">Hello Kotlin</a></li>
+</ul>
+:ET

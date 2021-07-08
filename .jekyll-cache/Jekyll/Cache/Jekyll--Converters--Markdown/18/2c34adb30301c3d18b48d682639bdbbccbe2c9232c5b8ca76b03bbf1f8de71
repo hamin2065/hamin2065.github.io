@@ -1,0 +1,170 @@
+I"C,<h2 id="what-is-ldap">What is LDAP</h2>
+
+<div class="row">
+    
+    <div style="flex: 100.0%">
+        <img class="single" src="/assets/img/ldap.png" alt="ldap.png" />
+    </div>
+    
+</div>
+
+<h3 id="more-about-the-concepts">More about the Concepts</h3>
+
+<p><a href="https://ldap.com/">LDAP</a> is the Lightweight Directory Access Protocol,also referred as <a href="https://en.wikipedia.org/wiki/X.500">X.500</a> 
+(Which is a series of computer networking standards covering electronic directory services.)
+It is open source and uses standard mechanism for interacting with directory servers.</p>
+
+<p><a href="https://en.wikipedia.org/wiki/Directory_service">Directory servers</a> is used to store a wide variety of information 
+(network resources, users, groups and even access control).
+The most famous one would be <a href="https://en.wikipedia.org/wiki/Active_Directory">Microsoft’s Active Directory</a>, 
+but you can also find some other like the <a href="https://en.wikipedia.org/wiki/Oracle_Internet_Directory">Oracle Internet Directory</a>,
+and even famous open source ones like <a href="https://en.wikipedia.org/wiki/Apache_Directory">Apache Directory</a> or <a href="https://en.wikipedia.org/wiki/OpenLDAP">OpenLDAP</a>.</p>
+
+<p>A directory service (server by extension) is a general term, for example the <a href="https://www.ietf.org/rfc/rfc1034.txt">DNS</a> is the first directory service on the internet.
+So the directory servers we are interested in are the one that implements the LDAP protocol.</p>
+
+<blockquote>
+  <p>LDAP usually refers to the directory server implementing the LDAP protocol.</p>
+</blockquote>
+
+<h3 id="data-structure">Data Structure</h3>
+
+<p>LDAP is very hierarchical with a <a href="https://www.pks.mpg.de/~mueller/docs/suse10.1/suselinux-manual_en/manual/sec.ldap.tree.html">tree</a> like data structure.
+It makes it very fast to read and slower to write.</p>
+
+<p>An example of a LDAP directory information tree (DIT) could look like:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">dc</span><span class="o">=</span>org
+└── <span class="nv">dc</span><span class="o">=</span>spring
+    └── <span class="nv">dc</span><span class="o">=</span>example
+        ├── <span class="nv">ou</span><span class="o">=</span><span class="nb">groups</span>
+        │   ├── <span class="nv">cn</span><span class="o">=</span>developers
+        │   └── <span class="nv">cn</span><span class="o">=</span>sysadmin
+        └── <span class="nv">ou</span><span class="o">=</span>people
+            ├── <span class="nv">uid</span><span class="o">=</span>ben
+            ├── <span class="nv">uid</span><span class="o">=</span>bob
+            └── <span class="nv">uid</span><span class="o">=</span>joe
+
+</code></pre></div></div>
+
+<p>Since it a tree, you can see a main branch <code class="language-plaintext highlighter-rouge">dc=example,dc=spring,dc=org</code>. 
+This could be considered as the base branch of the LDAP structure.</p>
+
+<p>The leafs are the entry, for example <em>bob</em>:</p>
+
+<ul>
+  <li>The complete path which unambiguously identifies is called <em>distinguished name</em> or DN and is <code class="language-plaintext highlighter-rouge">uid=bob,ou=people,dc=example,dc=spring,dc=org</code>.</li>
+  <li>A single node along the path to this entry is called <em>relative distinguished name</em> or RDN (We can have RDN <code class="language-plaintext highlighter-rouge">uid=bob,ou=people</code> from base <code class="language-plaintext highlighter-rouge">dc=example,dc=spring,dc=org</code>)</li>
+</ul>
+
+<h3 id="attributes">Attributes</h3>
+
+<p>The LDAP data structures uses attributes on each leafs that are defined in a schema <a href="https://tools.ietf.org/html/rfc4519">rfc4519</a>.
+Depending on the LDAP implementation you can add new attributes on top of the default ones from <a href="https://tools.ietf.org/html/rfc2253">rfc2253</a>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> String  X.500 AttributeType
+------------------------------
+CN      commonName
+L       localityName
+ST      stateOrProvinceName
+O       organizationName
+OU      organizationalUnitName
+C       countryName
+STREET  streetAddress
+DC      domainComponent
+UID     userid
+</code></pre></div></div>
+
+<p>An attribute is a map of <code class="language-plaintext highlighter-rouge">key: value</code> in the entry.</p>
+
+<h2 id="example">Example</h2>
+
+<h3 id="search-with-ldapsearch">Search with ldapsearch</h3>
+
+<p>One of the best tool to explore your LDAP, is by using the tool <strong><a href="https://docs.ldap.com/ldap-sdk/docs/tool-usages/ldapsearch.html">ldapsearch</a></strong>.
+It is a commandline tool that should already be in most default distribution of Linux based OS.</p>
+
+<p>Here is an example:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ldapsearch <span class="nt">-x</span> <span class="se">\</span>
+<span class="nt">-H</span> ldap://ldap.example.org <span class="se">\ </span>                            <span class="c"># ldap url</span>
+<span class="nt">-b</span> <span class="s2">"ou=groups,dc=example,dc=spring,dc=org"</span> <span class="se">\ </span>            <span class="c"># ldap branch</span>
+<span class="nt">-D</span> <span class="s2">"uid=bob,ou=people,dc=example,dc=spring,dc=org"</span> <span class="se">\ </span>    <span class="c"># ldap bind user</span>
+<span class="nt">-w</span> password                                              <span class="c"># ldap bind password</span>
+<span class="o">(</span><span class="s2">"cn=developers"</span><span class="o">)</span>                                        <span class="c"># The search filter </span>
+</code></pre></div></div>
+
+<p>Find more usage examples on <a href="https://docs.oracle.com/cd/E19693-01/819-0997/auto45/index.html">oracle</a> documentation.
+The result are returned in the LDIF format.</p>
+
+<h3 id="example-ldif">Example LDIF</h3>
+
+<p>LDIF is the The LDAP Data Interchange Format from <a href="https://tools.ietf.org/html/rfc2849">rfc2849</a>.
+It can be used to export and import ldap entries. The possibility are wides.</p>
+
+<p>Here is an example of our top branch with the dc; Domain Component:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">dn</span><span class="pi">:</span> <span class="s">dc=example,dc=spring,dc=org</span>
+<span class="na">objectClass</span><span class="pi">:</span> <span class="s">top</span>
+<span class="na">objectClass</span><span class="pi">:</span> <span class="s">domain</span>
+<span class="na">dc</span><span class="pi">:</span> <span class="s">spring</span>
+</code></pre></div></div>
+
+<p>Here would be how you define the ou; Organizational Units:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">dn</span><span class="pi">:</span> <span class="s">ou=groups,dc=example,dc=spring,dc=org</span>
+<span class="na">objectclass</span><span class="pi">:</span> <span class="s">top</span>
+<span class="na">objectclass</span><span class="pi">:</span> <span class="s">organizationalUnit</span>
+<span class="na">ou</span><span class="pi">:</span> <span class="s">groups</span>
+</code></pre></div></div>
+
+<p>Here is an example of a user defined by its userId (we could use the cn; Common Name as well in the dn; distinguished name):</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">dn</span><span class="pi">:</span> <span class="s">uid=bob,ou=people,dc=example,dc=spring,dc=org</span>
+<span class="na">objectclass</span><span class="pi">:</span> <span class="s">top</span>
+<span class="na">objectclass</span><span class="pi">:</span> <span class="s">person</span>
+<span class="na">objectclass</span><span class="pi">:</span> <span class="s">organizationalPerson</span>
+<span class="na">objectclass</span><span class="pi">:</span> <span class="s">inetOrgPerson</span>
+<span class="na">cn</span><span class="pi">:</span> <span class="s">Bob Hamilton</span>
+<span class="na">sn</span><span class="pi">:</span> <span class="s">Hamilton</span>
+<span class="na">uid</span><span class="pi">:</span> <span class="s">bob</span>
+<span class="na">userPassword</span><span class="pi">:</span> <span class="s">bobspassword</span>
+</code></pre></div></div>
+
+<p>Here we can have a group with its members.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">dn</span><span class="pi">:</span> <span class="s">cn=developers,ou=groups,dc=example,dc=spring,dc=org</span>
+<span class="na">objectclass</span><span class="pi">:</span> <span class="s">top</span>
+<span class="na">objectclass</span><span class="pi">:</span> <span class="s">groupOfUniqueNames</span>
+<span class="na">cn</span><span class="pi">:</span> <span class="s">developers</span>
+<span class="na">ou</span><span class="pi">:</span> <span class="s">developer</span>
+<span class="na">uniqueMember</span><span class="pi">:</span> <span class="s">uid=ben,ou=people,dc=example,dc=spring,dc=org</span>
+<span class="na">uniqueMember</span><span class="pi">:</span> <span class="s">uid=bob,ou=people,dc=example,dc=spring,dc=org</span>
+</code></pre></div></div>
+
+<p>Find out more about LDIF on <a href="https://docs.oracle.com/cd/B14099_19/idmanage.1012/b15883/ldif_appendix002.htm">oracle</a> documentation.</p>
+
+<h3 id="actual-ldap-query">Actual LDAP Query</h3>
+
+<p>You can use a GUI or like SQL enter query to get information you want out of your LDAP directory server.</p>
+
+<p>It is useful when you’d want to understand a <code class="language-plaintext highlighter-rouge">ldapsearch</code> search filter. 
+But the syntax can be quite complicated, here would be an example for Microsoft’s AD implementation:</p>
+
+<div class="language-lisp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="nv">&amp;</span><span class="p">(</span><span class="nv">objectClass=user</span><span class="p">)(</span><span class="nv">sAMAccountName=user@example.spring.org</span><span class="p">)</span>
+<span class="p">(</span><span class="nv">memberOf=CN=developers,OU=people,DC=example,DC=spring,DC=org</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>You can find more about the syntax in <a href="https://tools.ietf.org/html/rfc4516">rfc4516</a> and hopefully make sense of it all for your own use case.
+LDAP is quite a widely use protocol so resources and help should not be too hard to get.</p>
+
+<h2 id="misc">Misc.</h2>
+
+<p>And finally some useful links if you want to implement it or better understand its data structure at the bytes level:</p>
+
+<p>Spring <a href="https://spring.io/guides/gs/authenticating-ldap/">Authenticating a User with LDAP</a>
+LDAPv3 <a href="https://ldap.com/ldapv3-wire-protocol-reference-asn1-ber/">Encodign reference</a>
+Basic Encoreding Rule <a href="http://www.csc.villanova.edu/~cassel/netbook/ber/node4.html#SECTION00011200000000000000">variable length</a>
+LDAP packet and rfc <a href="www.selfadsi.org/ldap.htm">references</a></p>
+
+:ET

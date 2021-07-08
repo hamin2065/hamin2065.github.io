@@ -1,0 +1,84 @@
+I"�<p>In excel, you have to enable first the macro (and select the developer option). 
+Then you can press <kbd>ALT</kbd> + <kbd>F11</kbd> to go into edit macro mode. 
+To learn you can start with “recording macro” to see what excel is recording, 
+but it’s not the most efficient way.</p>
+
+<h4 id="comment--uncomment-bloc-of-code">Comment / Uncomment bloc of code</h4>
+
+<p>There’s a Comment / Uncomment button that can be toggled. For that <strong>right click</strong> on the <strong>menu bar</strong> then click on <strong>edit</strong>, 
+the edit tool bar will appear (you can place it in your quick access bar). There should be a <strong>comment</strong> and <strong>Uncomment</strong> <strong>icon</strong>. 
+This commands will basically add or remove <code class="language-plaintext highlighter-rouge">'</code> at the beginning of every selected ligns.</p>
+
+<h4 id="calling-a-sub">Calling a Sub</h4>
+
+<p>Here are an example on how to call a subroutine: <a href="https://msdn.microsoft.com/en-us/library/office/gg251432.aspx">here</a>
+It can be tricky.</p>
+
+<div class="language-vb highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Test</span> <span class="s">"N23:Q23"</span><span class="p">,</span> <span class="mi">1</span>
+<span class="k">Call</span> <span class="n">Test</span><span class="p">(</span><span class="s">"N23:Q23"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">Sub</span> <span class="nf">Test</span><span class="p">(</span><span class="n">xRange</span> <span class="ow">As</span> <span class="n">Range</span><span class="p">,</span> <span class="n">val</span> <span class="ow">As</span> <span class="kt">Integer</span><span class="p">)</span>
+	<span class="c1">'some coding</span>
+<span class="k">End</span> <span class="k">Sub</span>
+</code></pre></div></div>
+
+<h4 id="accelerate-macro">Accelerate Macro</h4>
+
+<p>Here are a couple of lines that can greatly improve the efficiency of your VBA macro.</p>
+
+<div class="language-vb highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">Sub</span> <span class="nf">example</span><span class="p">()</span>
+	<span class="c1">'Stop automatic calculation of excel cells</span>
+	<span class="n">Application</span><span class="p">.</span><span class="n">Calculation</span> <span class="o">=</span> <span class="n">xlCalculationManual</span>
+	<span class="c1">'Stop screen updating</span>
+	<span class="n">Application</span><span class="p">.</span><span class="n">ScreenUpdating</span> <span class="o">=</span> <span class="k">False</span>
+
+	<span class="c1">'Some code</span>
+
+	<span class="c1">'Put it back to "normal"</span>
+	<span class="n">Application</span><span class="p">.</span><span class="n">Calculation</span> <span class="o">=</span> <span class="n">xlCalculationAutomatic</span>
+	<span class="n">Application</span><span class="p">.</span><span class="n">ScreenUpdating</span> <span class="o">=</span> <span class="k">True</span>
+<span class="k">End</span> <span class="k">Sub</span>
+</code></pre></div></div>
+
+<h4 id="hide-0-value-of-empty-cells">Hide “0” value of empty cells</h4>
+
+<p>Sometime there are some 0 that pops up with the below formulas, 
+so here is a trick to hide them through formatting.
+Available <a href="https://support.office.com/en-us/article/Display-or-hide-zero-values-3ec7a433-46b8-4516-8085-a00e9e476b03">here</a>:</p>
+
+<ul>
+  <li>Home &gt; Format &gt; Format Cells</li>
+  <li>Number &gt; Custom</li>
+  <li>type : <code class="language-plaintext highlighter-rouge">0;;;@</code></li>
+</ul>
+
+<h4 id="userform">Userform</h4>
+
+<p>Some example for the Userform</p>
+
+<div class="language-vb highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Userform</span>
+    <span class="n">Textbox</span> 
+        <span class="n">Multiline</span> <span class="p">:</span> <span class="k">True</span>
+        <span class="n">EnterKeyBehavior</span> <span class="o">=</span> <span class="k">True</span> <span class="p">(</span><span class="n">sinon</span> <span class="n">ctrl</span> <span class="o">+</span> <span class="n">Enter</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="closing-procedure">Closing procedure</h4>
+
+<p>Procedure to close a file</p>
+
+<div class="language-vb highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">Sub</span> <span class="nf">arret</span><span class="p">()</span>
+	<span class="c1">'stop the current sub</span>
+    <span class="n">ActiveWorkbook</span><span class="p">.</span><span class="n">Save</span>
+    <span class="n">ActiveWorkbook</span><span class="p">.</span><span class="n">Close</span> <span class="k">True</span>
+<span class="k">End</span> <span class="k">Sub</span>
+</code></pre></div></div>
+
+<p>Close the file after 10 seconds</p>
+
+<div class="language-vb highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">Private</span> <span class="k">Sub</span> <span class="nf">Workbook_Open</span><span class="p">()</span>
+     <span class="n">temp</span> <span class="o">=</span> <span class="n">Now</span> <span class="o">+</span> <span class="n">TimeValue</span><span class="p">(</span><span class="err">«</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">10</span> <span class="err">»</span><span class="p">)</span>
+     <span class="n">Application</span><span class="p">.</span><span class="n">OnTime</span> <span class="n">temp</span><span class="p">,</span> <span class="err">«</span> <span class="n">arret</span> <span class="err">»</span>
+<span class="k">End</span> <span class="k">Sub</span>
+</code></pre></div></div>
+:ET

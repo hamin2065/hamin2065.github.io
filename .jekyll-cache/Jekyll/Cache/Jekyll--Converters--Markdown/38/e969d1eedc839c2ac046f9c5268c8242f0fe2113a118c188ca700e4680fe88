@@ -1,0 +1,172 @@
+I"9<h2 id="chess-rules">Chess Rules</h2>
+
+<h3 id="generic-chess-rules">Generic Chess Rules</h3>
+
+<p>Some of the generic rules that you can find on <a href="https://en.wikipedia.org/wiki/Chess">wikipedia</a>:</p>
+
+<ul>
+  <li>White always starts first.</li>
+  <li>King ♚ can’t move to a “check” case.</li>
+  <li>If King ♚ can only move to checked cases then it’s “checkmate”</li>
+  <li>If the player has to move, but all of his moves are checked cases, then it’s “stalemate”</li>
+</ul>
+
+<h3 id="pawn-specification">Pawn Specification</h3>
+
+<ul>
+  <li>Castling: This is when King ♚ goes to the available case of its color before an untouched Rook. 
+When castling, the Rook jumping over the King next to it.</li>
+  <li>Pawn promotion: A pawn ♟ becomes Queen ♛ if they reach the other hand of the board.</li>
+  <li>“En passant”: Pawn can advance two cases when first move.
+    <ul>
+      <li><em>En passant</em> is a way to capture a pawn right after it mades its two cases move, going diagonal behind it with another pawn.</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="row">
+    
+    <div class="column">
+        <img class="single" src="/assets/img/en_passant.gif" alt="en_passant.gif" />
+    </div>
+    
+</div>
+
+<h2 id="notation">Notation</h2>
+<h3 id="algebraic-notation">Algebraic Notation</h3>
+<p>It’s the <a href="https://en.wikipedia.org/wiki/Algebraic_notation_(chess)">method</a> for recording and describing the moves in a game of chess.
+I will put here the main characteristics:</p>
+
+<ul>
+  <li><strong>Movements</strong>
+    <ul>
+      <li>Be5 : move Bishop to e5</li>
+      <li>c5 : move pawn to c5</li>
+    </ul>
+  </li>
+  <li><strong>Captures</strong>
+    <ul>
+      <li>Bxe5 or B:e5 or Be5: : Bishop capture the piece on e5</li>
+      <li>exd6e.p. : pawn in e capturing another pawn <em>en passant</em> resulting in it going to d6.</li>
+    </ul>
+  </li>
+  <li><strong>Disambiguating moves</strong>
+    <ul>
+      <li>Ngf3 : Indicate the letter (referred as <em>file</em>) of the source case (knight in g to f3).</li>
+      <li>N5f3 : If not enough, use the number (referred as <em>rank</em>) of the source case (knight in 5 to f3)</li>
+      <li>Qd5f3 : If the above is not enough (when with multiple pawn promotion for example: Queen in d5 to f3)</li>
+      <li>The capture indication should be placed in between the coordinates</li>
+    </ul>
+  </li>
+  <li><strong>Pawn Promotion</strong>
+    <ul>
+      <li>e8Q or e8=Q : Pawn moved to e8 and got promoted to Queen</li>
+    </ul>
+  </li>
+  <li><strong>Draw offer</strong> <em>Not part of the Notation</em>
+    <ul>
+      <li>(=) : Submitting a draw offer to the opponent</li>
+    </ul>
+  </li>
+  <li><strong>Castling</strong>
+    <ul>
+      <li>0-0 : Means castling toward the king side</li>
+      <li>0-0-0 : Means castling toward the Queen side</li>
+    </ul>
+  </li>
+  <li><strong>Check</strong>
+    <ul>
+      <li>† or + : to indicate the opponent’s king is in check</li>
+    </ul>
+  </li>
+  <li><strong>Checkmate</strong>
+    <ul>
+      <li>‡ or # or ≠ : to indicate checkmate</li>
+    </ul>
+  </li>
+  <li><strong>End of game</strong>
+    <ul>
+      <li>1-0 : the white side won</li>
+      <li>0-1 : the black side won</li>
+      <li>½–½ : it’s a draw</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="board">Board</h3>
+
+<p>The board is a 8x8 checker wuth coordinates:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      a  b  c  d  e  f  g  h
+
+  8   a8 b8 c8 d8 e8 f8 g8 h8 
+  7   a7 b7 c7 d7 e7 f7 g7 h7 
+  6   a6 b6 c6 d6 e6 f6 g6 h6 
+  5   a5 b5 c5 d5 e5 f5 g5 h5 
+  4   a4 b4 c4 d4 e4 f4 g4 h4 
+  3   a3 b3 c3 d3 e3 f3 g3 h3 
+  2   a2 b2 c2 d2 e2 f2 g2 h2 
+  1   a1 b1 c1 d1 e1 f1 g1 h1 
+</code></pre></div></div>
+
+<p>And you place the pawns like followed:</p>
+
+<div class="row">
+    
+    <div class="column">
+        <img class="single" src="/assets/img/chess.png" alt="chess.png" />
+    </div>
+    
+</div>
+
+<h2 id="implementation">Implementation</h2>
+
+<h3 id="process">Process</h3>
+
+<p>To implement such a game, you could start simple and follow TDD (Test Driven Development).
+For that you would start by writing a test for a simple feature, then expand and add more feature.</p>
+
+<p>At each step, you first write a failing test, then make it pass, to finally refactor.
+The refactor part lift of the “over thinking” that may happen in the <em>“make it pass”</em> phase.
+Because first you want it to work, then you can think about any pattern, or how to make the code more readable / thinner / coherent.</p>
+
+<p>That way you can come move fast and write only necessary code. You can check <em>Refactoring</em> by <a href="https://martinfowler.com/books/refactoring.html">Martin Fowler</a>.
+It’s a well known book about what is refactoring and how to apply it.</p>
+
+<h3 id="example-have-a-pawn-on-the-board">Example: Have a pawn on the board</h3>
+
+<p>You could start with a basic test, you don’t need it to be perfect.
+As you write your test, the classes, and objects does not exist yet, 
+so you can go as you want.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">boardCanHavepawnTest</span><span class="o">()</span> <span class="o">{</span>
+  <span class="nc">ChessBoard</span> <span class="n">board</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ChessBoard</span><span class="o">();</span>
+  <span class="n">pawn</span> <span class="n">pawn</span> <span class="o">=</span> <span class="k">new</span> <span class="n">pawn</span><span class="o">();</span>
+  <span class="n">board</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">pawn</span><span class="o">,</span> <span class="s">"d7"</span><span class="o">);</span>
+  <span class="n">assertEquals</span><span class="o">(</span><span class="n">pawn</span><span class="o">,</span> <span class="n">board</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"d7"</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Then you can start implementing. I won’t go into details there, as you go the code may evolve (with pattern and encapsulation), 
+and you may also refactor the tests as you may not want to have the <code class="language-plaintext highlighter-rouge">ChessBoard</code> instantiation done in a <code class="language-plaintext highlighter-rouge">before()</code> method.</p>
+
+<p>You may want to cover the <em>“unhappy”</em> path too, for example trying to add a pawn in <code class="language-plaintext highlighter-rouge">a9</code> which is not a valid position.</p>
+
+<h3 id="example-to-go-further">Example: To go further</h3>
+
+<p>Then once you can have pawns on a board, you can think about what could be the next steps:</p>
+
+<ul>
+  <li>Have a pawn move on the board</li>
+  <li>Have a pawn take another pawn</li>
+  <li>Add specialization (knights, tower, bishop, …) which moves</li>
+  <li>Add the White / Black type of pawn</li>
+  <li>Add the possibility to take another pawn</li>
+  <li>Add the custom moves possibility</li>
+</ul>
+
+<p>And then you can be me more fancy and add some display feature, or save feature, etc …
+Each time following the same principle of writing a failing test, make it fail and refactor.</p>
+
+:ET

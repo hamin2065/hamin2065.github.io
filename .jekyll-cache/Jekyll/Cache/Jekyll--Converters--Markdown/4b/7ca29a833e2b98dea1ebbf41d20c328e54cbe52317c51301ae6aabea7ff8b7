@@ -1,0 +1,5 @@
+I"­<p>Prometheus is a titan in greek mythology that brought fire (hence the logo).
+<a href="https://prometheus.io/">Prometheus</a> is also a modern monitoring system that has uses time series to display the data.
+It provides a query language for better exploiting your metrics compiled with an alerting service and all of that
+with great compatibility and integration with other system. Making it fairly easy to deploy and use.</p>
+:ET

@@ -1,0 +1,169 @@
+I"�3<h2 id="d3js">D3.js</h2>
+
+<h3 id="introduction">Introduction</h3>
+
+<p><a href="https://d3js.org/">D3.js</a> is a javascript library developed by <a href="https://github.com/mbostock">Mike Bostock</a> (which was very proficient, giving a lot of examples).
+It basically use an HTML <code class="language-plaintext highlighter-rouge">&lt;div&gt;</code> to create a SVG and use javascript to draw and update the svg components.
+You dynamically create those elements within a pre defined canvas and those elements can be customized via CSS.</p>
+
+<p>I used it for a graph network of kanji bubbles <a href="https://sylhare.github.io/kanji/graph/">sylhare/kanji</a>:</p>
+
+<div class="row">
+    
+    <div class="column">
+        <img class="single" src="/assets/img/kanji-graph.png" alt="kanji-graph.png" />
+    </div>
+    
+</div>
+
+<p>When I was saying that author Mike Bostock was very proficient, you can check all of his examples on:</p>
+<ul>
+  <li><a href="https://bl.ocks.org/mbostock">bl.ocks.org</a> - with mostly example for D3.js of v3, v4</li>
+  <li><a href="https://observablehq.com/@mbostock">observablehq.com</a> - with example of D3.js from v4+</li>
+  <li><a href="https://bost.ocks.org/mike/">bost.ocks.org/</a> - his personal website which redirects to the above link</li>
+</ul>
+
+<p>With each new version of D3.js the syntax can change a bit (even though the overall logic stays similar). 
+It can be quite confusing looking at some example, not knowing how to “translate” it from one version to another.
+Here I use <strong>D3.js v4</strong>, it provided a good amount of examples and was not the oldest.</p>
+
+<p>Check <a href="https://www.d3indepth.com/introduction/">D3 in Depth</a> to learn it.</p>
+
+<h3 id="basic-structure">Basic structure</h3>
+
+<p>The whole process is called a simulation, for the node graph:</p>
+<ul>
+  <li>you give the data (nodes, links between those nodes)</li>
+  <li>you set the layout of those elements (css, svg, other attributes …)</li>
+  <li>you set some constraints (force, gravity, …)</li>
+  <li>you may add some other logic or added components to it</li>
+</ul>
+
+<p>And then you run the simulation which will make the system move.</p>
+
+<h2 id="examples">Examples</h2>
+
+<p>For these examples I’ve got inspired by all those talented people on the internet 
+that provided cool examples.
+If you have one other site to check that was no mentioned before, I’d recommend <a href="https://www.yan-holtz.com/">Yan Holtz</a>
+which provides amazing and simple examples at <a href="https://www.d3-graph-gallery.com">d3-graph-gallery.com</a></p>
+
+<script>
+ color = "rgb(239, 192, 80)"
+</script>
+
+<h3 id="with-data">With data</h3>
+
+<div id="d3example" class="center"></div>
+
+<p>You create a svg within the div of id “<em>d3example</em>” with defined height and width</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">svg</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="dl">"</span><span class="s2">#d3example</span><span class="dl">"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="dl">"</span><span class="s2">svg</span><span class="dl">"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="dl">"</span><span class="s2">width</span><span class="dl">"</span><span class="p">,</span> <span class="nx">width</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="dl">"</span><span class="s2">height</span><span class="dl">"</span><span class="p">,</span> <span class="nx">height</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Then you can load the nodes from the your example data (a json).
+You put all the elements in the svg group “<em>g</em>” and select all nodes from that data.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">exampleData</span> <span class="o">=</span> <span class="p">[{</span><span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">A</span><span class="dl">"</span><span class="p">},</span> <span class="p">{</span><span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">B</span><span class="dl">"</span><span class="p">},</span> <span class="p">{</span><span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">C</span><span class="dl">"</span><span class="p">},</span> <span class="p">{</span><span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">D</span><span class="dl">"</span><span class="p">}];</span>
+<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">svg</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="dl">"</span><span class="s2">g</span><span class="dl">"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="dl">"</span><span class="s2">nodes</span><span class="dl">"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="nx">exampleData</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">enter</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>You append a svg circle object to each of the node, and specify some svg attributes
+We put the coordinates to some random numbers inside our canvas:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">circles</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="dl">"</span><span class="s2">circle</span><span class="dl">"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="dl">"</span><span class="s2">cx</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="nx">width</span><span class="p">})</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="dl">"</span><span class="s2">cy</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="nx">height</span><span class="p">})</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="dl">"</span><span class="s2">r</span><span class="dl">"</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="dl">"</span><span class="s2">fill</span><span class="dl">"</span><span class="p">,</span> <span class="nx">rgb</span><span class="p">(</span><span class="mi">239</span><span class="p">,</span> <span class="mi">192</span><span class="p">,</span> <span class="mi">80</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>If you want to look at how the HTML is constructed, click on <em>Details</em> to expand the html.
+Basically like: <code class="language-plaintext highlighter-rouge">div &gt; svg &gt; g &gt; circle</code></p>
+
+<details>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"d3example"</span><span class="nt">&gt;</span> 
+    <span class="nt">&lt;svg</span> <span class="na">width=</span><span class="s">"450"</span> <span class="na">height=</span><span class="s">"450"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;circle</span> <span class="na">cx=</span><span class="s">"225"</span> <span class="na">cy=</span><span class="s">"225"</span> <span class="na">r=</span><span class="s">"40"</span> <span class="na">style=</span><span class="s">"fill: rgb(239, 192, 80)"</span><span class="nt">&gt;&lt;/circle&gt;</span>
+        <span class="nt">&lt;circle</span> <span class="na">cx=</span><span class="s">"..."</span> <span class="na">cy=</span><span class="s">"..."</span> <span class="na">r=</span><span class="s">"40"</span> <span class="na">style=</span><span class="s">"fill: rgb(239, 192, 80)"</span><span class="nt">&gt;&lt;/circle&gt;</span>
+    <span class="nt">&lt;/svg&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></figure>
+
+</details>
+
+<h2 id="miscellaneous">Miscellaneous</h2>
+
+<p>Some other things you may want to know using d3.js</p>
+
+<h3 id="transition">Transition</h3>
+
+<p>You can transition to ease the update using the <em>d3.transition()</em> method:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">transition</span><span class="p">().</span><span class="nx">duration</span><span class="p">(</span><span class="mi">750</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Then you can use this transition on the nodes to make their attributes transitioned from their current state 
+to their desired state.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// the node will shrink (transition) to a radius of 1e-6 then disappear</span>
+<span class="nx">node_up</span><span class="p">.</span><span class="nx">exit</span><span class="p">()</span>
+  <span class="p">.</span><span class="nx">transition</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="dl">"</span><span class="s2">r</span><span class="dl">"</span><span class="p">,</span> <span class="mi">1</span><span class="nx">e</span><span class="o">-</span><span class="mi">6</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">remove</span><span class="p">();</span>
+</code></pre></div></div>
+
+<h3 id="interval">Interval</h3>
+
+<p>When you want to update your canvas at a set interval.
+You may use another d3 method called <em>d3.interval()</em> which works as a timeout:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">d3</span><span class="p">.</span><span class="nx">interval</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">restart</span><span class="p">(</span><span class="nx">randomizeData</span><span class="p">()),</span> <span class="mi">2000</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Here it will restart with random data the simulation every 2000 seconds</p>
+
+<h3 id="colors">Colors</h3>
+
+<p>You can use d3 automatic colors for your nodes using <a href="https://github.com/d3/d3-scale-chromatic">d3-scale-chromatic</a>, 
+it provides a lot flexibility.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">d3Color</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">scaleOrdinal</span><span class="p">(</span><span class="nx">d3</span><span class="p">.</span><span class="nx">schemeCategory20</span><span class="p">);</span>
+<span class="nx">d3Color</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">())</span>
+</code></pre></div></div>
+<p>It uses <em>scaleOrdinal</em> that creates a color scale using a color scheme (that I’m just using randomly for demo).</p>
+
+<h3 id="other-examples">Other examples</h3>
+
+<p>You can check some other examples here:</p>
+
+<ul>
+  <li><a href="https://bl.ocks.org/denisemauldin/cdd667cbaf7b45d600a634c8ae32fae5">Filtering nodes</a></li>
+  <li><a href="https://bl.ocks.org/mbostock/3231298">Collision detection</a></li>
+</ul>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+
+<script src="/assets/js/d3.common.js"></script>
+
+<script src="/assets/js/d3.example.js"></script>
+
+<!-- CSS of the tooltip -->
+<style>
+ .center {
+   display: flex;
+   justify-content: center;
+ }
+ 
+ #inner {
+   display: inline-block;
+ }
+</style>
+
+:ET

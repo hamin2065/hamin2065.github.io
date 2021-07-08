@@ -1,0 +1,109 @@
+I"j<p>Flexbox (Flexible Box Module) was designed as a one-dimensional layout model, 
+meaning that you align and distribute item through one direction (either horizontal or vertical).
+It is very powerful and allow your layout to dynamically adjust based on the size of the screen.</p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Flexbox works with a flex container which has a flex display:</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.container</span> <span class="p">{</span>
+  <span class="nl">display</span><span class="p">:</span> <span class="n">flex</span><span class="p">;</span> 
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Other nice attributes for the container:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">flex-direction</code>: to decide which direction (<code class="language-plaintext highlighter-rouge">row</code> or <code class="language-plaintext highlighter-rouge">column</code>) the item are going to be displayed</li>
+  <li><code class="language-plaintext highlighter-rouge">flex-wrap</code>: to avoid items overlaying the container, with <code class="language-plaintext highlighter-rouge">wrap</code> they’ll automatically go on the next directional level</li>
+  <li><code class="language-plaintext highlighter-rouge">justify-content</code> with <code class="language-plaintext highlighter-rouge">align-items</code>: To align items depending on the flex direction.</li>
+</ul>
+
+<p>And a flex item that has different attributes:</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.item</span> <span class="p">{</span>
+  <span class="c">/* default flex value, also called 'initial' */</span>
+     <span class="nl">flex</span><span class="p">:</span> <span class="m">0</span> <span class="m">1</span> <span class="nb">auto</span><span class="p">;</span>
+  <span class="c">/*
+   * Which are the values for:
+   * flex: flex-grow flex-shrink flex-basis
+   */</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Here are what each of them do:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">flex-basis</code>: relative size elements in the direction (<code class="language-plaintext highlighter-rouge">50%</code> means it takes half of the container)</li>
+  <li><code class="language-plaintext highlighter-rouge">flex-grow</code>: with <code class="language-plaintext highlighter-rouge">0</code> stays original size, with <code class="language-plaintext highlighter-rouge">1</code> take the remaining space if any</li>
+  <li><code class="language-plaintext highlighter-rouge">flex-shrink</code>: with <code class="language-plaintext highlighter-rouge">0</code> stays original size, with <code class="language-plaintext highlighter-rouge">1</code> if too big, will fit inside parents</li>
+</ul>
+
+<p>The flex-grow, flex-shrink numbers can also act as a ratio, sharing a portion of what’s available depending on the number.
+For the size and flex-basis, there’s a hierarchy between elements, conflicts are handled through that hierarchy.</p>
+
+<h2 id="reminder">Reminder</h2>
+
+<h3 id="flex-container">Flex Container</h3>
+
+<p>Everything to control your flex container:</p>
+
+<div class="row">
+    
+    <div class="column">
+        <img src="/assets/img/flex-1.png" alt="flex-1.png" />
+    </div>
+    
+    <div class="column">
+        <img src="/assets/img/flex-2.png" alt="flex-2.png" />
+    </div>
+    
+</div>
+
+<h3 id="flex-item">Flex Item</h3>
+
+<p>All attributes you can use to manage your flex items:</p>
+
+<div class="row">
+    
+    <div class="column">
+        <img src="/assets/img/flex-3.png" alt="flex-3.png" />
+    </div>
+    
+    <div class="column">
+        <img src="/assets/img/flex-4.png" alt="flex-4.png" />
+    </div>
+    
+</div>
+
+<h2 id="tips">Tips</h2>
+
+<p>Here are a list of problems and solution of flexbox related issues:</p>
+
+<ul>
+  <li>Display flex makes all images stretched.
+    <ul>
+      <li>To fix it: <code class="language-plaintext highlighter-rouge">align-self: flex-start</code></li>
+    </ul>
+  </li>
+  <li>Display flex text over flow on word wrap
+    <ul>
+      <li>To fix it: <code class="language-plaintext highlighter-rouge">min-width: 0</code> (to be in reset css file). Because it’s overwritten with auto</li>
+    </ul>
+  </li>
+  <li>Display flex items width are not equal
+    <ul>
+      <li>Either use <code class="language-plaintext highlighter-rouge">width: 50%</code> or <code class="language-plaintext highlighter-rouge">flex: 1</code> to size components. Because model sizing is not the same.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="sources">Sources</h2>
+
+<ul>
+  <li><a href="https://www.alsacreations.com/tuto/lire/1493-CSS3-Flexbox-Layout-module.html">Alsa Creation</a> for the images</li>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox">Mozilla flexbox</a> for the specs.</li>
+  <li><a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/">CSS ticks</a> for a guide to flexbox</li>
+  <li><a href="http://apps.workflower.fi/css-cheats/?name=flexbox">Cheat sheet</a> by @sakamies</li>
+</ul>
+:ET

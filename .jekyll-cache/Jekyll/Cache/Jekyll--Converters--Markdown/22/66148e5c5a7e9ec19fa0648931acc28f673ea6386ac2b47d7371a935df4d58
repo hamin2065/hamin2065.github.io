@@ -1,0 +1,99 @@
+I"k<h1 id="user-and-permissions">User and permissions</h1>
+
+<p>Intended for Centos or Redhat.</p>
+
+<h2 id="linux-users-and-groups">Linux Users and groups</h2>
+
+<p>A user is a number uid. Information on the user is stored in <code class="language-plaintext highlighter-rouge">/etc/passwd</code></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#to add a user</span>
+useradd &lt;username&gt;
+</code></pre></div></div>
+
+<p>Use <code class="language-plaintext highlighter-rouge">id</code> to identify the user your are using right now.</p>
+
+<p>A group is a number gid by default the group name is the user’s name, the gid will be the next available. 
+Information for groups are stored in <code class="language-plaintext highlighter-rouge">/etc/group</code></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#to add a group</span>
+groupadd &lt;groupname&gt;
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">uid</code> and <code class="language-plaintext highlighter-rouge">gid</code> are two completely different number that both starts at <code class="language-plaintext highlighter-rouge">1000</code> (up to <code class="language-plaintext highlighter-rouge">2^16</code> for backward compatibility) and get incremented for each creation of group and user. 
+They may not be in sync. Root’s uid is <code class="language-plaintext highlighter-rouge">0</code>. 
+If you need a uid for a system you would create it between <code class="language-plaintext highlighter-rouge">201</code> to <code class="language-plaintext highlighter-rouge">999</code>. From <code class="language-plaintext highlighter-rouge">1</code> to <code class="language-plaintext highlighter-rouge">200</code> it is assigned by the operating system by default.</p>
+
+<h2 id="password">Password</h2>
+
+<h3 id="introduction">Introduction</h3>
+
+<p>Password files are located in <code class="language-plaintext highlighter-rouge">/etc/shadow</code> and are only accessible by <code class="language-plaintext highlighter-rouge">root</code>.
+Type <code class="language-plaintext highlighter-rouge">passwd</code> to change the password.</p>
+
+<p>There are three pieces of information stored in a modern password hash:
+<code class="language-plaintext highlighter-rouge">$1$gCjLa2/Z$6Pu0EK0AzfCjxjv2hoLOB/</code></p>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">1</code>: The hashing algorithm. The number <code class="language-plaintext highlighter-rouge">1</code> indicates an MD5 hash. The number <code class="language-plaintext highlighter-rouge">6</code> appears when
+a SHA-512 hash is used.</li>
+  <li><code class="language-plaintext highlighter-rouge">gCjLa2/Z</code>: The salt used to encrypt the hash. This is originally chosen at random. The
+salt and the unencrypted password are combined and encrypted to create the encrypted
+password hash. The use of a salt prevents two users with the same password from having
+identical entries in the <code class="language-plaintext highlighter-rouge">/etc/shadow</code> file.</li>
+  <li><code class="language-plaintext highlighter-rouge">6Pu0EK0AzfCjxjv2hoLOB/</code>: The encrypted hash</li>
+</ol>
+
+<h3 id="password-aging">Password aging</h3>
+
+<p>To see the configuration of the password, account and group you can:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>view /etc/login.defs
+</code></pre></div></div>
+
+<p>There you can edit the expiration date of newly created user password or change the <code class="language-plaintext highlighter-rouge">uid</code> and <code class="language-plaintext highlighter-rouge">gid</code> range.</p>
+
+<p>To get the date in 90 days you can use:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> date -d "+90 days"
+</code></pre></div></div>
+
+<h3 id="logging">logging</h3>
+
+<p>To see the log of the actions on the system you can go to <code class="language-plaintext highlighter-rouge">/var/log</code> then you can check <code class="language-plaintext highlighter-rouge">secure</code> file to see the last <code class="language-plaintext highlighter-rouge">sudo</code> commands that has been used. If you are root or if you use <code class="language-plaintext highlighter-rouge">su</code> or <code class="language-plaintext highlighter-rouge">sudo -i</code> the actions are not logged in.</p>
+
+<h2 id="permission">Permission</h2>
+
+<p>The rights can be seen using <code class="language-plaintext highlighter-rouge">ls -l</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> #The rights of a file
+ -rwxrw-r-- &lt;user&gt; &lt;group&gt; &lt;file&gt;
+</code></pre></div></div>
+
+<p>Here we have the first:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">-</code> because it is a file (<code class="language-plaintext highlighter-rouge">d</code> for a directory).</li>
+  <li>The first set <code class="language-plaintext highlighter-rouge">rwx</code> of rights for the user</li>
+  <li>The second set <code class="language-plaintext highlighter-rouge">rw-</code> of rights for the group</li>
+  <li>The third set <code class="language-plaintext highlighter-rouge">r--</code> of rights for all other users.</li>
+</ul>
+
+<p>When there is a <code class="language-plaintext highlighter-rouge">-</code> in the set of rights, it means there is no rights set.</p>
+
+<p>The rights on file are executed such as when requesting an action on it:</p>
+
+<ul>
+  <li>Is the file is owned by the user?
+    <ul>
+      <li>Yes -&gt; Check the owner permission</li>
+    </ul>
+  </li>
+  <li>Else: Is the user part of the group owning the file?
+    <ul>
+      <li>Yes -&gt; Check the group permission</li>
+    </ul>
+  </li>
+  <li>Else: Check the last set of permission (for other users)</li>
+</ul>
+
+<p>To delete a file you would need to have <code class="language-plaintext highlighter-rouge">write</code> access to the directory it is situated in. 
+To see the rights on the directory, you can do <code class="language-plaintext highlighter-rouge">ls -ld</code>.</p>
+:ET

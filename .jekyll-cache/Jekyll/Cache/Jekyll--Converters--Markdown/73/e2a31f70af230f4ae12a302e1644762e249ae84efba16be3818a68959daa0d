@@ -1,0 +1,160 @@
+I"sB<ul>
+  <li><strong>Category:</strong> coding challenge</li>
+  <li><strong>Points:</strong> 5</li>
+  <li><strong>Description:</strong> Can you pass this vision test, if it’s not working it’s definitely not your brain implant.
+Please calibrate your vision chip.</li>
+</ul>
+
+<div class="row">
+    
+    <div class="column">
+        <img class="single" src="/assets/img/vision.png" alt="vision.png" />
+    </div>
+    
+</div>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Your are presented with a website with an image and two choices:</p>
+<ul>
+  <li>Animal</li>
+  <li>Thing</li>
+</ul>
+
+<p>If you submit the correct answer you are greeted with a message <code class="language-plaintext highlighter-rouge">Congrats. You currently have 1 out of 15 000</code>.
+Meaning you’d need to guess right for 15 000 consecutive time before getting the flag.
+It would take insane people during an insane amount of time to get it manually, and unfortunately we’re limited in time.</p>
+
+<p>Looking at the type of image we’d get it looked like some kind of machine learning challenge,
+with images of dog looking like muffin or donuts:</p>
+
+<div class="row">
+    
+    <div class="column">
+        <img src="/assets/img/vision-dog.png" alt="vision-dog.png" />
+    </div>
+    
+    <div class="column">
+        <img src="/assets/img/vision-muffin.png" alt="vision-muffin.png" />
+    </div>
+    
+</div>
+
+<p>However after trying some, it feels like some images come back very often meaning there must not be more than 20 to 50 images total.
+Based on that assumption I build a little script.</p>
+
+<h2 id="solution">Solution</h2>
+
+<p>We will use python to build the script, basically it would follow these 4 steps:</p>
+
+<ul>
+  <li>Get the image from the site at <code class="language-plaintext highlighter-rouge">http://vision.ctf/catchat.php</code></li>
+  <li>Compare it with the already saved images</li>
+  <li>Post the answer to the website and check the result</li>
+  <li>In case of failure, save the image and retry</li>
+</ul>
+
+<h3 id="get-the-image">Get the image</h3>
+
+<p>We will use <code class="language-plaintext highlighter-rouge">requests</code> for that:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'http://vision.ctf/catchat.php'</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">cookies</span><span class="o">=</span><span class="n">cookies</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">catchat</span><span class="p">,</span> <span class="s">"sample.png"</span><span class="p">),</span> <span class="s">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">content</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Then we save the image as <code class="language-plaintext highlighter-rouge">sample.png</code></p>
+
+<h3 id="compare-the-image">Compare the image</h3>
+
+<p>So I stored all of the images in a <code class="language-plaintext highlighter-rouge">things</code> folder, and I compare the just obtained <code class="language-plaintext highlighter-rouge">sample</code> to the one stored there.
+I created a function that return True if the <code class="language-plaintext highlighter-rouge">sample</code> image is already in the <code class="language-plaintext highlighter-rouge">things</code> folder, False otherwise:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">in_things</span><span class="p">():</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="p">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">things_path</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">filename</span><span class="p">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">".png"</span><span class="p">):</span>
+            <span class="n">pre_result</span> <span class="o">=</span> <span class="n">image_compare</span><span class="p">(</span><span class="n">Image</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">catchat</span><span class="p">,</span> <span class="s">"sample.png"</span><span class="p">)),</span>
+                                       <span class="n">Image</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">things_path</span><span class="p">,</span> <span class="n">filename</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="n">pre_result</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"in Things? "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div></div>
+
+<p>For the <code class="language-plaintext highlighter-rouge">image_compare</code> function, I tried multiple online and finally got the one from <a href="https://rosettacode.org/wiki/Percentage_difference_between_images#python">Rosetta Code</a>
+which I managed to use using the <code class="language-plaintext highlighter-rouge">PIL</code> library.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="k">def</span> <span class="nf">image_compare</span><span class="p">(</span><span class="n">i1</span><span class="p">,</span> <span class="n">i2</span><span class="p">):</span>
+    <span class="n">pairs</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">i1</span><span class="p">.</span><span class="n">getdata</span><span class="p">(),</span> <span class="n">i2</span><span class="p">.</span><span class="n">getdata</span><span class="p">())</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">i1</span><span class="p">.</span><span class="n">getbands</span><span class="p">())</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># for gray-scale jpegs
+</span>        <span class="n">dif</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">p1</span> <span class="o">-</span> <span class="n">p2</span><span class="p">)</span> <span class="k">for</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dif</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">c1</span> <span class="o">-</span> <span class="n">c2</span><span class="p">)</span> <span class="k">for</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span> <span class="ow">in</span> <span class="n">pairs</span> <span class="k">for</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">))</span>
+
+    <span class="n">ncomponents</span> <span class="o">=</span> <span class="n">i1</span><span class="p">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">i1</span><span class="p">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">dif</span> <span class="o">/</span> <span class="mf">255.0</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span> <span class="o">/</span> <span class="n">ncomponents</span>
+</code></pre></div></div>
+
+<h3 id="post-the-answer-back">Post the answer back</h3>
+
+<p>From observing the request sent manually, the website uses a <code class="language-plaintext highlighter-rouge">cookie</code> and a specific payload to validate for the results,
+so I copy those to add it to my post request:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cookies</span> <span class="o">=</span> <span class="p">{</span><span class="s">'PHPSESSID'</span><span class="p">:</span> <span class="s">'6d0db2mni2vrv65e98mo5md1gr'</span><span class="p">}</span>
+
+<span class="n">animal</span> <span class="o">=</span> <span class="p">{</span><span class="s">'result'</span><span class="p">:</span> <span class="s">'animal'</span><span class="p">}</span>
+<span class="n">thing</span> <span class="o">=</span> <span class="p">{</span><span class="s">'result'</span><span class="p">:</span> <span class="s">'thing'</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>So the now if the image is not in the <code class="language-plaintext highlighter-rouge">things</code> folder, then it must mean it is an animal.
+So depending on the <code class="language-plaintext highlighter-rouge">in_things()</code> method, I know what result I need to submit:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="ow">not</span> <span class="n">in_things</span><span class="p">():</span>
+    <span class="n">post</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="s">'http://vision.ctf/index.php'</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">cookies</span><span class="o">=</span><span class="n">cookies</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">animal</span><span class="p">)</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="s">"(C.* 15 000&lt;)+"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">post</span><span class="p">.</span><span class="n">content</span><span class="p">))</span>
+    <span class="n">if_wrong_save_image</span><span class="p">(</span><span class="n">status</span><span class="p">)</span>
+
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">post</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="s">'http://vision.ctf/index.php'</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">cookies</span><span class="o">=</span><span class="n">cookies</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">thing</span><span class="p">)</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="s">"(C.* 15 000&lt;)+"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">post</span><span class="p">.</span><span class="n">content</span><span class="p">))</span>
+    <span class="n">if_wrong_save_image</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">image_type</span><span class="o">=</span><span class="s">"animals"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="in-case-of-failure">In case of failure</h3>
+
+<p>The trick to know if the <code class="language-plaintext highlighter-rouge">POST</code> succeeded, and that I have correctly guessed if it is an animal or a thing is to check the returning page.
+If I guessed correctly I should see something like <code class="language-plaintext highlighter-rouge">Congrats. You currently have 1 out of 15 000</code>.
+So I used the <code class="language-plaintext highlighter-rouge">re</code> module (regex) to search for exactly that sentence:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">status = re.search("(C.* 15 000&lt;)+", str(post.content))</code></li>
+</ul>
+
+<p>In the case it’s wrong <code class="language-plaintext highlighter-rouge">status</code> will return <code class="language-plaintext highlighter-rouge">None</code> and so I would copy <code class="language-plaintext highlighter-rouge">sample.png</code> which is a new image to the correct folder:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">if_wrong_save_image</span><span class="p">(</span><span class="n">congrats_regex</span><span class="p">,</span> <span class="n">image_type</span><span class="o">=</span><span class="s">"things"</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">congrats_regex</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"new {}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">image_type</span><span class="p">))</span>
+        <span class="n">new_image</span> <span class="o">=</span> <span class="s">"thing"</span> <span class="o">+</span> <span class="n">time</span><span class="p">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">"%Y%m%d-%H%M%S"</span><span class="p">)</span> <span class="o">+</span> <span class="s">".png"</span>
+        <span class="n">copyfile</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">catchat</span><span class="p">,</span> <span class="s">"sample.png"</span><span class="p">),</span>
+                 <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">catchat</span><span class="p">,</span> <span class="s">"/samples/{}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">image_type</span><span class="p">)),</span> <span class="n">new_image</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>Finally, running the whole code inside of a infinite loop, and a couple of retry at first (there was just around 40 images in the end).</p>
+
+<p>it would take around 3 to 4 hours to get the flag:</p>
+
+<ul>
+  <li>FLAG-0af9e4f2996a7169ebf85f91133d73a1</li>
+</ul>
+
+<p>That was an awesome little challenge!
+I was worried they’d throw a new random image toward the end, that would make the whole thing retry again for 4 hours.
+But they were not so evil.</p>
+
+:ET

@@ -1,0 +1,162 @@
+I"�1<p><a href="https://locust.io/">Locust</a> is a python based tool to load test website, REST APIs and else.
+You define the behavior of the tasks in python.
+You can read the doc at <a href="https://docs.locust.io/en/stable/">docs.locust.io</a>.</p>
+
+<h2 id="installation">Installation</h2>
+
+<p>Make sure you have <code class="language-plaintext highlighter-rouge">libev</code> and install python dependencies (Work with Python 3.6):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew <span class="nb">install </span>libev
+pip <span class="nb">install </span>locustio
+</code></pre></div></div>
+
+<p>Or you can use the available <a href="https://docs.locust.io/en/stable/running-locust-docker.html?highlight=docker">docker version</a>.</p>
+
+<h2 id="create-the-load-test">Create the load test</h2>
+
+<p>Create an example <code class="language-plaintext highlighter-rouge">load.py</code> which will contain the locust task:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">LoadTasks</span><span class="p">(</span><span class="n">HttpLocust</span><span class="p">):</span>
+    <span class="n">host</span> <span class="o">=</span> <span class="n">url</span>
+    <span class="n">task_set</span> <span class="o">=</span> <span class="n">ExampleTaskSequence</span>
+    <span class="n">min_wait</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">max_wait</span> <span class="o">=</span> <span class="mi">1000</span>
+</code></pre></div></div>
+
+<p>Then we can create an <code class="language-plaintext highlighter-rouge">ExampleTaskSequence</code> class with the different requests that will be used
+in the load test.
+Here let’s use TaskSequence <code class="language-plaintext highlighter-rouge">@seq_task(1)</code> (with the number corresponding of the number in which they are going to be used) 
+instead of a <code class="language-plaintext highlighter-rouge">@task(1)</code> where the number correspond to the weight of the task.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ExampleTaskSequence</span><span class="p">(</span><span class="n">TaskSequence</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">create_token</span><span class="p">()</span>
+
+    <span class="o">@</span><span class="n">seq_task</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">client</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">"payload"</span><span class="p">:</span><span class="s">"payload"</span><span class="p">}},</span>
+                         <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">"login"</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">),</span> <span class="n">verify</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="o">@</span><span class="n">seq_task</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">disconnect</span> <span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">client</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s">"disconnect"</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<p>To reduce the code size and for the sack of example some function are being called and defined else where.
+The <code class="language-plaintext highlighter-rouge">name</code> in the <code class="language-plaintext highlighter-rouge">self.client</code> will be used in the summary in the locust graph instead of the url by default.
+It works pretty much like <code class="language-plaintext highlighter-rouge">requests</code> so you can test your http command with it and straight copy / paste it in locust.</p>
+
+<h2 id="run-the-load-test">Run the Load test</h2>
+
+<h3 id="single-instance">Single instance</h3>
+
+<p>Use this command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Execute a loadTest</span>
+locust <span class="nt">-f</span> load.py LoadTask
+</code></pre></div></div>
+
+<p>You can start it with the locust GUI at <a href="localhost:8089">localhost:8089</a>
+The logs are generated in the terminal and there so you can check what is happening.</p>
+
+<p>You can also run it without web interface using:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>locust <span class="nt">-f</span> load.py LoadTask <span class="nt">--no-web</span> <span class="nt">--clients</span><span class="o">=</span>500 <span class="nt">--hatch-rate</span><span class="o">=</span>500
+</code></pre></div></div>
+<p>Where you specify:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">client</code>: Total number of simulated customer</li>
+  <li><code class="language-plaintext highlighter-rouge">hatch-rate</code>: Number of new customer created per seconds until it reaches <code class="language-plaintext highlighter-rouge">client</code></li>
+</ul>
+
+<h3 id="distributed">Distributed</h3>
+
+<p>Locust run on one Thread, but you can run it on a distributed way with master and slaves.</p>
+
+<p>Use this command to start the master:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>locust <span class="nt">-f</span> load.py <span class="nt">--master</span>
+</code></pre></div></div>
+
+<p>The you can start as many slave as you CPU can, using:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>locust <span class="nt">-f</span> load.py <span class="nt">--slave</span> <span class="nt">--master-host</span><span class="o">=</span>127.0.0.1
+</code></pre></div></div>
+
+<h2 id="interpret-the-data">Interpret the Data</h2>
+
+<div class="row">
+    
+    <div style="flex: 100.0%">
+        <img class="single" src="/assets/img/locust.png" alt="locust.png" />
+    </div>
+    
+</div>
+
+<p>In Locust.
+When you go in charts on the web UI, you’ll see three of them:</p>
+
+<ul>
+  <li><strong>Total requests per second</strong>:
+    <ul>
+      <li>Tracks the number of requests send per second during the load test time</li>
+    </ul>
+  </li>
+  <li><strong>Response time(ms)</strong>:
+    <ul>
+      <li>Median (=50th percentile) in green: It means 50% of the user have a response time inferior or equal to the one said</li>
+      <li>95th percentile in yellow: Represents the real traffic, 95% of your users will be under this response time.</li>
+    </ul>
+  </li>
+  <li><strong>Number of Users</strong>:
+    <ul>
+      <li>The number of active user created</li>
+      <li>It depends on the max number of users created at the start, and the hatch/second rate.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="statistics-definitions">Statistics definitions</h3>
+
+<p>Let say we have these 12 response time for 12 requests that have been sent during one second:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rt</span> <span class="o">=</span> <span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">47</span><span class="p">,</span> <span class="mi">48</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">53</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">57</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Out of that we can get for that second these statistical data:</p>
+
+<ul>
+  <li><strong>Average</strong>: The same as the mean, you take the sum of all response time divided by the number of request</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">average</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rt</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">rt</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span> <span class="mi">443</span> <span class="o">/</span> <span class="mi">12</span> <span class="o">=</span> <span class="mf">36.9</span>
+</code></pre></div></div>
+
+<ul>
+  <li><strong>Median</strong>: You take the value that is at half of your <em>ordered</em> data
+    <ul>
+      <li>For an odd number of data take the middle one (ex: 5, median is the value of the 3rd one - 1, 2, <code class="language-plaintext highlighter-rouge">3</code>, 4, 5)</li>
+      <li>For an even number of data take the mean of the middles one (ex: 4 median is the mean of the values of 2nd and 3rd one - 1, <code class="language-plaintext highlighter-rouge">2</code>, <code class="language-plaintext highlighter-rouge">3</code>, 4)</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">median</span> <span class="o">=</span> <span class="p">(</span><span class="n">rt</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">rt</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>  
+<span class="o">&gt;&gt;</span> <span class="p">(</span><span class="mi">31</span> <span class="o">+</span> <span class="mi">47</span><span class="p">)</span> <span class="o">/</span> <span class="mi">39</span>
+</code></pre></div></div>
+
+<ul>
+  <li><strong>95th percentile</strong>: The value at 95th percent of the dataset
+    <ul>
+      <li>For a dataset of 100, the 95th percentile will be the 95th value from the ordered dataset. (…, 93, 94, <code class="language-plaintext highlighter-rouge">95</code>, 96, 97, 98, 99, 100.)</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">percentile</span> <span class="o">=</span> <span class="n">rt</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="mf">0.95</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">rt</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>  
+<span class="o">&gt;&gt;</span> <span class="n">rt</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="mi">55</span> <span class="c1"># for the 11th element of the list
+</span></code></pre></div></div>
+:ET

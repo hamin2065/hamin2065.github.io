@@ -1,0 +1,128 @@
+I"�<h2 id="i-definition">I. Definition</h2>
+
+<p>Story points are a unit of measure for expressing an estimate of the overall effort that will be required to fully implement a product backlog item or any other piece of work.</p>
+
+<p>When we estimate with story points, we assign a point value to each item. The raw values we assign are unimportant. What matters are the <em>relative values</em>. A story that is assigned a 2 should be twice as much as a story that is assigned a 1. It should also be two-thirds of a story that is estimated as 3 story points.</p>
+
+<h3 id="what-goes-into-a-story-point">What Goes Into a Story Point</h3>
+
+<p>Because story points represent the effort to develop a story, a team’s estimate must include everything that can affect the effort. That could include:</p>
+
+<ul>
+  <li>The amount of work to do</li>
+  <li>The complexity of the work</li>
+  <li>Any risk or uncertainty in doing the work</li>
+</ul>
+
+<p>When estimating with story points, be sure to consider each of these factors.</p>
+
+<h2 id="ii-estimate-or-not">II. Estimate or not</h2>
+
+<h3 id="advantages">Advantages</h3>
+
+<ul>
+  <li>Estimates allows to predict when a substantial increment of value will be delivered</li>
+  <li>Estimates help our stakeholders plan ahead. It is part of the value we provide.</li>
+  <li>Estimates can de-risk scope of uncertain size and complexity</li>
+  <li>Estimated work can be traded in and out of scope for other work of similar size. Without estimates you can’t trade.</li>
+  <li>Estimating a task brings value, because its process involves more details and understanding of the requirements.</li>
+</ul>
+
+<h3 id="drawbacks">Drawbacks</h3>
+
+<ul>
+  <li>Estimates can be inaccurate and set false expectations</li>
+  <li>Estimation can be seen as commitment which could be use against yourself</li>
+  <li>Estimation is time consuming</li>
+</ul>
+
+<h2 id="iii-techniques">III. Techniques</h2>
+
+<h3 id="poker-planning">Poker Planning</h3>
+
+<p>A typical Planning Poker set has cards with the following numbers: � 1 2 3 5 8 13 20 40 100.</p>
+
+<ul>
+  <li>Everybody has the same amount of cards</li>
+  <li>They draw one of these card to measure a the backlog item first presented by the PO</li>
+  <li>The lower and higher numbers explain there reason</li>
+  <li>The process is repeated until the team agrees, then we pass on to the next card</li>
+</ul>
+
+<p>When the number on the card is 20 or higher, it either need to be broken down, or sent back to the Product owner for more explanation.</p>
+
+<p>Poker planning is fairly democratic but can be rather time consuming.</p>
+
+<h3 id="t-shirt-size">T-Shirt Size</h3>
+
+<p>Here you need a scale of “t-shirt size”: XS, S, M, L, XL, XXL.</p>
+
+<ul>
+  <li>The scale is put on table horizontally, you need to have the backlog item written down</li>
+  <li>The team starts with one item of the backlog and discuss where to put it on the scale</li>
+  <li>They can ask for information to the product Owner</li>
+  <li>Once the size has been decided, we can add the Story Points according to the size</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>Size</strong></th>
+      <th><strong>T-Shirt Size</strong></th>
+      <th><strong>Suggested Story Points</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Extra Small</td>
+      <td>XS</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>Small</td>
+      <td>S</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>Medium</td>
+      <td>M</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>Large</td>
+      <td>L</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>Extra Large</td>
+      <td>XL</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <td>Extra Extra Large</td>
+      <td>XXL</td>
+      <td>13</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Easily set up, different way of implementing it, less arguing on numbers.</p>
+
+<h3 id="one-point-one-card">One Point One card</h3>
+
+<p>This method consist of using one story point per backlog item.</p>
+
+<ul>
+  <li>The prediction is based on the previous sprint, the team is more likely to finish the same amount of task than last time</li>
+  <li>The velocity is calculated via the number of stories per sprint</li>
+</ul>
+
+<p>This method is very simple. Sprint goal may be separated from business value and risky items won’t be identified through points.</p>
+
+<h2 id="iv-sources">IV. Sources</h2>
+
+<ul>
+  <li><a href="https://dzone.com/articles/agile-estimation-practice">Agile Estimation Practice</a></li>
+  <li><a href="https://www.mountaingoatsoftware.com/blog/what-are-story-points">What are story points ?</a></li>
+</ul>
+:ET

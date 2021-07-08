@@ -1,0 +1,74 @@
+I" <h2 id="introduction">Introduction</h2>
+
+<p><a href="https://jestjs.io/">Jest</a> is an Open source test framework developed by Facebook and compatible
+with a lot of framework.</p>
+
+<p>Jest is fast, and already pre configured to get started with it. So it simply works.
+it adapts to run your test in parallel to reduce the total amount it takes to run them.</p>
+
+<h2 id="basic-test">Basic test</h2>
+
+<p>The syntax is pretty standard based on <a href="https://jasmine.github.io/">jasmine</a> test framework.
+Jest by default will consider as test files anything in a <code class="language-plaintext highlighter-rouge">test/</code> folder or ending with <code class="language-plaintext highlighter-rouge">.spec.js</code> or <code class="language-plaintext highlighter-rouge">.test.js</code>.
+You can restrict that by overriding the basic configurations.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">describe</span><span class="p">(</span><span class="dl">"</span><span class="s2">Jest tests</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// Adds todo on what needs to be tested</span>
+  <span class="nx">test</span><span class="p">.</span><span class="nx">todo</span><span class="p">(</span><span class="dl">'</span><span class="s1">Well this is not exactly how it should be tested</span><span class="dl">'</span><span class="p">);</span> 
+  
+  <span class="nx">it</span><span class="p">(</span><span class="dl">'</span><span class="s1">is a simple test</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">adds 1 + 2 to equal 3</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="nx">expect</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span> <span class="p">}).</span><span class="nx">toBe</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+  
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="with-snapshot">With snapshot</h2>
+
+<p>You can also test using snapshots. Very useful with legacy code with no tests.
+It basically keep in memory what the output was. 
+When failing, it will ask you either to update the snapshot or not. 
+Testing only with snapshot is not recommended because you can let bug pass in tests by mistake.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">it</span><span class="p">(</span><span class="dl">'</span><span class="s1">will fail every time</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">user</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">createdAt</span><span class="p">:</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span>
+    <span class="na">id</span><span class="p">:</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">20</span><span class="p">),</span>
+    <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">LeBron James</span><span class="dl">'</span><span class="p">,</span>
+  <span class="p">};</span>
+
+  <span class="c1">// You can tweak the snapshot not to fail on trivial changes  </span>
+  <span class="nx">expect</span><span class="p">(</span><span class="nx">user</span><span class="p">).</span><span class="nx">toMatchSnapshot</span><span class="p">({</span>
+    <span class="na">createdAt</span><span class="p">:</span> <span class="nx">expect</span><span class="p">.</span><span class="nx">any</span><span class="p">(</span><span class="nb">Date</span><span class="p">),</span>
+    <span class="na">id</span><span class="p">:</span> <span class="nx">expect</span><span class="p">.</span><span class="nx">any</span><span class="p">(</span><span class="nb">Number</span><span class="p">),</span>
+  <span class="p">});</span> 
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h2 id="jest-tips-and-tricks">Jest Tips and tricks</h2>
+
+<p>Here are some commands you can add in your package.json to work with jest:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">  </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jest"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"debug"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jest --watch"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"coverage"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jest --coverage"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"clear_jest"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jest --clearCache"</span><span class="w">
+  </span><span class="p">}</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Just <code class="language-plaintext highlighter-rouge">jest</code> runs the test, but you might want to use:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">--watch</code> to run the tests automatically at each modifications.<br />
+You can also specify in the watch which tests to re-run in case you have a lot.</li>
+  <li><code class="language-plaintext highlighter-rouge">--coverage</code> to get the coverage right from the testing tool</li>
+  <li><code class="language-plaintext highlighter-rouge">--clearCache</code>when jest get jammed (happened to me with Vue.js Framework), 
+  last resort when tests are failing for no reasons</li>
+</ul>
+
+<p>One last, that was useful when linting the project was this one to easy fix trailing spaces and other noise errors using:</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"lint"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eslint --fix . --ext .js src test/unit test/e2e/specs"</span><span class="w">
+</span></code></pre></div></div>
+:ET

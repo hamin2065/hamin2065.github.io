@@ -1,0 +1,147 @@
+I"�<h2 id="csv-external-import">CSV External import</h2>
+
+<p>On the advance configuration (if you’re admin press <code class="language-plaintext highlighter-rouge">gg</code> then type external import):</p>
+
+<ul>
+  <li>Usually Excel csv are with <code class="language-plaintext highlighter-rouge">;</code></li>
+  <li>Use <code class="language-plaintext highlighter-rouge">ISO-8859-1</code> for french instead of <code class="language-plaintext highlighter-rouge">utf-8</code> to get the accents</li>
+</ul>
+
+<h3 id="adding-issues-links">Adding issues links</h3>
+
+<p>Adding links to the issues can be mapped to the jira link field using:</p>
+
+<ul>
+  <li>the <code class="language-plaintext highlighter-rouge">Issue ID</code> from the sheet</li>
+  <li>the <code class="language-plaintext highlighter-rouge">issue key</code> from issues already in jira like <code class="language-plaintext highlighter-rouge">TEST-1</code></li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>Summary</th>
+      <th>Issue ID</th>
+      <th>Link  “relates”</th>
+      <th>Link “relates”</th>
+      <th>Link “blocks”</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>House</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>Patio</td>
+      <td>2</td>
+      <td> </td>
+      <td> </td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>Garden</td>
+      <td>3</td>
+      <td>TEST-1</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="adding-issue">Adding issue</h3>
+
+<p>Basic representation on how to add an issue with the mandatory fields:</p>
+
+<ul>
+  <li>Issue id: from your excel sheet, must be unique at each import</li>
+  <li>Parent id: used for subtasks only</li>
+  <li>Issuetype: Must match the ones in Jira so that it maps automatically</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>parent id</th>
+      <th>Summary</th>
+      <th>issue type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td> </td>
+      <td>task ABC</td>
+      <td>Task</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1</td>
+      <td>subtask A</td>
+      <td>Subtask</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>1</td>
+      <td>subtask B</td>
+      <td>Subtask</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="adding-epics">Adding epics</h3>
+
+<p>For epics and the linked issues under those epics you need:</p>
+
+<ul>
+  <li>Epic Name: Little name of the epic</li>
+  <li>Summary: lengthy name of the epic</li>
+  <li>Epic Link: To link the epic to the story
+    <ul>
+      <li>The Epic Name <code class="language-plaintext highlighter-rouge">the car</code> define in excel</li>
+      <li>The issue key <code class="language-plaintext highlighter-rouge">PLANE-7</code> of an existing epic in jira</li>
+    </ul>
+  </li>
+  <li>Issuetype: must be set as <code class="language-plaintext highlighter-rouge">Epic</code> to be an epic.</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>Issue type</th>
+      <th>Epic Name</th>
+      <th>summary</th>
+      <th>Epic Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Epic</td>
+      <td>the car</td>
+      <td>build a car</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Story</td>
+      <td> </td>
+      <td>build an engine</td>
+      <td>my-epic</td>
+    </tr>
+    <tr>
+      <td>Story</td>
+      <td> </td>
+      <td>buy tires</td>
+      <td>my-epic</td>
+    </tr>
+    <tr>
+      <td>Story</td>
+      <td> </td>
+      <td>Build wings</td>
+      <td>PLANE-7</td>
+    </tr>
+  </tbody>
+</table>
+:ET

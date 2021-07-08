@@ -1,0 +1,144 @@
+I"�
+<div class="row">
+    
+    <div style="flex: 100.0%">
+        <img class="single" src="/assets/img/reveal-jekyll.png" alt="reveal-jekyll.png" />
+    </div>
+    
+</div>
+
+<p><a href="https://github.com/hakimel/reveal.js">Reveal.js</a> is an open source HTML presentation framework.
+With <a href="https://github.com/sylhare/Reveal-Jekyll">Reveal Jekyll</a>, the goal is to make it easier to manage your presentation and just focus on the content in markdown.</p>
+
+<p>Basically you can see it as a boiler plate for your reveal.js presentation. 
+You can either write your slides as separate markdown files or put everything in one. <a href="https://sylhare.github.io/Reveal-Jekyll/#/">Check it out!</a></p>
+
+<p>What’s more! All default plugins are pre bundled with it and almost all reveal.js features are compatible with your reveal jekyll presentation.</p>
+
+<blockquote>
+  <p>Get started with your presentation in less than 5min</p>
+</blockquote>
+
+<h2 id="set-up">Set up</h2>
+
+<p>You can go on <a href="https://github.com/sylhare/Reveal-Jekyll">Reveal Jekyll</a> and click on <a href="https://github.com/sylhare/Reveal-Jekyll/generate">Use this template</a>
+to clone and create your own repository.</p>
+
+<p>Then locally, make sure to install bundle which will ease the installation of jekyll:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem <span class="nb">install </span>bundle
+bundle <span class="nb">install</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>You can go into settings to make your master branch generate a Github Page automatically at <em>username</em>.github.io/<em>repository_name</em></p>
+</blockquote>
+
+<h2 id="create-your-presentation">Create your presentation</h2>
+
+<p>Workflow of your presentation:</p>
+
+<div class="row">
+    
+    <div style="flex: 100.0%">
+        <img class="single" src="/assets/img/slide-explanation.png" alt="slide-explanation.png" />
+    </div>
+    
+</div>
+
+<h3 id="raw-markdown">Raw Markdown</h3>
+
+<p>Take a look at the <a href="https://github.com/sylhare/Reveal-Jekyll/blob/master/index.html">example</a>,
+In <code class="language-plaintext highlighter-rouge">index.html</code> use the <code class="language-plaintext highlighter-rouge">layout: raw</code> and then you can create your slides directly in the file using markdown:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">___</code> Makes a basement slide</li>
+  <li><code class="language-plaintext highlighter-rouge">---</code> Makes the next slide</li>
+</ul>
+
+<h3 id="using-jekyll-capabilities">Using Jekyll capabilities</h3>
+
+<p>Take a look at the <a href="https://github.com/sylhare/Reveal-Jekyll/tree/master/_slides">example slides</a> and <a href="https://github.com/sylhare/Reveal-Jekyll/tree/master/_basements">basements</a>,
+In <code class="language-plaintext highlighter-rouge">index.html</code> use the <code class="language-plaintext highlighter-rouge">layout: presentation</code>. It will use the <code class="language-plaintext highlighter-rouge">_slides</code> and <code class="language-plaintext highlighter-rouge">_basements</code> folder to create the presentation.</p>
+
+<h4 id="slide">Slide</h4>
+
+<p>Use the <code class="language-plaintext highlighter-rouge">_slides</code> folder to create a file per slide in markdown.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="nn">---</span>
+<span class="na">background</span><span class="pi">:</span> <span class="s">...</span>                 <span class="c1"># Optional to put an image or a color as the background</span>
+<span class="na">video</span><span class="pi">:</span> <span class="s2">"</span><span class="s">http://video-link.mp4"</span>  <span class="c1"># Optional to put a video as the background</span>
+<span class="na">transition</span><span class="pi">:</span> <span class="s">slide</span>               <span class="c1"># Optional change the transition type for this slide</span>
+<span class="nn">---</span>
+
+<span class="s">Slide content in markdown</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Don’t forget to add the two <code class="language-plaintext highlighter-rouge">---</code>.</p>
+</blockquote>
+
+<p>To order the presentation you can do something like <code class="language-plaintext highlighter-rouge">01-First-slide-title.md</code>, <code class="language-plaintext highlighter-rouge">02-Second-slide-title.md</code>.</p>
+
+<h4 id="basement-slides">Basement slides</h4>
+
+<p>Basement slides can be put in the <code class="language-plaintext highlighter-rouge">_basements</code> folder.
+The Basement slides are slides that will be accessible using the down arrow when on a particular slide.</p>
+
+<p>They are the sub sections of your presentation:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="nn">---</span>
+<span class="na">slide</span><span class="pi">:</span> <span class="s">slide-title</span>
+<span class="nn">---</span>
+ 
+<span class="s">Content of the Basement slide in markdown</span>
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>Don’t forget to use the <code class="language-plaintext highlighter-rouge">slide</code> attribute to specify under which slide it will fit.</p>
+</blockquote>
+
+<h4 id="config">Config</h4>
+
+<p>Configure Reveal.js in teh <code class="language-plaintext highlighter-rouge">_config.yml</code>:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">reveal</span><span class="pi">:</span>
+  <span class="na">transition</span><span class="pi">:</span> <span class="s2">"</span><span class="s">slide"</span> <span class="c1"># none/fade/slide/convex/concave/zoom</span>
+  <span class="na">theme</span><span class="pi">:</span> <span class="s2">"</span><span class="s">black"</span> <span class="c1"># beige/blood/league/moon/night/serif/simple/sky/solarized/white</span>
+</code></pre></div></div>
+
+<p>You can set globally the transitions and theme of your presentation.</p>
+
+<h3 id="export-presentation">Export presentation</h3>
+
+<p>To export the presentation use <code class="language-plaintext highlighter-rouge">?print-pdf</code> at the end of the url to be able to save the page as PDF:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;url&gt;</span>:<span class="nt">&lt;port&gt;</span>/<span class="nt">&lt;base</span> <span class="na">url</span><span class="nt">&gt;</span>/?print-pdf
+</code></pre></div></div>
+
+<p>Try it at <a href="https://sylhare.github.io/Reveal-Jekyll/?print-pdf">…/Reveal-Jekyll/?print-pdf</a></p>
+
+<h3 id="use-as-a-gem">Use as a gem</h3>
+
+<p>There is a <code class="language-plaintext highlighter-rouge">Dockerfile</code> available, check it out to see how to use the theme in a Docker.
+Basically you need 4 things to make it work as a gem:</p>
+
+<ul>
+  <li>The Gemfile with the <a href="https://rubygems.org/gems/reveal-jekyll">reveal-jekyll gem</a>: <code class="language-plaintext highlighter-rouge">gem 'reveal-jekyll', '~&gt; 0.0.2'</code></li>
+  <li>The <code class="language-plaintext highlighter-rouge">index.html</code> which is the entrypoint of your jekyll site and presentation (with explained above configuration)</li>
+  <li>The <code class="language-plaintext highlighter-rouge">_config.yml</code> which defines your theme configuration.</li>
+  <li>The presentation, assets and content you want to display.</li>
+</ul>
+
+<p>And that’s it you’d be good to roll!</p>
+
+<h2 id="run-the-presentation">Run the presentation</h2>
+
+<p>One you all set, you can run locally using:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle <span class="nb">exec </span>jekyll serve
+</code></pre></div></div>
+:ET

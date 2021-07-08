@@ -1,0 +1,125 @@
+I"�<h2 id="introduction">Introduction</h2>
+
+<p>I have created a package for prime algorithms called <a href="https://github.com/sylhare/nprime">nprime</a>.</p>
+
+<p>Algorithm developed :</p>
+
+<ul>
+  <li>Eratosthenes sieve based</li>
+  <li>Fermat’s test (based on Fermat’s theorem)</li>
+  <li>Prime generating functions</li>
+  <li>Miller Rabin predictive algorithm</li>
+</ul>
+
+<p>To install the package use pip:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install nprime
+</code></pre></div></div>
+
+<h2 id="math">Math</h2>
+
+<p>Here are a bit of information to help understand some of the algorithms.</p>
+
+<h3 id="congruence">Congruence</h3>
+
+<p>The “<code class="language-plaintext highlighter-rouge">≡</code>” means congruent, \(a \equiv b \pmod n\) implies that:</p>
+
+<p>For \(\dfrac{kn}{\lparen{a} - {b}\rparen}\) then \(\exists{k} \in \Z\) that verifies \(a = kn + b\)</p>
+
+<p>which implies:</p>
+
+<p>\(a \equiv 0 \pmod n \Leftrightarrow a = kn \Leftrightarrow\) <em>a</em> is divisible by <em>n</em></p>
+
+<h3 id="strong-pseudoprime">Strong Pseudoprime</h3>
+
+<p>A strong <a href="http://mathworld.wolfram.com/StrongPseudoprime.html">pseudoprime</a> to a base \(a\) is an odd composite number \(n\) 
+with \(n-1 = d\times2^s\) (for \(d\) odd) for some \(r = 0, 1, ..., s-1\) gives either:</p>
+<ul>
+  <li>
+\[a^d = 1\pmod n\]
+  </li>
+  <li>
+\[a^{(d\times2^r)} = -1\pmod n\]
+  </li>
+</ul>
+
+<h3 id="erathostenes-sieve">Erathostene’s Sieve</h3>
+
+<h4 id="how-to-use">How to use</h4>
+
+<p>Implementation of the sieve of Erathostene that discover the primes and their composite up to a limit.
+It returns a dictionary:</p>
+
+<ul>
+  <li>the key are the primes up to \(n\)</li>
+  <li>the key are the primes up to \(n\)</li>
+  <li>the value is the list of composites of these primes up to \(n\)</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">nprime</span> <span class="kn">import</span> <span class="n">sieve_eratosthenes</span>
+
+<span class="c1"># With as a parameter the upper limit
+</span><span class="n">sieve_eratosthenes</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span> <span class="p">{</span><span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="mi">3</span><span class="p">:</span> <span class="p">[</span><span class="mi">9</span><span class="p">],</span> <span class="mi">5</span><span class="p">:</span> <span class="p">[],</span> <span class="mi">7</span><span class="p">:</span> <span class="p">[]}</span>
+</code></pre></div></div>
+
+<h4 id="theory">Theory</h4>
+
+<p>This sieve mark as composite the multiple of each primes. It is an efficient way to find primes.
+For \(n \in \N\) with \(n &gt; 2\) and for \(\forall a \in[2, ..., \sqrt{n}]\) then \(\frac n a \notin \N\) is true.</p>
+
+<p><a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Sieve_of_Eratosthenes_animation.gif" alt="Erathostene example" /></a></p>
+
+<h3 id="fermats-theorem">Fermat’s Theorem</h3>
+
+<h4 id="how-to-use-1">How to use</h4>
+
+<p>A Probabilistic algorithm taking \(t\) randoms numbers \(a\) and testing the Fermat’s theorem on number \(n &gt; 1\)
+Prime probability is right is \(1 - \frac 1 {(2^t)}\)</p>
+
+<p>Returns a boolean: <code class="language-plaintext highlighter-rouge">True</code> if \(n\) passes the tests.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">nprime</span> <span class="kn">import</span> <span class="n">fermat</span>
+
+<span class="c1"># With n the number you want to test
+</span><span class="n">fermat</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="theory-1">Theory</h4>
+
+<p>If \(n\) is prime then \(\forall a \in[1, ..., n-1]\)</p>
+
+<ul>
+  <li>
+\[a^{(n-1)} ≡ 1 \pmod n \Leftrightarrow a^{(n-1)} = kn + 1\]
+  </li>
+</ul>
+
+<h3 id="miller-rabin">Miller rabin</h3>
+
+<h4 id="how-to-use-2">How to use</h4>
+
+<p>A probabilistic algorithm which determines whether a given number \(n &gt; 1\) is prime or not.
+The miller_rabin tests is repeated \(t\) times to get more accurate results.</p>
+
+<p>Returns a boolean: <code class="language-plaintext highlighter-rouge">True</code> if \(n\) passes the tests.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">nprime</span> <span class="kn">import</span> <span class="n">miller_rabin</span>
+
+<span class="c1"># With n the number you want to test
+</span><span class="n">miller_rabin</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="theory-2">Theory</h4>
+
+<p>For \(n \in \N\) and \(n &gt; 2\), Take a random \(a \in [1,...,n−1]\)</p>
+
+<ul>
+  <li>Find \(d\) and \(s\) such as with \(n - 1 = 2^s \times d\) (with \(d\) odd)</li>
+  <li>if \((a^d)^{2^r} \equiv 1 \pmod n\) for all \(r\) in \(0\) to \(s-1\)</li>
+  <li>Then \(n\) is prime.</li>
+</ul>
+
+<p>The test output is false of \(1/4\) of the “\(a\) values” possible in \(n\), 
+so the test is repeated \(t\) times.</p>
+:ET

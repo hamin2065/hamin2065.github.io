@@ -1,0 +1,396 @@
+I"/l<h2 id="components-hands-on">Components Hands-on</h2>
+
+<p>To get a better grasp of kubernetes components and commands.
+You can set up a kubernetes cluster on your own following: 
+    - <a href="https://github.com/sylhare/Linux/blob/master/Kubernetes/kubernetes.sh">kubeadm installation script</a></p>
+
+<h3 id="kubectl-main-commands">Kubectl main commands</h3>
+
+<p>kubectl is a command line interface for running commands against Kubernetes clusters.
+In all of them, you can replace <code class="language-plaintext highlighter-rouge">&lt;component&gt;</code> with any of the kubernetes component (pods, node, deployments, services, …)</p>
+
+<p>To get definition and information on the different kubernetes elements</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl explain &lt;component&gt;
+</code></pre></div></div>
+
+<p>To create a kubernetes component that is define inside the file.yaml.
+It uses the kubernetes API server to schedule the creation of the component based on the yaml file.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create -f file.yaml
+</code></pre></div></div>
+
+<p>Give the basic information of the components, (number, status, Age)</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get &lt;component&gt;
+
+# Get the logs for one application / component
+kubectl logs -l app=my-component
+</code></pre></div></div>
+
+<p>To remove a component.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete &lt;component's name&gt;
+</code></pre></div></div>
+
+<p>Describe will give you the information of the scheduled component. If there is a name used for multiple component, you can specify witch one using <code class="language-plaintext highlighter-rouge">&lt;component&gt;/&lt;component's name&gt;</code></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl describe &lt;component's name&gt;
+</code></pre></div></div>
+
+<p>You can label components to organize your resources. It can then be used for network or access restrictions.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl label &lt;component&gt; &lt;component's name&gt; env=test
+</code></pre></div></div>
+
+<h3 id="pods">Pods</h3>
+
+<p>To create a pod, you need to specify its <code class="language-plaintext highlighter-rouge">kind</code>, <code class="language-plaintext highlighter-rouge">name</code> and then in <code class="language-plaintext highlighter-rouge">spec</code> the type of container that it is running.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">poddy</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">poddy</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">gcr.io/google_containers/echoserver:1.4</span>
+    <span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="m">8080</span>
+</code></pre></div></div>
+
+<p>Each created pods have its own ip, they also have labels that are used to identify and query them.</p>
+
+<blockquote>
+  <p>ImagePullPolicy, determines when to pull the image of the container(s) inside the pod. It is recommended to put “always” so it always pull the image (to avoid some trouble).</p>
+</blockquote>
+
+<h3 id="replication-controller">Replication controller</h3>
+
+<p>A ReplicationController ensures that a specified number of pod replicas are running at any one time. In other words, a ReplicationController makes sure that a pod or a homogeneous set of pods is always up and available.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">ReplicationController</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">poddy</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="m">2</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">poddy-app</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">poddy</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">poddy-app</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="s">...</span> <span class="c1"># Specs of the pod</span>
+</code></pre></div></div>
+
+<p>Here we have 2 replicas of the specified pods named <code class="language-plaintext highlighter-rouge">poddy-&lt;random stuff&gt;</code> that will be created. The replicationController finds the pods using their label here <code class="language-plaintext highlighter-rouge">poddy-app</code> - called a ReplicaSet.</p>
+
+<ul>
+  <li>If you add another similar pods with the same label the replicationController will associate it and terminates one pods since it will have 3.</li>
+</ul>
+
+<h3 id="service">Service</h3>
+
+<p>A Kubernetes Service is an abstraction which defines a logical set of Pods and a policy by which to access them - sometimes called a micro-service. It is a group of pods acting as one, exposing the pods under one IP.</p>
+
+<blockquote>
+  <p>Since ReplicaSet can kill and recreate Pods, the pod ips can change meaning you never know how to reach them.</p>
+</blockquote>
+
+<p>Basically a service has:</p>
+
+<ul>
+  <li>A static IP to reach the application</li>
+  <li>A Selector to select the pods part of the service</li>
+</ul>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">poddy-service</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s2">"</span><span class="s">NodePort"</span>
+  <span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="m">8080</span>
+      <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+      <span class="na">targetPort</span><span class="pi">:</span> <span class="m">8080</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">poddy-app</span>
+</code></pre></div></div>
+
+<p>In service spec you can find the <code class="language-plaintext highlighter-rouge">type</code>, it can be either:</p>
+
+<ul>
+  <li>ClusterIP: Exposes the service on a cluster-internal IP. Choosing this value makes the service only reachable from within the cluster using the <NodeIP>, it is the default.</NodeIP></li>
+  <li>NodePort: Exposes the service on each Node’s IP at a static port (the NodePort). You’ll be able to contact the NodePort service, from outside the cluster, by requesting <NodeIP>:<NodePort>.</NodePort></NodeIP></li>
+</ul>
+
+<h3 id="deployment">Deployment</h3>
+
+<p>A deployment combines pods and replicaSets to create a desired state of the cluster.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-deployment</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nginx</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="s">...</span> <span class="c1"># Specs of the replicationController</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="s">...</span> <span class="c1"># Specs of the pod(s)</span>
+</code></pre></div></div>
+
+<p>Scale the deployment of an application, here the nginx app:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl scale deployment nginx <span class="nt">--replicas</span><span class="o">=</span>3
+</code></pre></div></div>
+
+<h3 id="namespace">Namespace</h3>
+
+<p>A namespace is a way to separate your cluster or components. For example having a <code class="language-plaintext highlighter-rouge">prod</code> and a <code class="language-plaintext highlighter-rouge">test</code> namespace can help deploy new software in the appropriate place.</p>
+
+<p>Here is how we create a namespace</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create namespace test
+</code></pre></div></div>
+
+<p>Or using a file, you can define your namespace like:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">Namespace</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">test</span>
+</code></pre></div></div>
+
+<p>To create components inside that newly created “test” namespace:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create component-file.yaml -n test
+</code></pre></div></div>
+
+<p>To set that new namespace as the default namespace (When not specified <code class="language-plaintext highlighter-rouge">default</code> will be used as a namespace and for every commands).:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl config use-context test
+</code></pre></div></div>
+
+<p>To see which namespace you are in, you can use:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl config current-context
+</code></pre></div></div>
+
+<h3 id="volumes">Volumes</h3>
+
+<h4 id="persistent-volume">Persistent Volume</h4>
+
+<p>A PersistentVolume (PV) is a piece of storage in the cluster that has been provisioned by an administrator. It is a resource in the cluster just like a node is a cluster resource.</p>
+
+<p>The information there stays even if the pod dies, it’s independent.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">PersistentVolume</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">mysql-pv</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">vol</span><span class="pi">:</span> <span class="s">mysql</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">capacity</span><span class="pi">:</span>
+    <span class="na">storage</span><span class="pi">:</span> <span class="s">5Gi</span>
+  <span class="na">accessModes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
+  <span class="na">hostPath</span><span class="pi">:</span>
+    <span class="na">path</span><span class="pi">:</span> <span class="s">/data/mysql-poddy</span>
+</code></pre></div></div>
+
+<h4 id="persistent-volume-claim">Persistent Volume Claim</h4>
+
+<p>A PersistentVolumeClaim (PVC) is a request for storage by a user. It allows a user to consume abstract storage resources.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">PersistentVolumeClaim</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">mysql-pv-claim</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">storageClassName</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">accessModes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
+  <span class="na">resources</span><span class="pi">:</span>
+    <span class="na">requests</span><span class="pi">:</span>
+      <span class="na">storage</span><span class="pi">:</span> <span class="s">5Gi</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">vol</span><span class="pi">:</span> <span class="s2">"</span><span class="s">mysql"</span>
+</code></pre></div></div>
+
+<p>Here the pvc claim the above <code class="language-plaintext highlighter-rouge">mysql-pv</code> one, using the label in order to select it, and the <code class="language-plaintext highlighter-rouge">accessModes</code> for how it is supposed to be accessed.</p>
+
+<h3 id="secrets">Secrets</h3>
+
+<p>Kubernetes secrets allow users to define sensitive information outside of containers and expose that information to containers through environment variables as well as files within Pods.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Secret</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">poddy-secret</span>
+<span class="na">type</span><span class="pi">:</span> <span class="s">Opaque</span>
+<span class="na">data</span><span class="pi">:</span>
+  <span class="na">dbname</span><span class="pi">:</span> <span class="s">d29yZHByZXNzX2Ri</span>
+  <span class="na">dbuser</span><span class="pi">:</span> <span class="s">d29yZHByZXNzX3VzZXI=</span>
+  <span class="na">dbpassword</span><span class="pi">:</span> <span class="s">d29yZHByZXNzX3Bhc3M=</span>
+  <span class="na">mysqlrootpassword</span><span class="pi">:</span> <span class="s">cm9vdHBhc3MxMjM=</span>
+</code></pre></div></div>
+
+<p>Secrets must be encoded first into base64, and put into <code class="language-plaintext highlighter-rouge">data</code>.</p>
+
+<h3 id="daemon-set">Daemon Set</h3>
+
+<p>Daemon Set ensure that a copy of the pod runs on a selected set of nodes. By default, all nodes in the cluster are selected. 
+A selection criteria may be specified to select a limited number of nodes.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">DaemonSet</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">poddy-daemonset</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">tier</span><span class="pi">:</span> <span class="s">monitoring</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">poddy-exp</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">tier</span><span class="pi">:</span> <span class="s">monitoring</span>
+        <span class="na">name</span><span class="pi">:</span> <span class="s">poddy-exp</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="s">...</span> <span class="c1"># Specs of the pod(s)</span>
+</code></pre></div></div>
+
+<h3 id="jobs">Jobs</h3>
+
+<p>A Job creates one or more pods and ensures that a specified number of them successfully complete. 
+A job keeps track of successful completion of a pod. The job will start a new pod if the pod fails or is deleted due to hardware failure.</p>
+
+<p>Jobs are complementary to Replica Set. 
+A Replica Set manages pods which are not expected to terminate (e.g. web servers), and a Job manages pods that are expected to terminate (e.g. batch jobs).</p>
+
+<h4 id="non-parallel-job">Non Parallel Job</h4>
+
+<p>Only one pod per job is started, unless the pod fails. Job is complete as soon as the pod terminates successfully.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">batch/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Job</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">poddy-job</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="s">...</span> <span class="c1"># Specs of the pod(s)</span>
+</code></pre></div></div>
+
+<h4 id="parallel-job">Parallel Job</h4>
+
+<p>The number of pods to complete is defined by <code class="language-plaintext highlighter-rouge">.spec.completions</code> attribute (here <code class="language-plaintext highlighter-rouge">6</code>) in the configuration file. 
+The number of pods to run in parallel is defined by <code class="language-plaintext highlighter-rouge">.spec.parallelism</code> attribute (here <code class="language-plaintext highlighter-rouge">2</code> pods at the same time) in the configuration file.</p>
+
+<blockquote>
+  <p>The default value for both of these attributes is 1.</p>
+</blockquote>
+
+<p>The job is complete when there is one successful pod for each value in the range in 1 to <code class="language-plaintext highlighter-rouge">.spec.completions</code>.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">batch/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Job</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">poddy-parallel-job</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">completions</span><span class="pi">:</span> <span class="m">6</span>
+  <span class="na">parallelism</span><span class="pi">:</span> <span class="m">2</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">poddy</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="s">...</span> <span class="c1"># Specs of the pod with the same name as in template.metadata</span>
+</code></pre></div></div>
+
+<h4 id="cron-job">Cron Job</h4>
+
+<p>A Cron Job is a job that runs on a given schedule, written in Cron format. There are two primary use cases:</p>
+
+<ul>
+  <li>Run jobs once at a specified point in time</li>
+  <li>Repeatedly at a specified point in time</li>
+</ul>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">batch/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">CronJob</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">poddy-cron</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">schedule</span><span class="pi">:</span> <span class="s2">"</span><span class="s">*/1</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*"</span>
+  <span class="na">jobTemplate</span><span class="pi">:</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">template</span><span class="pi">:</span>
+        <span class="na">metadata</span><span class="pi">:</span>
+          <span class="na">labels</span><span class="pi">:</span>
+            <span class="na">app</span><span class="pi">:</span> <span class="s">poddy-app</span>
+        <span class="na">spec</span><span class="pi">:</span>
+          <span class="s">...</span> <span class="c1"># Specs of the pod with the same name as in template.metadata</span>
+</code></pre></div></div>
+
+<h3 id="ingress">Ingress</h3>
+
+<p>An Ingress Controller - is an application that watches the Master Node’s API Server for changes in the Ingress resources and updates the Layer 7 load balancer accordingly.
+Ingress-Controller is a mandatory prerequisite for Ingress rules to start working in Kubernetes.</p>
+
+<p>Kubernetes has different options of Ingress Controllers, and, if needed, we can also build our own. Most popular Ingress Controllers implementations are <code class="language-plaintext highlighter-rouge">Haproxy</code>, <code class="language-plaintext highlighter-rouge">Traefic</code>, <code class="language-plaintext highlighter-rouge">Nginx</code>.</p>
+
+<h4 id="networkpolicy">NetworkPolicy</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">kind</span><span class="pi">:</span> <span class="s">NetworkPolicy</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">access-nginx</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">policy-demo</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">podSelector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">run</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">ingress</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">from</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">podSelector</span><span class="pi">:</span>
+          <span class="na">matchLabels</span><span class="pi">:</span>
+            <span class="na">run</span><span class="pi">:</span> <span class="s">access</span>
+</code></pre></div></div>
+
+<h2 id="single-service-ingress">Single service ingress</h2>
+
+<p>The simple ingress usage is with one address, and one service associated to it. The service associated needs to have <code class="language-plaintext highlighter-rouge">CLusterIP</code> in the <code class="language-plaintext highlighter-rouge">spec.type</code>.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">extensions/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
+<span class="na">metadata</span><span class="pi">:</span>
+ <span class="na">name</span><span class="pi">:</span> <span class="s">poddy-ingress</span>
+<span class="na">spec</span><span class="pi">:</span>
+ <span class="na">rules</span><span class="pi">:</span>
+ <span class="pi">-</span> <span class="na">http</span><span class="pi">:</span>
+     <span class="na">paths</span><span class="pi">:</span>
+     <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
+       <span class="na">backend</span><span class="pi">:</span>
+         <span class="na">serviceName</span><span class="pi">:</span> <span class="s">poddy-service</span>
+         <span class="na">servicePort</span><span class="pi">:</span> <span class="m">80</span>
+   <span class="na">host</span><span class="pi">:</span> <span class="s">poddy.com</span>
+</code></pre></div></div>
+
+<h2 id="simple-fanout">Simple fanout</h2>
+
+<p>This time we going to deploy Simple fanout type that exposing multiple services on same host, but via different paths. This type is very handy when you running in CloudProvider and want to cut cost on creating LoadBalancers for each of you application.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">extensions/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">simple-fanout-rules</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">rules</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">poddy.com</span>
+    <span class="na">http</span><span class="pi">:</span>
+      <span class="na">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/hello</span>                            <span class="c1"># poddy.com/hello</span>
+        <span class="na">backend</span><span class="pi">:</span>
+          <span class="na">serviceName</span><span class="pi">:</span> <span class="s">poddy-service-1</span>
+          <span class="na">servicePort</span><span class="pi">:</span> <span class="m">80</span>
+      <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/world</span>                            <span class="c1"># poddy.com/world</span>
+        <span class="na">backend</span><span class="pi">:</span>      
+          <span class="na">serviceName</span><span class="pi">:</span> <span class="s">poddy-service-2</span>
+          <span class="na">servicePort</span><span class="pi">:</span> <span class="m">80</span>
+</code></pre></div></div>
+:ET

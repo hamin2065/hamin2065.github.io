@@ -1,0 +1,153 @@
+I"�-<p>We will be using the default java sockets to create a tcp server/client with Kotlin:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">java.net.ServerSocket</span>
+<span class="k">import</span> <span class="nn">java.net.Socket</span>
+</code></pre></div></div>
+
+<p>If you already know it in Java then no suprise, but since you might be interested in Ktor or the kotlin syntax:</p>
+
+<blockquote>
+  <p>You can have access to the source code at <a href="https://github.com/sylhare/tcp">sylhare/tcp</a>.</p>
+</blockquote>
+
+<h2 id="implementation">Implementation</h2>
+
+<p>So I will put only snippets of the most simple relevant parts here.
+You can always check the <a href="(https://github.com/sylhare/tcp)">source code</a> later with much more example, tests and so on!</p>
+
+<h3 id="server-and-client">Server and Client</h3>
+
+<p>There are two concepts here:</p>
+<ul>
+  <li>A server accepts clients connection.</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">server</span> <span class="p">=</span> <span class="nc">ServerSocket</span><span class="p">(</span><span class="mi">9999</span><span class="p">)</span>
+<span class="kd">val</span> <span class="py">socket</span> <span class="p">=</span> <span class="n">server</span><span class="p">.</span><span class="nf">accept</span><span class="p">()</span>
+</code></pre></div></div>
+<ul>
+  <li>A Client looks for a server to establish a connection.</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">socket</span> <span class="p">=</span> <span class="nc">Socket</span><span class="p">(</span><span class="s">"localhost"</span><span class="p">,</span> <span class="mi">9999</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>However once the connection is establish ie the client socket is created and connected to the server.
+Then bytes exchange can flow.</p>
+
+<h3 id="socket">Socket</h3>
+
+<p>The Socket is that connection between the server and the client. A Socket has an input and a output. 
+Depending on where you look at it, it does not mean the same thing because it a bidirectional link.</p>
+<ul>
+  <li>A <em>Server’s input</em> is the <em>client’s output</em>.</li>
+  <li>A <em>Server’s output</em> is the <em>client’s input</em>.</li>
+</ul>
+
+<p>So basically you read from the input and write to the output. 
+You work with Bytes, which might not be the best for your use case. 
+For text you can use some wrapper:</p>
+<ul>
+  <li>To write and send text:</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">PrintWriter</span><span class="p">(</span><span class="n">socket</span><span class="p">.</span><span class="n">outputStream</span><span class="p">,</span> <span class="k">true</span><span class="p">).</span><span class="nf">write</span><span class="p">(</span><span class="s">"text"</span><span class="p">)</span> 
+</code></pre></div></div>
+<ul>
+  <li>To read bytes as text:</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">text</span> <span class="p">=</span> <span class="nc">BufferedReader</span><span class="p">(</span><span class="nc">InputStreamReader</span><span class="p">(</span><span class="n">socket</span><span class="p">.</span><span class="n">inputStream</span><span class="p">)).</span><span class="nf">readLine</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>The write is pretty straightforward, you can <code class="language-plaintext highlighter-rouge">flush</code> the outputStream meaning to forcefully send whatever is in the pipe at that moment.
+The reader requires a buffer, which it will use to copy the read bytes into it.</p>
+
+<h3 id="multi-bind">Multi bind</h3>
+
+<p>When you have one server that needs to accept multiple clients.
+Oracle documentation about <a href="https://docs.oracle.com/javase/tutorial/networking/sockets/clientServer.html">TCP Client Server</a>
+sum it up quite well:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">socket</span> <span class="p">=</span> <span class="n">server</span><span class="p">.</span><span class="nf">accept</span><span class="p">()</span>            <span class="c1">// accept a connection</span>
+    <span class="nc">Thread</span><span class="p">{</span> <span class="nf">handleClient</span><span class="p">(</span><span class="n">socket</span><span class="p">)</span> <span class="p">}.</span><span class="nf">start</span><span class="p">()</span>  <span class="c1">// create a thread to deal with the client</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="testing">Testing</h3>
+
+<p>For testing a connection, and your tcp server, client.
+You have a wide range of possibilities.</p>
+
+<h4 id="with-real-traffic">With real traffic</h4>
+
+<p>In order to test your client or server, you will need a server or a client in order to build a socket connexion, there’s no magic.
+In simple project you might think that your test code looks similar as your main code.
+But as you develop new features, the test client / server should remain simple.</p>
+
+<blockquote>
+  <p>You will need to run the server on a different thread!</p>
+</blockquote>
+
+<p>Since you want the server to accept new connexion, you’ll want to have it running on a different thread so that the tests can move on.
+A very simple example could be if you had a <code class="language-plaintext highlighter-rouge">Server</code> object using what was shown before:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Thread</span><span class="p">(</span><span class="nc">Runnable</span> <span class="p">{</span> <span class="nc">Server</span><span class="p">().</span><span class="nf">start</span><span class="p">(</span><span class="n">port</span> <span class="p">=</span> <span class="s">"1234"</span><span class="p">)</span> <span class="p">}).</span><span class="nf">start</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>The you can create your test with your client:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="k">fun</span> <span class="nf">serverRespondsHelloClient</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">client</span> <span class="p">=</span> <span class="nc">Client</span><span class="p">()</span>
+    <span class="n">client</span><span class="p">.</span><span class="nf">startConnection</span><span class="p">(</span><span class="s">"localhost"</span><span class="p">,</span> <span class="s">"1234"</span><span class="p">)</span>
+    <span class="nc">Assertions</span><span class="p">.</span><span class="nf">assertEquals</span><span class="p">(</span><span class="s">"hello client"</span><span class="p">,</span> <span class="n">client</span><span class="p">.</span><span class="nf">sendMessage</span><span class="p">(</span><span class="s">"hello server"</span><span class="p">))</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>You create your <code class="language-plaintext highlighter-rouge">Client</code> object that would look like what was shown above. 
+Connect it to the server running in the thread, send something and assuming that <code class="language-plaintext highlighter-rouge">sendMessage</code> methods return the received response,
+you can assert on it.</p>
+
+<p>That’s a very simple use case, you might not want to return the response from the send message and depending if you’re testing 
+the client or the server you may go different ways to test the expected behaviour. 
+Like creating having a <code class="language-plaintext highlighter-rouge">TestServer</code> or a <code class="language-plaintext highlighter-rouge">testClient</code> that will have some special <code class="language-plaintext highlighter-rouge">assertReceived</code> method for what you need to test.</p>
+
+<h4 id="with-mock">With Mock</h4>
+
+<p>You could mock the socket but it can quickly get tedious and you’d be better off with a real socket client / server for your tests.
+But you may want to use mock for corner cases or to decouple your client tests from your business logic tests.</p>
+
+<p>Here if you’d like to simulate an Exception.
+You would do that using <a href="https://mockk.io/">mockK</a> in kotlin:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Create a relaxed mock </span>
+<span class="k">lateinit</span> <span class="kd">var</span> <span class="py">mockClientSocket</span><span class="p">:</span> <span class="nc">Socket</span> <span class="p">=</span> <span class="nf">mockk</span><span class="p">(</span><span class="n">relaxed</span> <span class="p">=</span> <span class="k">true</span><span class="p">)</span>
+
+<span class="c1">// Set up the mock and test</span>
+<span class="nd">@Test</span>
+<span class="k">fun</span> <span class="nf">uncaughtExceptionDummyTest</span> <span class="p">{</span>    
+    <span class="nf">every</span> <span class="p">{</span> <span class="n">socket</span><span class="p">.</span><span class="nf">getOutputStream</span><span class="p">()</span> <span class="p">}</span> <span class="n">throws</span> <span class="nc">Exception</span><span class="p">()</span>
+    <span class="kd">val</span> <span class="py">client</span> <span class="p">=</span> <span class="nc">SocketClient</span><span class="p">(</span><span class="n">socket</span> <span class="p">=</span> <span class="n">mockClientSocket</span><span class="p">)</span>
+    <span class="n">assertThrows</span><span class="p">&lt;</span><span class="nc">Exception</span><span class="p">&gt;</span> <span class="p">{</span> <span class="n">client</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="s">"data"</span><span class="p">)</span> <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The relaxed mock is used so you don’t have to manually specify and mock all of the internals. Mockk will do it for you.
+Obviously this test is just a dummy example, you don’t want to let uncaught exceptions in your code.</p>
+
+<h2 id="using-a-framework-ktor">Using a framework: ktor</h2>
+
+<p><a href="https://ktor.io/">Ktor</a> is a framework for building asynchronous (coroutine) servers and clients in connected systems using Kotlin.
+Made by the same people that made Kotlin.</p>
+
+<p>Ktor in addition to HTTP handling, also supports client and server, TCP and UDP raw sockets.
+It exposes a suspending API that uses NIO under the hoods.</p>
+
+<p>You can check it out at <a href="https://ktor.io/servers/raw-sockets.html">Raw Sockets Ktor example</a>.</p>
+
+<p>My only concern was that implementing the example, I had the warning that those <code class="language-plaintext highlighter-rouge">raw sockets</code> are still under
+<code class="language-plaintext highlighter-rouge">@KtorExperimentalAPI</code> which means behaviour can still change in future release.
+Other than that, it works 👍</p>
+:ET

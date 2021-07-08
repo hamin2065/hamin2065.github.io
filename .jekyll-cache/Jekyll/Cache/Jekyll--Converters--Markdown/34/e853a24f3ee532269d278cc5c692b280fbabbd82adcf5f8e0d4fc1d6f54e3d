@@ -1,0 +1,5 @@
+I""<p>In excel, you have to enable first the macro (and select the developer option). 
+Then you can press <kbd>ALT</kbd> + <kbd>F11</kbd> to go into edit macro mode. 
+To learn you can start with “recording macro” to see what excel is recording, 
+but it’s not the most efficient way.</p>
+:ET

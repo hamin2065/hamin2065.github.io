@@ -1,0 +1,169 @@
+I"�<h2 id="scrum-framework">SCRUM framework</h2>
+
+<p>Started in 1995, book released in 2001. Latest version was released in 2011.
+Author: Ken Schawner and Jeff Sutherland</p>
+
+<h3 id="artifact">Artifact</h3>
+
+<ul>
+  <li><strong>Backlog</strong> (prioritized task that adds the most priority) - Product Owner</li>
+  <li><strong>Sprint</strong> (time box to do items from the backlog) - TEAM</li>
+  <li><strong>Increment</strong> (what you deliver) - TEAM</li>
+</ul>
+
+<h3 id="roles">Roles</h3>
+
+<p>Product Owner (defines the priorities the value, represent all stakeholders of the project)</p>
+
+<p>Scrum Master (person who knows the scrum process inside out, make sure everybody knows how it works, and keep the team focused)</p>
+
+<p>Team (cross functional, self organizing group, have necessary skills to deliver the product)</p>
+
+<ul>
+  <li><strong>Product Owner</strong>: the what and the when (not how much)</li>
+  <li><strong>Development team</strong>: the how and the how much</li>
+  <li><strong>Scrum Master</strong>: the process</li>
+  <li><em>Stakeholders</em>: People impacted or who impacts the project</li>
+  <li><em>Scrum Mentor</em>: Coach to help you correct what is wrong in your process</li>
+</ul>
+
+<h3 id="events---ceremonies">Events - Ceremonies</h3>
+
+<h4 id="sprint-planning">Sprint Planning</h4>
+
+<ul>
+  <li><strong>Time:</strong> 2-8Hrs</li>
+  <li>Team owns it, 2hrs a week up to 8, team can add more or remove work during the sprint.</li>
+</ul>
+
+<h5 id="planning-part-1">Planning part 1</h5>
+
+<ul>
+  <li><strong>Time:</strong> 1-4Hrs</li>
+  <li><strong>Players:</strong> PO, SM, TEAM</li>
+  <li>Product owner to present what he needs, set the goal, top priorities</li>
+</ul>
+
+<h5 id="planning-part-2">Planning part 2</h5>
+
+<ul>
+  <li><strong>Time:</strong> 1-4Hrs</li>
+  <li><strong>Players:</strong> SM, TEAM</li>
+  <li>Add the tasks from the backlog they commit they will do during the sprint length, estimate tasks</li>
+</ul>
+
+<h4 id="daily-scrum">Daily Scrum</h4>
+
+<ul>
+  <li><strong>Time:</strong> 15min</li>
+  <li><strong>Players:</strong> SM, TEAM</li>
+  <li><strong>Questions:</strong>
+    <ul>
+      <li><em>What did you do yesterday?</em></li>
+      <li><em>What will you do today?</em></li>
+      <li><em>Is there something blocking you? Need help?</em></li>
+    </ul>
+  </li>
+</ul>
+
+<p>Sync the team, the team is owner of this planning. Sprint tasks should look like a wave (From  the left (todo) for the lesser priority tasks to the right (done) for top priority tasks).</p>
+
+<p>if a task in the sprint takes more time than estimated, you have to decide if you keep it or if you move it to the next sprint depending if you are on target or not.</p>
+
+<p>You make commitment to the team, problem solving and talk is done after the daily scrum</p>
+
+<h4 id="sprint-review">Sprint Review</h4>
+
+<ul>
+  <li><strong>Time:</strong> 1-4Hrs</li>
+  <li><strong>Players:</strong> PO, SM, TEAM</li>
+  <li><strong>Product focused</strong>, occurs at the end of the sprint demonstrates sprint increment, get feedback and create new tasks, change prioritize, have new ideas, improve the product to please the product owner</li>
+  <li><strong>Key elements</strong>:
+    <ul>
+      <li>Celebrate the work that was done</li>
+      <li>Share the knowledge to the team / stakeholders</li>
+      <li>Get Feedback on the product.</li>
+      <li>PO validates if the stories are accepted or not.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Team success or a team failure according to the “GOAL” of the sprint, requirements with acceptance criteria.
+DEMO should not exceed a 2hours.</p>
+
+<h4 id="sprint-retrospective">Sprint Retrospective</h4>
+
+<ul>
+  <li><strong>Time:</strong> 45min - 3hrs</li>
+  <li><strong>Players:</strong> SM, TEAM</li>
+  <li><strong>Process focused</strong> see what went well or bad and look for best practices, impact the way we work)</li>
+  <li>Adapt: improvement list (priority improve process over deliver, need to ponder)</li>
+  <li>Inspect: Get a good understanding or the lesson learn
+    <ul>
+      <li>Impediment current issues</li>
+      <li>Improvement things we want to be better in the future (more effort)</li>
+    </ul>
+  </li>
+  <li><strong>Questions:</strong>
+    <ul>
+      <li><em>What went well during the sprint cycle?</em></li>
+      <li><em>What went wrong during the sprint cycle?</em></li>
+      <li><em>What could we do differently to improve?</em></li>
+    </ul>
+  </li>
+  <li><strong>Agenda</strong>
+    <ul>
+      <li>Debrief the metrics</li>
+      <li>Last Retro action plan - 5 min</li>
+      <li>Brainstorm (creation of the post-it) - 5min</li>
+      <li>Discussion and sharing of the post-it - 30 min</li>
+      <li>Prioritisation - 5 min</li>
+      <li>Action plan to address the 3 most important items - 10 to 15min</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="product-backlog-grooming">Product Backlog Grooming</h4>
+<p><em>NOT OFFICIAL EVENT</em></p>
+
+<ul>
+  <li><strong>Time:</strong> max 10%</li>
+  <li>Make sure you do not run out of stuff to do, stories, tasks for the future in the middle of the sprint</li>
+</ul>
+
+<h4 id="sprint-cancellation">Sprint Cancellation</h4>
+
+<p>Product Owner can stop a sprint that goes really wrong.</p>
+
+<h3 id="metrics">Metrics</h3>
+
+<p>Metrics in whatever agile methodology you choose to use are not meant for higher management, but rather as a tool for the team to auto evaluate and improve recursively.</p>
+
+<p>It is recommended to implement early on metrics (chosen by the team) in order to get feedback on your process. It can be good indicator of:</p>
+
+<ul>
+  <li>Your Sprint health (changes in the sprint backlog)</li>
+  <li>The number of blocked item</li>
+  <li>The waiting time of an issue (time is stays in a particular column)</li>
+  <li>The WIP (work in progress), the amount of task currently in progress</li>
+  <li>The elapsed time of an issue (time between the creation and the completion)</li>
+</ul>
+
+<p>This information will help take decisions during the daily scrum on how the team is doing. 
+It is also a key component during the retrospective where you can comment and take action:</p>
+
+<ul>
+  <li>Find the root cause of a sudden drop in a metric</li>
+  <li>Add a new metric to monitor a new aspect</li>
+  <li>Remove old metric that are not relevant anymore</li>
+</ul>
+
+<h4 id="burntdown">Burntdown</h4>
+
+<p>Sprint Burntdown chart, how to evaluate the work that has been done (based on the story points) compared with the remaining amount of time. 
+It is the most used metric for the SCRUM framework.</p>
+
+<blockquote>
+  <p>“Information helps you make decision”</p>
+</blockquote>
+:ET

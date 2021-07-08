@@ -1,0 +1,138 @@
+I"�.<h2 id="excel-auto-find-drop-down-menu">Excel auto find drop down menu</h2>
+
+<h4 id="create-a-named-range">Create a Named range</h4>
+
+<p>To manage the named ranges, you can go in <strong>Formulas</strong> &gt; <strong>Name Manager</strong>. You can also use defined range by their name in Excel formulas.</p>
+
+<h5 id="1-static">1. Static</h5>
+<p>To <a href="https://support.office.com/fr-fr/article/Cr%C3%A9er-une-liste-d%C3%A9roulante-7693307a-59ef-400a-b769-c5402dce407b">create a named range</a> in excel, 
+you can select a column of data then <strong>right click</strong> then select <strong>define name</strong> the name will be the name of the range and how it will be referred to.
+The <strong>refers to</strong> is the range itself and is auto populated with the range of selected cells when clicking on <strong>define name</strong></p>
+
+<h5 id="2-dynamic">2. Dynamic</h5>
+<p>To get a <a href="https://trumpexcel.com/named-ranges-in-excel/">dynamic named range</a> you will need to replace the <strong>refers to</strong> of the named range by this kind of formula (for example if values are in the A column):</p>
+
+<div class="language-coffee highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">=</span><span class="nx">$A</span><span class="na">$2</span><span class="o">:</span><span class="nx">INDEX</span><span class="p">(</span><span class="nx">$A</span><span class="na">$2</span><span class="o">:</span><span class="nx">$A$100</span><span class="p">;</span><span class="nx">COUNTIF</span><span class="p">(</span><span class="nx">$A</span><span class="na">$2</span><span class="o">:</span><span class="nx">$A$100</span><span class="p">;</span><span class="s">"&lt;&gt;"</span><span class="o">&amp;</span><span class="s">""</span><span class="p">))</span>
+</code></pre></div></div>
+<p>This formula will start looking at value from <code class="language-plaintext highlighter-rouge">A2</code> to the index (the coordinates) of the last non empty cell (up to 100 in here).
+It will only refers to the populated cells in the dynamic named range.</p>
+
+<h4 id="get-other-information-from-the-entered-item">Get other information from the entered item</h4>
+<h5 id="1-example">1. Example:</h5>
+
+<ul>
+  <li>You have a range of value with a define name: <code class="language-plaintext highlighter-rouge">list</code> with all the values to find.</li>
+  <li>You have the case where the search value is entered in <code class="language-plaintext highlighter-rouge">C4</code>.</li>
+</ul>
+
+<p>Then you can add this formula in the cells next to <code class="language-plaintext highlighter-rouge">C4</code> to map the cell using what has been entered in <code class="language-plaintext highlighter-rouge">C4</code>.</p>
+
+<div class="language-coffee highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">=</span><span class="nx">INDIRECT</span><span class="p">(</span><span class="s">"tab_name!"</span><span class="o">&amp;</span><span class="nx">ADDRESS</span><span class="p">(</span><span class="nx">MATCH</span><span class="p">(</span><span class="nx">C4</span><span class="p">;</span><span class="nx">List</span><span class="p">;</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span><span class="nx">COLUMN</span><span class="p">(</span><span class="nx">List</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+</code></pre></div></div>
+
+<ul>
+  <li>The <code class="language-plaintext highlighter-rouge">MATCH</code> function will match the <code class="language-plaintext highlighter-rouge">ROW</code> of the entered value (here <code class="language-plaintext highlighter-rouge">C4</code>) and the <code class="language-plaintext highlighter-rouge">List</code> value to get the right one.</li>
+  <li>the <code class="language-plaintext highlighter-rouge">ADDRESS</code> function will map the found value and its relative position. 
+(Used with <code class="language-plaintext highlighter-rouge">+1</code> or <code class="language-plaintext highlighter-rouge">-1</code> in the <code class="language-plaintext highlighter-rouge">ROW, COLUMN</code> you can modify the address you get.</li>
+  <li>the <code class="language-plaintext highlighter-rouge">INDIRECT</code> function print the value of the input coordinates (the <code class="language-plaintext highlighter-rouge">"tab_name!"</code> where the value is and the address of the found value).</li>
+</ul>
+
+<h5 id="2-another-example">2. Another Example</h5>
+
+<p>Or you can use this formula which will look in <code class="language-plaintext highlighter-rouge">List</code> if it finds the value in <code class="language-plaintext highlighter-rouge">C4</code>:</p>
+
+<div class="language-coffee highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">=</span><span class="nx">VLOOKUP</span><span class="p">(</span><span class="nx">C4</span><span class="p">;</span><span class="nx">List</span><span class="p">;</span><span class="mi">2</span><span class="p">;</span><span class="nx">FALSE</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="have-a-google-like-search">Have a google like search</h4>
+
+<p><a href="https://trumpexcel.com/excel-drop-down-list-with-search-suggestions/">Here</a> is a sweet example that requires 1 column with the values and 3 helping columns and a cell that will be used to do the google like search:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>E</strong>. Available values</th>
+      <th><strong>F</strong>. criteria matching</th>
+      <th><strong>G</strong>. Occurrence count</th>
+      <th><strong>H</strong>. Found values</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>value_one</td>
+      <td>1</td>
+      <td>1</td>
+      <td>value_one</td>
+    </tr>
+    <tr>
+      <td>value_two</td>
+      <td>0</td>
+      <td> </td>
+      <td>value_three</td>
+    </tr>
+    <tr>
+      <td>value_three</td>
+      <td>1</td>
+      <td>2</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>Column #1 : <strong>Available Values</strong> you add the values that will be looked at</li>
+  <li>Column #2 : <strong>Criteria matching</strong> you add this formula:</li>
+</ul>
+
+<div class="language-coffee highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">=</span><span class="nx">ISNUMBER</span><span class="p">(</span><span class="nx">IFERROR</span><span class="p">(</span><span class="nx">SEARCH</span><span class="p">(</span><span class="nx">$B$3</span><span class="p">,</span><span class="nx">E3</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="s">""</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>This formula returns 1 if part of what is in cell <code class="language-plaintext highlighter-rouge">E3</code> in the <strong>Available values</strong> column is also in cell <code class="language-plaintext highlighter-rouge">B3</code>, the <strong>search cell</strong>.</p>
+
+<ul>
+  <li>Column #3 : <strong>Occurrence count</strong> you add this formula:</li>
+</ul>
+
+<div class="language-coffee highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">=</span><span class="nx">IF</span><span class="p">(</span><span class="nx">F3</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="nx">COUNTIF</span><span class="p">(</span><span class="nx">$F</span><span class="na">$3</span><span class="o">:</span><span class="nx">F3</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="s">""</span><span class="p">)</span> 
+</code></pre></div></div>
+
+<p>This formula starting at <code class="language-plaintext highlighter-rouge">F3</code>, with <code class="language-plaintext highlighter-rouge">F3</code> the <strong>criteria matching</strong> look if the <strong>criteria matching</strong> is 1 and count how many there was since first cell (<code class="language-plaintext highlighter-rouge">$F$3</code>).</p>
+
+<ul>
+  <li>Column #4 : <strong>Found Values</strong> stack all of the criteria matching values with this formula:</li>
+</ul>
+
+<div class="language-coffee highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">=</span><span class="nx">IFERROR</span><span class="p">(</span><span class="nx">INDEX</span><span class="p">(</span><span class="nx">$E</span><span class="na">$3</span><span class="o">:</span><span class="nx">$E$22</span><span class="p">,</span><span class="nx">MATCH</span><span class="p">(</span><span class="nx">ROWS</span><span class="p">(</span><span class="nx">$G</span><span class="na">$3</span><span class="o">:</span><span class="nx">G3</span><span class="p">),</span><span class="nx">$G</span><span class="na">$3</span><span class="o">:</span><span class="nx">$G$22</span><span class="p">,</span><span class="mi">0</span><span class="p">)),</span><span class="s">""</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>With <code class="language-plaintext highlighter-rouge">G3</code> in the <strong>Occurrence count</strong> column. It works with <code class="language-plaintext highlighter-rouge">MATCH</code> and <code class="language-plaintext highlighter-rouge">INDEX</code> looking for occurrence. 
+The <code class="language-plaintext highlighter-rouge">IFERROR</code> will show the corresponding value indexed, or nothing.</p>
+
+<p>You can use this formula to create the dynamic range from the <strong>found values</strong> in <code class="language-plaintext highlighter-rouge">H3</code>:</p>
+
+<div class="language-coffee highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">=</span><span class="nx">$H</span><span class="na">$3</span><span class="o">:</span><span class="nx">INDEX</span><span class="p">(</span><span class="nx">$H</span><span class="na">$3</span><span class="o">:</span><span class="nx">$H$22</span><span class="p">;</span><span class="nx">MAX</span><span class="p">(</span><span class="nx">$G</span><span class="na">$3</span><span class="o">:</span><span class="nx">$G$22</span><span class="p">);</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The name will be used for the combobox (dropdown in developer &gt; insert &gt; activeX). Here are the properties to look for:</p>
+
+<ul>
+  <li>AutoWordSelect: False</li>
+  <li>LinkedCell: B3</li>
+  <li>ListFillRange: name of the created named range</li>
+  <li>MatchEntry: 2 – fmMatchEntryNone</li>
+</ul>
+
+<p>The LinkedCell <code class="language-plaintext highlighter-rouge">B3</code> is the searching cell, it will print the result of the search.
+If you haven’t change the name of the combobox, the default one should be <code class="language-plaintext highlighter-rouge">ComboBox1</code> and you can copy paste that into the VBA part of your sheet:</p>
+
+<div class="language-vb highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">Private</span> <span class="k">Sub</span> <span class="nf">ComboBox1_Change</span><span class="p">()</span>
+<span class="c1">'DropDownList is the name of the created Named range</span>
+<span class="n">ComboBox1</span><span class="p">.</span><span class="n">ListFillRange</span> <span class="o">=</span> <span class="s">"DropDownList"</span>
+<span class="k">Me</span><span class="p">.</span><span class="n">ComboBox1</span><span class="p">.</span><span class="n">DropDown</span>
+<span class="k">End</span> <span class="k">Sub</span>
+</code></pre></div></div>
+
+<p>This sub <code class="language-plaintext highlighter-rouge">ComboBox1_change()</code> overwrites the default attitude of the ComboBox object when changed.</p>
+
+<p>You also need some lists for the comboBox to update automatically, one for the dropdown that will be the results of the matched value of the occurrence count.</p>
+:ET

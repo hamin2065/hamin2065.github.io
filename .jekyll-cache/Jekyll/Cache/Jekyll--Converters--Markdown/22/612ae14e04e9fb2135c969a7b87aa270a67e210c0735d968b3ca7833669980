@@ -1,0 +1,87 @@
+I"$<p>MongoDB is a Document Oriented Database, a type of <strong>NoSQL</strong> database. 
+It is open source and available at <a href="https://www.mongodb.com">mongodb.com</a>.</p>
+
+<p><img src="/assets/img/mongo.svg" alt="decrypt" /></p>
+
+<h3 id="document-storage">Document Storage</h3>
+
+<p><strong>Document databases</strong> pair each key with a complex data structure known as a document. 
+Documents can contain many different key-value pairs, or key-array pairs, or even nested documents.</p>
+
+<h3 id="mongo-db-example">Mongo DB example</h3>
+
+<p>MongoDB stores data in flexible, <strong>JSON-like documents</strong> called <strong>collection</strong>. 
+Each element of the database is stored as a separate JSON. Mongo can generate a database out of this file.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">db</span><span class="p">.</span><span class="nx">inventory</span><span class="p">.</span><span class="nx">insertMany</span><span class="p">([</span>
+   <span class="c1">// MongoDB adds the _id field with an ObjectId if _id is not present</span>
+   <span class="p">{</span> <span class="na">item</span><span class="p">:</span> <span class="dl">"</span><span class="s2">journal</span><span class="dl">"</span><span class="p">,</span> <span class="na">qty</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span> <span class="na">status</span><span class="p">:</span> <span class="dl">"</span><span class="s2">A</span><span class="dl">"</span> <span class="p">},</span>
+   <span class="p">{</span> <span class="na">item</span><span class="p">:</span> <span class="dl">"</span><span class="s2">notebook</span><span class="dl">"</span><span class="p">,</span> <span class="na">qty</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="na">status</span><span class="p">:</span> <span class="dl">"</span><span class="s2">A</span><span class="dl">"</span> <span class="p">},</span>
+   <span class="p">{</span> <span class="na">item</span><span class="p">:</span> <span class="dl">"</span><span class="s2">paper</span><span class="dl">"</span><span class="p">,</span> <span class="na">qty</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="na">status</span><span class="p">:</span> <span class="dl">"</span><span class="s2">D</span><span class="dl">"</span> <span class="p">},</span>
+   <span class="p">{</span> <span class="na">item</span><span class="p">:</span> <span class="dl">"</span><span class="s2">planner</span><span class="dl">"</span><span class="p">,</span> <span class="na">qty</span><span class="p">:</span> <span class="mi">75</span><span class="p">,</span> <span class="na">status</span><span class="p">:</span> <span class="dl">"</span><span class="s2">D</span><span class="dl">"</span> <span class="p">},</span>
+<span class="p">]);</span>
+</code></pre></div></div>
+
+<h3 id="actions-with-mongo">Actions with Mongo</h3>
+
+<p>Mongo provides you with different type of actions to query the database, it follows the CRUD:</p>
+
+<ul>
+  <li>Insert: to add new element in the database</li>
+</ul>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">db</span><span class="p">.</span><span class="nx">collection_name</span><span class="p">.</span><span class="nx">insert</span><span class="p">({</span><span class="dl">"</span><span class="s2">fieldname</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">})</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Find: which lets you find and read elements in the database</li>
+</ul>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">db</span><span class="p">.</span><span class="nx">inventory</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span> <span class="p">{}</span> <span class="p">)</span>               <span class="c1">// Will return all document in the collection</span>
+<span class="nx">db</span><span class="p">.</span><span class="nx">inventory</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span> <span class="p">{</span> <span class="na">status</span><span class="p">:</span> <span class="dl">"</span><span class="s2">D</span><span class="dl">"</span> <span class="p">}</span> <span class="p">)</span>  <span class="c1">// Searching filtering by a value</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Update: to update the elements</li>
+</ul>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">db</span><span class="p">.</span><span class="nx">collection_name</span><span class="p">.</span><span class="nx">update</span><span class="p">()</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Remove: to delete element of the database</li>
+</ul>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">db</span><span class="p">.</span><span class="nx">collection_name</span><span class="p">.</span><span class="nx">remove</span><span class="p">({</span><span class="dl">"</span><span class="s2">fieldname</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">})</span>
+</code></pre></div></div>
+
+<h3 id="deployment">Deployment</h3>
+
+<p>The mongoDB can be deployed in different configuration:</p>
+
+<ul>
+  <li>
+    <p><strong>Stand alone</strong> is a simple instance of the mongo DB, just the database.</p>
+  </li>
+  <li>
+    <p><strong>Replica Set</strong> is a set of three database with one primary and two secondary.</p>
+    <ul>
+      <li>If one is down then one of the two secondary gets elected to primary automatically.</li>
+      <li>All db have the same data in it.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="/assets/img/mongo-replicaset.jpg" alt="decrypt" /></p>
+
+<ul>
+  <li><strong>Shard Cluster</strong> is composed of multiple replica set that shares the data of a collection (according to set rules).
+    <ul>
+      <li>The applications connect to the Database through a <code class="language-plaintext highlighter-rouge">Mongo S</code> application</li>
+      <li>The <code class="language-plaintext highlighter-rouge">Mongo S</code> will direct the request to the right replica set using a config replica set that knows where the information is stored.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="/assets/img/mongo-shard.jpg" alt="decrypt" /></p>
+:ET

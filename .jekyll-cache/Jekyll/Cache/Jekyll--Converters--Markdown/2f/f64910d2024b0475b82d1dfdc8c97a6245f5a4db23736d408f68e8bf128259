@@ -1,0 +1,48 @@
+I"i<p>Some tips, software and short cut that are useful with mac. But not enough to stick.
+<!--more--></p>
+
+<h2 id="miscellaneous">Miscellaneous</h2>
+
+<ul>
+  <li>Delete a folder and file with <kbd>delete</kbd> instead of move to trash</li>
+  <li><kbd>shift</kbd> + <kbd>⌘</kbd> + <kbd>.</kbd> for showing hidden files</li>
+  <li><kbd>ctrl</kbd> + <kbd>space</kbd> for language switching  🇺🇸 - 🇨🇦</li>
+  <li><kbd>fn</kbd> + <kbd>f11</kbd> to see the desktop</li>
+</ul>
+
+<h2 id="screenshot">Screenshot</h2>
+
+<p>The image will be save on the desktop:</p>
+
+<ul>
+  <li><kbd>Shift</kbd> + <kbd>⌘</kbd> + <kbd>3</kbd> For a full screenshots</li>
+  <li><kbd>Shift</kbd> + <kbd>⌘</kbd> + <kbd>4</kbd> So you will be able to select what to screenshots within the screen</li>
+  <li><kbd>Shift</kbd> + <kbd>⌘</kbd> + <kbd>ctrl</kbd> + <kbd>4</kbd> So you will be able to select what to screenshots within the screen</li>
+</ul>
+
+<h2 id="emojis">Emojis</h2>
+
+<p>If you want to have them available while you type without having or going through the touch bar:</p>
+
+<ul>
+  <li><kbd>ctrl</kbd> + <kbd>⌘</kbd> + <kbd>space</kbd> For emojis 😉💪🏝🙆‍️</li>
+</ul>
+
+<h2 id="change-your-name">Change your name</h2>
+
+<p>Change your name on Mac:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>scutil <span class="nt">--set</span> ComputerName <span class="s2">"newname"</span>
+<span class="nb">sudo </span>scutil <span class="nt">--set</span> LocalHostName <span class="s2">"newname"</span>
+<span class="nb">sudo </span>scutil <span class="nt">--set</span> HostName <span class="s2">"newname"</span>
+</code></pre></div></div>
+
+<h2 id="other-tools">Other tools</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Spectacle</code> for screen splitting</li>
+  <li><code class="language-plaintext highlighter-rouge">Iterm</code> for terminal</li>
+  <li><code class="language-plaintext highlighter-rouge">Zsh</code> for term color transformation</li>
+  <li><code class="language-plaintext highlighter-rouge">Fork</code> for version control</li>
+</ul>
+:ET

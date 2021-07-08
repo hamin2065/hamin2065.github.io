@@ -1,0 +1,91 @@
+I"y<h2 id="introduction">Introduction</h2>
+
+<p><a href="https://www.cypress.io/">Cypress</a> is a testing tool using <a href="https://mochajs.org/">Mocha</a> test framework under the hood.
+It runs as a browser application enabling cross browser testing. It works on MAC, Linux, Windows.
+But it also it means it is hard to test what is happening from the outside world.</p>
+
+<p>For example css events are not yet all “testable”. Cypress check the DOM and js modifications in the page.
+It still allows to perform end to end tests and in a certain limit unit tests.</p>
+
+<p>My only issue is that cypress is takes much longer to test. 
+And I would not suggest to write unit tests with it.</p>
+
+<h2 id="configuration">Configuration</h2>
+
+<p>Here, let’s talk about the configuration. 
+Even though, it’s all preconfigured and should work right out of the box.
+I have added few lines for features that was not necessary in my case (for a small app).</p>
+
+<p>Let’s talk about how cypress is structured:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">.</span>
+├── fixtures                <span class="c"># Data for tests</span>
+│   └── example.json
+├── integration             <span class="c"># Where you put your tests</span>
+│   ├── website.spec.js
+│   └── feature.spec.js
+├── plugins                 <span class="c"># For special commands, plugins configuration for frameworks</span>
+│   └── index.js
+├── support
+│   ├── commands.js         <span class="c"># Commands to reuse in tests</span>
+│   └── index.js            <span class="c"># For other configurations</span>
+└── cypress.json            <span class="c"># Optional for other configurations</span>
+</code></pre></div></div>
+
+<p>To disable screenshots on failure you can add in <code class="language-plaintext highlighter-rouge">support/index.js</code> this:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Cypress</span><span class="p">.</span><span class="nx">Screenshot</span><span class="p">.</span><span class="nx">defaults</span><span class="p">({</span>
+  <span class="na">screenshotOnRunFailure</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>To disable the video, because cypress can record your tests being run in the browser.
+Add a <code class="language-plaintext highlighter-rouge">cypress.json</code> file with this in it:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"video"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="basic-test">Basic test</h2>
+
+<p>You will see that the test syntax is pretty similar to any other js test framework.
+The Cypress syntax is very simple.
+Basically you get a url, get something in the page and check value, style, and more.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">describe</span><span class="p">(</span><span class="dl">'</span><span class="s1">My First Test</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">it</span><span class="p">(</span><span class="dl">'</span><span class="s1">Gets, types and asserts</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">cy</span><span class="p">.</span><span class="nx">visit</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://example.cypress.io</span><span class="dl">'</span><span class="p">)</span>
+
+    <span class="nx">cy</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="dl">'</span><span class="s1">type</span><span class="dl">'</span><span class="p">).</span><span class="nx">click</span><span class="p">()</span>
+
+    <span class="c1">// Should be on a new URL which includes '/commands/actions'</span>
+    <span class="nx">cy</span><span class="p">.</span><span class="nx">url</span><span class="p">().</span><span class="nx">should</span><span class="p">(</span><span class="dl">'</span><span class="s1">include</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">/commands/actions</span><span class="dl">'</span><span class="p">)</span>
+
+    <span class="c1">// Get an input, type into it and verify that the value has been updated</span>
+    <span class="nx">cy</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">.action-email</span><span class="dl">'</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">type</span><span class="p">(</span><span class="dl">'</span><span class="s1">fake@email.com</span><span class="dl">'</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">should</span><span class="p">(</span><span class="dl">'</span><span class="s1">have.value</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">fake@email.com</span><span class="dl">'</span><span class="p">)</span>
+  <span class="p">})</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<p>Cypress is full of nice feature to test the layout of your website. 
+And each of them are nicely <a href="https://docs.cypress.io/api/api/table-of-contents.html">documented</a></p>
+
+<h2 id="tips-and-tricks">Tips and tricks</h2>
+
+<p>Here is how you should add your cypress commands in your <code class="language-plaintext highlighter-rouge">package.json</code>.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">  </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="nl">"cy:run"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cypress run"</span><span class="p">,</span><span class="w">
+     </span><span class="nl">"cy:open"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cypress open"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">cypress run</code> allows you to run “headless” all cypress tests in the <code class="language-plaintext highlighter-rouge">integration</code> folder.
+So it is fully compatible with a CI/CD pipeline.
+The <code class="language-plaintext highlighter-rouge">cypress open</code> is a great feature when debugging, because it starts an interactive window where you can
+select the tests suite you want to run, and display the live test output in a browser.
+You can see where it failed, how and what it looked liked.</p>
+:ET

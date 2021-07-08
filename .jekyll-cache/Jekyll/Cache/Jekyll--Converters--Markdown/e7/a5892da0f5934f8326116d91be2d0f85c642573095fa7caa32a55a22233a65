@@ -1,0 +1,123 @@
+I"8<p>The <a href="https://jmeter.apache.org/index.html">Apache JMeter™</a> application is open source software, a 100% pure Java application designed to load test functional behavior and measure performance. 
+It was originally designed for testing Web Applications but has since expanded to other test functions.</p>
+
+<h2 id="installation">Installation</h2>
+
+<p>With mac, to install <a href="https://jmeter.apache.org/usermanual/">apache</a> JMeter:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew <span class="nb">install </span>jmeter
+</code></pre></div></div>
+
+<h2 id="configuration">Configuration</h2>
+
+<h3 id="variable">Variable</h3>
+
+<p>JMeter files can leverage <a href="https://jmeter.apache.org/usermanual/functions.html">variables</a> in order to update your load test on the fly:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">${</span><span class="nv">__P</span><span class="p">(host, localhost)</span><span class="k">}</span>
+</code></pre></div></div>
+
+<p>Here I am defining the variable <code class="language-plaintext highlighter-rouge">host</code> with a default value of <code class="language-plaintext highlighter-rouge">"localhost"</code>. 
+This variable can be overwritten in the command line using:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jmeter <span class="nt">-n</span> <span class="nt">-t</span> LoadTestJmeterScript.jmx <span class="nt">-Jhost</span><span class="o">=</span>192.168.0.1
+</code></pre></div></div>
+
+<p>So that the host will be <em>192.168.0.1</em> during the load test.
+You can define all of your default variable within a <em>TCP Sampler Config</em> that will apply on all the subsequent Sampler.
+Also you can configure your Thread Group number of Thread and duration adding variables to it.
+When using with duration you should use “Infinite Loop”.</p>
+
+<h3 id="create-your-sampler">Create your Sampler</h3>
+
+<p>You can find excellent tutorial on <a href="https://www.blazemeter.com/blog/how-load-test-tcp-protocol-services-jmeter">Blazemeter</a> 
+or <a href="https://dzone.com/articles/how-to-load-test-tcp-protocol-services-with-jmeter">Dzone</a> with screenshot and detailed examples.
+There some options available in your Sampler:</p>
+
+<div class="row">
+    
+    <div style="flex: 100.0%">
+        <img class="single" src="/assets/img/jmeter-sampler.png" alt="jmeter-sampler.png" />
+    </div>
+    
+</div>
+
+<ul>
+  <li>The timeout parameter:
+    <ul>
+      <li><em>Connect</em>: max time in ms for the Sampler to wait for the connection to be established.</li>
+      <li><em>Response</em>: max time the sampler will wait for a response from the request.</li>
+    </ul>
+  </li>
+  <li>The other connection parameters:
+    <ul>
+      <li><em>Re-use connection</em>: To re use the same connection previously established to send data</li>
+      <li><em>Close connection</em>: To open and close the connection each time it sends data.</li>
+      <li><em>Set NoDelay</em>: When set small messages, even those the size of only 1 byte, are sent in a separate packet. Otherwise, if this parameter is cleared, a number of small messages is combined in one packet before sending them.</li>
+      <li><em>SO_LINGER</em>: This option can be enabled in the socket to cause the script to block the close the connection call for a number of seconds, specified in this field, until all final data is delivered to the destination station.</li>
+      <li><em>EOL byte value</em>: Tells which is the last byte to expect (So it knows when it got all of the response, otherwise it will timeout with Error: 500)</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="row">
+    
+    <div class="column">
+        <img class="single" src="/assets/img/jmeter-test-plan.png" alt="jmeter-test-plan.png" />
+    </div>
+    
+</div>
+
+<p>You can add a TCP Sampler and then add some other things to it like:</p>
+<ul>
+  <li><em>Response Assertion</em>: To assert on the response data of the request (Because TCP does not return HTTP - 200, you need to add something to say when it’s a success)</li>
+  <li><em>View Results Tree</em>: To check what has been send and received for the particular sampler</li>
+  <li><em>BeanShell PreProcessor</em>: To custom the request you are going to send (Uses BeanShell syntax)</li>
+</ul>
+
+<p>If you want the combined results of your Thread Group. You will want to use a <em>Summary Report</em>.
+Add a filename to it like “performance.csv” so it will be generated at each run.</p>
+
+<div class="row">
+    
+    <div style="flex: 100.0%">
+        <img class="single" src="/assets/img/jmeter-summary.png" alt="jmeter-summary.png" />
+    </div>
+    
+</div>
+
+<p>You can add other <em>Listeners</em> to your Thread Group for assertions or even a graph.
+To generate a report, see the command line in the next section.</p>
+
+<h2 id="usage">Usage</h2>
+
+<p>Run the load test for 100 tps:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jmeter <span class="nt">-f</span> <span class="nt">-n</span> <span class="nt">-t</span> LoadTestTcp.jmx <span class="nt">-Jthreads</span><span class="o">=</span>100 <span class="nt">-Jhost</span><span class="o">=</span>localhost <span class="nt">-Jport</span><span class="o">=</span>5556 <span class="nt">-l</span> output.jtl
+</code></pre></div></div>
+
+<p>The result of the load test will be saved:</p>
+
+<ul>
+  <li>in <code class="language-plaintext highlighter-rouge">output.jtl</code> for the load test values</li>
+  <li>in <code class="language-plaintext highlighter-rouge">jmeter.log</code> for the logs of jmeter</li>
+  <li>in <code class="language-plaintext highlighter-rouge">performance.csv</code> for the csv with all of the requests (a bit like the output.jtl)</li>
+</ul>
+
+<p>To turn the csv/jtl file into an html in the <em>report</em> folder, use:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jmeter <span class="nt">-g</span> output.jtl <span class="nt">-o</span> report
+jmeter <span class="nt">-g</span> performance.csv <span class="nt">-o</span> report
+</code></pre></div></div>
+
+<p>This will <a href="https://jmeter.apache.org/usermanual/generating-dashboard.html">generate a report</a> that you can open in your browser.</p>
+
+<div class="row">
+    
+    <div style="flex: 100.0%">
+        <img class="single" src="/assets/img/jmeter-report.png" alt="jmeter-report.png" />
+    </div>
+    
+</div>
+
+<p>You will get access to all the information you need (timestamp, transaction/s, request average or median time, results, etc …)</p>
+:ET

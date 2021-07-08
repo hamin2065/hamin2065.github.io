@@ -1,0 +1,48 @@
+I"U<h1 id="system-configuration-commands">System Configuration commands</h1>
+
+<p>Intended for Centos or Redhat.</p>
+
+<h2 id="network-configuration-commands">Network configuration commands</h2>
+
+<p>Show the network information</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ifconfig    # Being deprecated for Linux
+ip a
+</code></pre></div></div>
+
+<p>to return just the IP of the wifi</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ifconfig wlan0 | grep "inet" | grep -v "inet6" | tr -s " " ":" | cut -f4 -d ":"
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">grep "inet</code>”  that includes <em>inet</em></li>
+  <li><code class="language-plaintext highlighter-rouge">grep -v "inet6"</code> that excludes the IPv6 address</li>
+  <li><code class="language-plaintext highlighter-rouge">tr -s " " ":"</code> is added with <code class="language-plaintext highlighter-rouge">tr</code> that means translate and <code class="language-plaintext highlighter-rouge">-s</code> squeeze to replace any <code class="language-plaintext highlighter-rouge">" "</code> (space) into <code class="language-plaintext highlighter-rouge">":"</code> finally we have</li>
+  <li><code class="language-plaintext highlighter-rouge">cut -f4 -d ":"</code> that cuts the first for field with <code class="language-plaintext highlighter-rouge">-d </code>(delimiter) is <code class="language-plaintext highlighter-rouge">":"</code></li>
+</ul>
+
+<h2 id="controlling-services-and-daemon">Controlling services and daemon</h2>
+
+<p>With RHEL 7, you use systemctl to <code class="language-plaintext highlighter-rouge">mask</code> daemon so that they won’t be start, even at reboot. It can be useful if for example you want to make some test while a service is stopped.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl mask daemon.service
+systemctl unmask daemon.service
+</code></pre></div></div>
+
+<h2 id="log">Log</h2>
+
+<p>In <code class="language-plaintext highlighter-rouge">/etc/rsyslog.conf</code> you can specify what is stored and how.
+When using <code class="language-plaintext highlighter-rouge">*.info</code> is all the info log and higher. Using <code class="language-plaintext highlighter-rouge">mail.none</code> is used to specify not to store them (because it is handled in another folder). Make a space and define where you went the logs to be saved.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Log anything (except mail) of level info or higher.</span>
+<span class="c"># Don't log private authentication messages!</span>
+<span class="k">*</span>.info<span class="p">;</span>mail.none<span class="p">;</span>authpriv.none<span class="p">;</span>cron.none       /var/log/messages
+<span class="c"># The authpriv file has restricted access.</span>
+authpriv.<span class="k">*</span>                                     /var/log/secure
+<span class="c"># Log all the mail messages in one place.</span>
+mail.<span class="k">*</span>                                        -/var/log/maillog
+<span class="c"># Log cron stuff</span>
+cron.<span class="k">*</span>                                         /var/log/cron
+</code></pre></div></div>
+:ET

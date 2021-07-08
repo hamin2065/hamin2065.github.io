@@ -1,0 +1,169 @@
+I"�;<p>Since we had a look at spring and springboot in a previous <a href="/2020/06/22/Springboot-basics.html">article</a>.
+Let review how we can test the beast! 
+Because like all good developer, you like writing good tested code with TDD aka Test Driven Development.
+Where you usually <em>start</em> with test… 😅</p>
+
+<h2 id="test-a-simple-rest-spring-application">Test a simple Rest spring application</h2>
+
+<h3 id="simple-get-endpoint">Simple Get endpoint</h3>
+
+<p>Let’s say you have a spring REST application in kotlin with a simple endpoint.
+That’s all good and well, but how do you test that in Kotlin. 
+You can usually find a lot of information online, so let’s add this one to the mix:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RestController</span>
+<span class="nd">@RequestMapping</span><span class="p">(</span><span class="s">"/v1"</span><span class="p">)</span>
+<span class="kd">class</span> <span class="nc">Endpoints</span> <span class="p">{</span>
+
+  <span class="nd">@GetMapping</span><span class="p">(</span><span class="n">value</span> <span class="p">=</span> <span class="p">[</span><span class="s">"/hello/{name}"</span><span class="p">],</span> <span class="n">produces</span> <span class="p">=</span> <span class="p">[</span><span class="s">"application/json"</span><span class="p">])</span>
+  <span class="k">fun</span> <span class="nf">checkBarring</span><span class="p">(</span><span class="nd">@PathVariable</span><span class="p">(</span><span class="n">value</span> <span class="p">=</span> <span class="s">"name"</span><span class="p">)</span> <span class="n">name</span><span class="p">:</span> <span class="nc">String</span><span class="p">)</span> <span class="p">=</span> <span class="nc">ResponseEntity</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="nc">HttpStatus</span><span class="p">.</span><span class="nc">OK</span><span class="p">)</span>
+
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="bring-in-your-test-dependencies">Bring in your test dependencies</h3>
+
+<p>The springboot dependencies will be automatically deduced by the plugin.
+That’s why when importing springboot test packages you may want to exclude the old junit v4 
+to start fresh with mockK and Junit5.</p>
+
+<p>Here would be a simplified snippet of our <em>build.gradle.kts</em> for our test dependencies:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">plugins</span> <span class="p">{</span>
+    <span class="nf">id</span><span class="p">(</span><span class="s">"org.springframework.boot"</span><span class="p">)</span> <span class="n">version</span> <span class="s">"2.2.7.RELEASE"</span>
+    <span class="nf">id</span><span class="p">(</span><span class="s">"io.spring.dependency-management"</span><span class="p">)</span> <span class="n">version</span> <span class="s">"1.0.7.RELEASE"</span>
+    
+<span class="p">}</span>
+
+<span class="nf">dependencies</span> <span class="p">{</span>
+    <span class="nf">testRuntimeOnly</span><span class="p">(</span><span class="s">"org.junit.jupiter:junit-jupiter-engine"</span><span class="p">)</span>
+    <span class="nf">testImplementation</span><span class="p">(</span><span class="s">"org.junit.jupiter:junit-jupiter:5.4.2"</span><span class="p">)</span>
+    <span class="nf">testImplementation</span><span class="p">(</span><span class="s">"org.junit.jupiter:junit-jupiter-api"</span><span class="p">)</span>
+    <span class="nf">testImplementation</span><span class="p">(</span><span class="s">"io.mockk:mockk:1.9.3"</span><span class="p">)</span>
+    <span class="nf">testImplementation</span><span class="p">(</span><span class="s">"org.springframework.boot:spring-boot-starter-test"</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">exclude</span><span class="p">(</span><span class="n">module</span> <span class="p">=</span> <span class="s">"junit"</span><span class="p">)</span>
+        <span class="nf">exclude</span><span class="p">(</span><span class="n">module</span><span class="p">=</span><span class="s">"junit-vintage-engine"</span><span class="p">)</span>
+        <span class="nf">exclude</span><span class="p">(</span><span class="n">module</span> <span class="p">=</span> <span class="s">"mockito-core"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Although mockito should still be compatible with Kotlin, 
+the syntax gets weird because it’s conflicting with some Kotlin key words like <code class="language-plaintext highlighter-rouge">when()</code>.
+So usually when using Kotlin, you’ll go with <a href="https://mockk.io/">mockK</a> instead.</p>
+
+<p>And to avoid interferences we exclude Mockito from <em>spring-boot-starter-test</em> as well.</p>
+
+<h3 id="spring-application-test-class">Spring application test class</h3>
+
+<p>Let’s create our <em>ApplicationTest</em> class to test our springboot REST application.
+Basically you would find some annotation in order to resolve the bean in the context load,
+specify some information and properties.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@ExtendWith</span><span class="p">(</span><span class="nc">SpringExtension</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+<span class="nd">@SpringBootTest</span><span class="p">(</span>
+    <span class="n">webEnvironment</span> <span class="p">=</span> <span class="nc">SpringBootTest</span><span class="p">.</span><span class="nc">WebEnvironment</span><span class="p">.</span><span class="nc">RANDOM_PORT</span><span class="p">,</span>
+    <span class="n">classes</span> <span class="p">=</span> <span class="p">[</span><span class="nc">ApplicationTest</span><span class="p">.</span><span class="nc">ControllerTestConfig</span><span class="o">::</span><span class="k">class</span><span class="p">],</span>
+    <span class="n">properties</span> <span class="p">=</span> <span class="p">[</span><span class="s">"spring.example.property=foobar"</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="nd">@ActiveProfiles</span><span class="p">(</span><span class="n">value</span> <span class="p">=</span> <span class="p">[</span><span class="s">"test"</span><span class="p">])</span>
+<span class="k">internal</span> <span class="kd">class</span> <span class="nc">ApplicationTest</span> <span class="p">{</span>
+
+  <span class="kd">var</span> <span class="py">testRestTemplate</span> <span class="p">=</span> <span class="nc">TestRestTemplate</span><span class="p">()</span>
+
+  <span class="nd">@LocalServerPort</span>
+  <span class="kd">var</span> <span class="py">serverPort</span><span class="p">:</span> <span class="nc">Int</span> <span class="p">=</span> <span class="mi">0</span>
+
+  <span class="nd">@TestConfiguration</span>
+  <span class="k">internal</span> <span class="kd">class</span> <span class="nc">ControllerTestConfig</span> <span class="p">{</span>
+
+    <span class="nd">@Bean</span>
+    <span class="k">fun</span> <span class="nf">foo</span><span class="p">():</span> <span class="nc">Foo</span> <span class="p">=</span> <span class="nf">mockk</span><span class="p">()</span>
+    
+  <span class="p">}</span>
+  
+  <span class="k">private</span> <span class="k">fun</span> <span class="nf">applicationUrl</span><span class="p">()</span> <span class="p">=</span> <span class="s">"http://localhost:$applicationPort"</span>
+<span class="p">}</span>   
+</code></pre></div></div>
+
+<p>You can see other annotations:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">@SpringBootTest</code>: Because it’s a springboot test, you can pass spring properties in <code class="language-plaintext highlighter-rouge">properties</code> and define some variables.</li>
+  <li><code class="language-plaintext highlighter-rouge">@ActiveProfiles(value = ["test"])</code>: To use a different profile when spinning the spring application (you might not want a certain bean to be built for the test, or you have a test profile defined with different values.)</li>
+  <li><code class="language-plaintext highlighter-rouge">@LocalServerPort</code>: In this case will represent the port on which your web springboot app will be hosted.</li>
+  <li><code class="language-plaintext highlighter-rouge">@TestConfiguration</code>: This is to define the test configuration, you can mock or update beans there.</li>
+</ul>
+
+<h3 id="write-your-first-test">Write your first test</h3>
+
+<p>I came across <a href="https://phauer.com/2018/best-practices-unit-testing-kotlin/">Kotlin Unit test best practice</a> 
+that gives a lot of cool tips on how to test your kotlin code.</p>
+
+<p>Here is a simple test to send a GET request to your application using the <code class="language-plaintext highlighter-rouge">testRestTemplate</code>. 
+A springboot test tool to make REST request, so that you can test the behaviour of your application.
+You can check and assert the result to make sure everything is alright.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="k">fun</span> <span class="nf">simpleGetTest</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">val</span> <span class="py">result</span> <span class="p">=</span> <span class="n">testRestTemplate</span><span class="p">.</span><span class="nf">exchange</span><span class="p">(</span>
+      <span class="nc">URI</span><span class="p">(</span><span class="nf">applicationUrl</span><span class="p">()</span> <span class="p">+</span> <span class="s">"/v1/hello/world"</span><span class="p">),</span>
+      <span class="nc">HttpMethod</span><span class="p">.</span><span class="nc">GET</span><span class="p">,</span>
+      <span class="nc">HttpEntity</span><span class="p">(</span><span class="s">""</span><span class="p">),</span>
+      <span class="nc">String</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span><span class="p">)</span>
+
+  <span class="nc">Assertions</span><span class="p">.</span><span class="nf">assertEquals</span><span class="p">(</span><span class="nc">HttpStatus</span><span class="p">.</span><span class="nc">OK</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="n">statusCode</span><span class="p">)</span>
+  <span class="nc">Assertions</span><span class="p">.</span><span class="nf">assertEquals</span><span class="p">(</span><span class="s">"world"</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="n">body</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>You can see the result is in a <code class="language-plaintext highlighter-rouge">String::class.java</code> to get the result body as a String.
+Be careful, if you set the result body type to <code class="language-plaintext highlighter-rouge">Void::class.java</code> you won’t get the body at all (even if there’s one).</p>
+
+<h2 id="mock-your-beans">Mock your beans</h2>
+
+<p>Obviously here you’re testing end to end your application, and in some case it may connect to other part of the system.
+In order to simplify the testing, you can mock external dependencies for your test to run smoothly.</p>
+
+<p>If there are bits of logic of a spring component you want to test, you can still “<em>autowire</em>” them in another test file,
+Thus you can test different niche behaviour or custom error handling.</p>
+
+<h3 id="using-mockk-only">Using mockK only</h3>
+
+<p>Here is how you would do that with our @Bean foo from the previous example.
+You would set a special test profile here and use for the real bean <code class="language-plaintext highlighter-rouge">"!test"</code> to avoid interferences.
+Be sure if you have a missing bean error to add your test configurations class in <em>classes</em> in your <code class="language-plaintext highlighter-rouge">@SpringBootTest</code></p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Bean</span>
+<span class="nd">@Profile</span><span class="p">(</span><span class="n">value</span> <span class="p">=</span> <span class="p">[</span><span class="s">"test"</span><span class="p">])</span>
+<span class="k">fun</span> <span class="nf">foo</span><span class="p">():</span> <span class="nc">Foo</span> <span class="p">{</span>
+  <span class="kd">val</span> <span class="py">fooClient</span><span class="p">:</span> <span class="nc">Foo</span> <span class="p">=</span> <span class="nf">mockk</span><span class="p">(</span><span class="n">relaxed</span> <span class="p">=</span> <span class="k">true</span><span class="p">)</span>
+  <span class="nf">every</span> <span class="p">{</span> <span class="n">fooClient</span><span class="p">.</span><span class="k">do</span><span class="p">(</span><span class="nf">any</span><span class="p">())</span> <span class="p">}</span> <span class="n">just</span> <span class="nc">Runs</span>
+  <span class="nf">every</span> <span class="p">{</span> <span class="n">fooClient</span><span class="p">.</span><span class="nf">isOpen</span><span class="p">()</span> <span class="p">}</span> <span class="n">returns</span> <span class="k">true</span>
+  <span class="nf">every</span> <span class="p">{</span> <span class="n">fooClient</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span> <span class="p">}</span> <span class="n">throws</span> <span class="nc">RuntimeException</span><span class="p">()</span>
+  <span class="k">return</span> <span class="n">fooCLient</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>So here you can see three behaviours that was defined for our Beans.
+We define the behaviour of some method, define a return value or throw an exception.
+This way we can test some custom behaviour.</p>
+
+<h3 id="with-springmockk">With springmockk</h3>
+
+<p>However if you prefer a syntax closer to Mockito, you can use <a href="https://github.com/Ninja-Squad/springmockk">springMockk</a>
+with mockK by adding this dependency from your gradle file:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">testImplementation</span><span class="p">(</span><span class="s">"com.ninja-squad:springmockk:2.0.2"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Then you can just define your mocked bean like:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@MockkBean</span>
+<span class="k">lateinit</span> <span class="kd">var</span> <span class="py">foo</span><span class="p">:</span> <span class="nc">Foo</span>
+</code></pre></div></div>
+
+<p>And then you can use “ <em>every { … }</em> + behaviour” the mockK way to define the behaviour of the mockkBean
+in each test. 
+Make sure you have Mocktio excluded for this one, as it’s strongly recommended.</p>
+:ET

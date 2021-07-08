@@ -1,0 +1,102 @@
+I"<p>Certificates are everywhere …
+Usually you don’t see them, everything works fine until it does not. 
+The most common place with certificate errors will be on website not using them or with errors.</p>
+
+<p><img src="/assets/img/http_warning.png" alt="warning" />
+<em>Like your connection is not secure, you’re going to die and all your data will be hacked</em></p>
+
+<p>I might be exaggerating, it’s not that complicated and you might not always getting hacked, but you surely gonna die.
+Anyway, how does it work?</p>
+
+<h2 id="lets-get-started-">Let’s get started 😎</h2>
+
+<h3 id="from-a-client-side">From a client side</h3>
+
+<p>Here would be a lousy explanation of random typical workflow:</p>
+
+<p>Basically, when somebody (let’s say <em>“Carl’s app”</em>) tries to connect to you:</p>
+<blockquote>
+  <ul>
+    <li>What’s up who are you, what do you offer?</li>
+  </ul>
+</blockquote>
+
+<p>You can test it with this command to get the certificate manually:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>openssl s_client <span class="nt">-connect</span> host:port
+</code></pre></div></div>
+
+<p>Then “Carl’s app” answer, <em>“hey it’s me”</em> giving you its public certificate (like an id to prove he’s legit and all).
+But you go:</p>
+<blockquote>
+  <ul>
+    <li>Don’t know you, but it written that Carl’s knows you, but who the heck is Carl? Like I don’t have all day, already a millisecond!</li>
+  </ul>
+</blockquote>
+
+<p>Yeah because Carl created his app public key with his own key private key. That’s call signing the public key.
+ So here “Carl’s app” public key looks like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-----BEGIN-----
+Hi,
+
+ Server is legit 
+ 
+Carl
+-----END-----
+</code></pre></div></div>
+
+<p>So then Carl gives is public key, saying I’m cool bro, look even Google say so, he signed my key. 
+And then you check and see that his public is checked by Google (which is one of the root certificate provider used to sign other certificates).
+Once you get this certification, you know that server is indeed legit and you can start the encrypted and trusted connection.</p>
+
+<blockquote>
+  <ul>
+    <li>You are “secured”!</li>
+  </ul>
+</blockquote>
+
+<p>All this is called the PKI (Public key infrastructure).</p>
+
+<h3 id="from-a-server-side">From a server side</h3>
+
+<p>The server to create his public key signed by another authority uses a <a href="https://www.sslshopper.com/what-is-a-csr-certificate-signing-request.html">CSR</a> (Certificate Signing Request),
+And you can get your csr from the server key using:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>openssl req <span class="nt">-new</span> <span class="nt">-newkey</span> rsa:2048 <span class="nt">-nodes</span> <span class="nt">-out</span> servername.csr <span class="nt">-keyout</span> servername.key
+
+<span class="nt">-----BEGIN</span> CERTIFICATE REQUEST-----
+MIIByjCCATMCAQAwgYkxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlh
+MRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRMwEQYDVQQKEwpHb29nbGUgSW5jMR8w
+HQYDVQQLExZJbmZvcm1hdGlvbiBUZWNobm9sb2d5MRcwFQYDVQQDEw53d3cuZ29v
+Z2xlLmNvbTCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEApZtYJCHJ4VpVXHfV
+IlstQTlO4qC03hjX+ZkPyvdYd1Q4+qbAeTwXmCUKYHThVRd5aXSqlPzyIBwieMZr
+WFlRQddZ1IzXAlVRDWwAo60KecqeAXnnUK+5fXoTI/UgWshre8tJ+x/TMHaQKR/J
+cIWPhqaQhsJuzZbvAdGA80BLxdMCAwEAAaAAMA0GCSqGSIb3DQEBBQUAA4GBAIhl
+4PvFq+e7ipARgI5ZM+GZx6mpCz44DTo0JkwfRDf+BtrsaC0q68eTf2XhYOsq4fkH
+Q0uA0aVog3f5iJxCa3Hp5gxbJQ6zV6kJ0TEsuaaOhEko9sdpCoPOnRBm2i/XRD2D
+6iNh8f8z0ShGsFqjDgFHyF3o+lUyj+UC6H1QW7bn
+<span class="nt">-----END</span> CERTIFICATE REQUEST-----
+</code></pre></div></div>
+
+<p>This one is given to another authority to create the signed public key. 
+Usually you can use <code class="language-plaintext highlighter-rouge">entrust certificate</code> which are common on the web, you don’t go up to Google or big company own certificate to validate a simple web request.</p>
+
+<p>But that <code class="language-plaintext highlighter-rouge">root</code> certificate at the end of the chain exists and usually it has a public key known by a lot of people, 
+and a private key that is kept secret in a vault that is used to create the chain.</p>
+
+<h3 id="with-a-truststore">With a truststore</h3>
+
+<p>You can in your application add your certificates in a truststore.
+Usually truststore are used for SSL handshakes. you can do that with <code class="language-plaintext highlighter-rouge">keytool</code> using this command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>keytool <span class="nt">-noprompt</span> <span class="nt">-keystore</span> client.truststore.jks <span class="nt">-alias</span> my-custom-cert-alias <span class="nt">-import</span> <span class="nt">-file</span> newcert.crt <span class="nt">-storepass</span> <span class="s2">"changeit"</span> <span class="nt">-keypass</span> <span class="s2">"changeit"</span>
+</code></pre></div></div>
+
+<p>And to check the certificate in the truststore use:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>keytool <span class="nt">-list</span> <span class="nt">-v</span> <span class="nt">-keystore</span> client.truststore.jks <span class="nt">-storepass</span> <span class="s2">"changeit"</span>
+</code></pre></div></div>
+
+<p>You are now all set to explore the wonders of certificates! Good luck, you will need it because they expire all the times.</p>
+:ET

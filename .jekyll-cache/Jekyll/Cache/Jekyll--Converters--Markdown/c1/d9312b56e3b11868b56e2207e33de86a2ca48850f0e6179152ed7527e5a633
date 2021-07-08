@@ -1,0 +1,35 @@
+I"<h2 id="ffmpeg">FFmpeg</h2>
+
+<p><a href="https://github.com/FFmpeg/FFmpeg">FFmpeg</a> is a collection of libraries and tools to process multimedia content such as audio, video, subtitles and related metadata.</p>
+
+<p>It is a cross platform tool that we will use to make the conversion.</p>
+
+<h2 id="convert-mov-to-mp4">Convert .mov to .mp4</h2>
+
+<p>To do it on windows easily, here are the small steps you need to follow:</p>
+
+<ol>
+  <li>Download a ffmpeg windows build from <a href="http://ffmpeg.zeranoe.com/builds/">here</a>.</li>
+  <li>Unzip it and place it in <code class="language-plaintext highlighter-rouge">Program Files</code> for example.</li>
+  <li>Add the ffmpeg to your <code class="language-plaintext highlighter-rouge">PATH</code> environment variable with the <code class="language-plaintext highlighter-rouge">cmd.exe</code> tool (windows CLI).
+    <div class="language-batch highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">setx</span> <span class="na">/M </span><span class="kd">PATH</span> <span class="s2">"D:\Program Files\ffmpeg\bin;</span><span class="nv">%PATH%</span><span class="s2">"</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Check that it is now working (you might need to source the env variables or re open <code class="language-plaintext highlighter-rouge">cmd.exe</code>)
+    <div class="language-batch highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">ffmpeg</span> <span class="na">-version
+</span></code></pre></div>    </div>
+  </li>
+  <li>Go to the directory with all the <code class="language-plaintext highlighter-rouge">.mov</code> files using the <code class="language-plaintext highlighter-rouge">CD</code> command, use <code class="language-plaintext highlighter-rouge">DIR</code> to display what’s in the directory.
+    <ul>
+      <li>You can find the path to your folder in the explorer (click on the top bar).</li>
+      <li>If the folder is situated in another disk like D, type <code class="language-plaintext highlighter-rouge">D:</code> to switch to it then use the <code class="language-plaintext highlighter-rouge">CD</code> command.</li>
+    </ul>
+  </li>
+  <li>Run this loop command to convert all the <code class="language-plaintext highlighter-rouge">.mov</code> files from that directory to <code class="language-plaintext highlighter-rouge">.mp4</code> using ffmpeg.
+    <div class="language-batch highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">FOR</span> <span class="na">/r </span><span class="vm">%i</span> <span class="kd">IN</span> <span class="o">(*</span>.MOV<span class="o">)</span> <span class="kd">DO</span> <span class="kd">ffmpeg</span> <span class="na">-i </span><span class="s2">"</span><span class="vm">%i</span><span class="s2">"</span> <span class="na">-vcodec </span><span class="kd">h264</span> <span class="na">-acodec </span><span class="kd">mp2</span> <span class="s2">"</span><span class="vm">%~ni</span><span class="s2">.mp4"</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>And that’s it you’re done. Now you should have in that folder all of your files <code class="language-plaintext highlighter-rouge">.mov</code> and the <code class="language-plaintext highlighter-rouge">.mp4</code> with the same name.</p>
+:ET

@@ -1,0 +1,113 @@
+I"X<h1 id="linux-foundation">Linux Foundation</h1>
+
+<p>The <a href="http://www.linuxfoundation.org/">Linux Foundation</a> is a large open source non profit organisation that promotes and foster collaborative development.</p>
+
+<h2 id="open-source">Open Source</h2>
+
+<p>Readings from <a href="https://github.com/shiffman/Open-Source-Course-ITP">Daniel Shiffman - Open Source Course</a></p>
+
+<ul>
+  <li><a href="https://medium.com/@kenjagan/what-does-open-source-even-mean-6bd47befe696">What Does “Open Source” Even Mean?</a> by Jen Kagan</li>
+  <li><a href="https://www.harihareswara.net/sumana/2016/05/21/0">Inessential Weirdness’s in Open Source Software </a> by Sumana Harihareswara</li>
+  <li><a href="https://medium.com/processing-foundation/processing-and-floss-d35aa4607f4c">Processing and FLOSS</a> by Casey Reas</li>
+  <li><a href="https://medium.com/mozilla-open-innovation/a-time-for-action-innovating-for-diversity-inclusion-in-open-source-communities-6922fef4675e">A Time for Action — Innovating for Diversity &amp; Inclusion in Open Source Communities</a> by Emma Irwin</li>
+  <li><a href="https://medium.com/mozilla-open-innovation/how-were-making-code-of-conduct-enforcement-real-and-scaling-it-3e382cf94415">How We’re Making Code of Conduct Enforcement Real — and Scaling it</a> by Emma Irwin</li>
+  <li><a href="https://medium.com/@ed_saber/ethicalcs-bring-ethics-identity-and-impact-to-computer-science-education-eae5a9d4682">EthicalCS: bring ethics, identity, and impact to Computer Science education</a> by Saber Khan</li>
+</ul>
+
+<h2 id="onap">ONAP</h2>
+
+<p><a href="https://www.onap.org/">ONAP</a> (Open Network Automation Platform) is an open source software platform that delivers capabilities for the design, creation, orchestration, monitoring, and life cycle management of</p>
+
+<ul>
+  <li>Virtual Network Functions (VNFs)</li>
+  <li>The carrier-scale Software Defined Networks (SDNs) that contain them</li>
+  <li>Higher-level services that combine the above</li>
+</ul>
+
+<h3 id="contributing-to-onap">Contributing to ONAP</h3>
+
+<h4 id="getting-access-to-the-source-code">Getting access to the source code</h4>
+
+<p>ONAP is composed of a big <a href="https://gerrit.onap.org/r/#/admin/projects/">list of projects</a> on which you can contribute to.</p>
+
+<p>To have a preview of the projects you can check the mirrored repositories on <a href="https://github.com/onap">Github/onap</a>. As mirror you can’t really contribute to them that way.</p>
+
+<p>To contribute using you need to:</p>
+
+<ul>
+  <li>Go on the ONAP’s Gerrit: <a href="https://gerrit.onap.org/r/#/admin/projects/">gerrit.onap.org</a></li>
+  <li>Create a linux foundation account (in <code class="language-plaintext highlighter-rouge">Account signup / management</code>)</li>
+  <li>Then you need to sign in (it’s a tiny <code class="language-plaintext highlighter-rouge">sign in</code> link under the <code class="language-plaintext highlighter-rouge">search button</code>).</li>
+  <li>Configure a rsa public key on your side:</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh-keygen <span class="nt">-t</span> rsa
+</code></pre></div></div>
+
+<ul>
+  <li>Add your public key in <code class="language-plaintext highlighter-rouge">settings/SSH Public Keys</code></li>
+  <li>test your ssh tunnel with :</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh <span class="nt">-p</span> 29418 &lt;sshusername&gt;@gerrit.&lt;project&gt;.org
+</code></pre></div></div>
+
+<ul>
+  <li>On your project page, you should be able to clone the project using ssh.</li>
+</ul>
+
+<h4 id="commit-to-the-project">Commit to the project</h4>
+
+<p>Each project has a JIRA project associated to it at <a href="https://jira.onap.org">jira.onap.org</a>. It is a good way to find things to do on a project.</p>
+
+<p>To contribute and actually commit code you would need:</p>
+
+<ul>
+  <li>Acquire the commit hook:</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-Lo</span> ./.git/hooks/commit-msg https://gerrit.onap.org/r/tools/hooks/commit-msg
+<span class="nb">chmod</span> +x ./.git/hooks/commit-msg
+</code></pre></div></div>
+
+<ul>
+  <li>Add the files to your commit message</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git add <span class="nb">.</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Sign off the commit and add the issue ID to the footer (it’s case sensitive)</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fixing stuff
+
+Change-Id: I706ec04d541925be8f04c44254379523f2085eca
+Issue-ID: POLICY-389
+Signed-off-by: Bob &lt;bob@mail.com&gt;
+</code></pre></div></div>
+
+<ul>
+  <li>Push your code to refs for master:</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git push origin HEAD:refs/for/master
+</code></pre></div></div>
+
+<ul>
+  <li>It will go through a process of being reviewed, accepted. To make any change to your commit, use:</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git commit <span class="nt">--amend</span>
+</code></pre></div></div>
+
+<h2 id="sources">Sources</h2>
+
+<ul>
+  <li><a href="http://lf-releng-docs.readthedocs.io/en/latest/gerrit.html">Gerrit’s Guide</a></li>
+  <li><a href="https://wiki.onap.org/display/DW/Configuring+Gerrit">Configuring Gerrit</a></li>
+  <li><a href="https://gerrit.onap.org/r/#/c/31483/1//COMMIT_MSG">Commit message example</a></li>
+</ul>
+:ET

@@ -1,0 +1,161 @@
+I"U.<p>Prometheus is a titan in greek mythology that brought fire (hence the logo).
+<a href="https://prometheus.io/">Prometheus</a> is also a modern monitoring system that has uses time series to display the data.
+It provides a query language for better exploiting your metrics compiled with an alerting service and all of that
+with great compatibility and integration with other system. Making it fairly easy to deploy and use.</p>
+
+<h2 id="implement-prometheus-metrics">Implement Prometheus Metrics</h2>
+
+<p>You can create different types of metrics depending on your needs.
+Here we are going to look at a couple of example in Kotlin.</p>
+
+<h3 id="metrics-types">Metrics types</h3>
+
+<p>There are 4 types of metrics:</p>
+
+<ul>
+  <li>Counter: simple that can only go up (number of transactions, errors)</li>
+  <li>Gauge: can go up and down (request duration, queue size)</li>
+  <li>Histogram: measure the frequency of events in  pre-defined buckets (response duration)</li>
+  <li>Summary: measure with more accuracy on the application side the frequency of events in dynamic buckets.</li>
+</ul>
+
+<h3 id="implement-with-springboot-in-kotlin">Implement with Springboot in Kotlin</h3>
+
+<h4 id="set-up">Set up</h4>
+
+<p>First would be the springboot <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html#production-ready-enabling">Actuator</a> library.
+That will provide all the prod ready feature you may want including the metrics one.
+Then besides all the other common springboot dependency, here is a summary of what you may need to add in your <code class="language-plaintext highlighter-rouge">gradle.build.kts</code>.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">implementation</span><span class="p">(</span><span class="s">"org.springframework.boot:spring-boot-starter-actuator"</span><span class="p">)</span>
+<span class="c1">// To create your own prometheus metrics</span>
+<span class="nf">implementation</span><span class="p">(</span><span class="s">"io.micrometer:micrometer-registry-prometheus:1.3.5"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Those will enable you to create and display the metrics. 
+<a href="https://micrometer.io/">Micrometer</a> is an application metrics that supports multiple monitoring services.
+Then don’t forget to update your <em>application.yml</em> with metrics enabled. 
+This way you’ll have all basic springboot prometheus metrics already created and advertised.</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="na">management</span><span class="pi">:</span>
+  <span class="na">server</span><span class="pi">:</span>
+    <span class="na">port</span><span class="pi">:</span> <span class="m">9100</span>
+  <span class="c1"># Enable prometheus and metrics endpoints</span>
+  <span class="na">endpoint</span><span class="pi">:</span>
+    <span class="na">metrics</span><span class="pi">:</span>
+      <span class="na">enabled</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="na">prometheus</span><span class="pi">:</span>
+      <span class="na">enabled</span><span class="pi">:</span> <span class="no">true</span>
+  <span class="c1"># Expose all metrics endpoints</span>
+  <span class="na">endpoints</span><span class="pi">:</span>
+    <span class="na">web</span><span class="pi">:</span>
+      <span class="na">exposure</span><span class="pi">:</span>
+        <span class="na">include</span><span class="pi">:</span> <span class="s1">'</span><span class="s">*'</span>
+  <span class="c1"># Enable prometheus metrics generation</span>
+  <span class="na">metrics</span><span class="pi">:</span>
+    <span class="na">export</span><span class="pi">:</span>
+      <span class="na">prometheus</span><span class="pi">:</span>
+        <span class="na">enabled</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div></div>
+
+<p>With the above config you should be able to check the metrics at <a href="http://localhost:9000/actuator/prometheus">localhost:9000/actuator/prometheus</a>.
+Also you may need to set jmx to true (which is false by default in spring 2.x) for some metrics (like for kafka)</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">spring</span><span class="pi">:</span>
+  <span class="na">jmx</span><span class="pi">:</span>
+    <span class="na">enabled</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div></div>
+
+<p><a href="https://en.wikipedia.org/wiki/Java_Management_Extensions">JMX</a> is the Java Management Extension library that supply tools 
+for run time managing and monitoring.</p>
+
+<h4 id="counter-with-micrometer-core">Counter with Micrometer Core</h4>
+
+<p>For the counter you can use the <em>MeterRegistry</em> then set a name, you can add some other parameters but we keep it simple.
+The tag <code class="language-plaintext highlighter-rouge">.tag("key", "value")</code> is used when exploiting the metrics in the <em>PromQL</em> so you can differentiate them. 
+You can add as many tags as you want:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">io.micrometer.core.instrument.MeterRegistry</span>
+<span class="k">import</span> <span class="nn">io.micrometer.core.instrument.Counter</span>
+
+<span class="nd">@Component</span>
+<span class="kd">class</span> <span class="nc">MetricLogger</span><span class="p">(</span><span class="n">registry</span><span class="p">:</span> <span class="nc">MeterRegistry</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">private</span> <span class="kd">var</span> <span class="py">requestReceivedCounter</span><span class="p">:</span> <span class="nc">Counter</span> <span class="p">=</span> <span class="nc">Counter</span>
+        <span class="p">.</span><span class="nf">builder</span><span class="p">(</span><span class="s">"request_received"</span><span class="p">)</span>
+        <span class="p">.</span><span class="nf">tag</span><span class="p">(</span><span class="s">"app"</span><span class="p">,</span><span class="s">"my-app"</span><span class="p">)</span>
+        <span class="p">.</span><span class="nf">register</span><span class="p">(</span><span class="n">registry</span><span class="p">)</span>
+
+    <span class="k">fun</span> <span class="nf">requestReceived</span><span class="p">()</span> <span class="p">=</span> <span class="n">requestReceivedCounter</span><span class="p">.</span><span class="nf">increment</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>With that you can call your logger and increment your counter:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="nd">@Autowired</span>
+<span class="k">private</span> <span class="k">lateinit</span> <span class="kd">var</span> <span class="py">metricLogger</span><span class="p">:</span> <span class="nc">MetricLogger</span>
+    
+<span class="k">fun</span> <span class="nf">myMethodThatReceiveRequest</span><span class="p">()</span> <span class="p">{</span>
+   <span class="n">metricLogger</span><span class="p">.</span><span class="nf">requestReceived</span><span class="p">()</span>
+   <span class="c1">// ... and do some more stuff</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>You can use it within your code this way, a bit like you would with log lines.</p>
+
+<h4 id="gauge-with-prometheus-client">Gauge with Prometheus Client</h4>
+
+<p>For the Gauge, you will need the <em>CollectorRegistry</em> a name, some help message and a label.
+As before you can add as many tags as you wish.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">io.prometheus.client.CollectorRegistry</span>
+<span class="k">import</span> <span class="nn">io.prometheus.client.Gauge</span>
+
+<span class="nd">@Component</span>
+<span class="kd">class</span> <span class="nc">MetricLogger</span><span class="p">(</span><span class="n">collectorRegistry</span><span class="p">:</span> <span class="nc">CollectorRegistry</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">private</span> <span class="kd">var</span> <span class="py">queueSizeGauge</span><span class="p">:</span> <span class="nc">Gauge</span> <span class="p">=</span> <span class="nc">Gauge</span>
+        <span class="p">.</span><span class="nf">build</span><span class="p">(</span><span class="s">"queue_size"</span><span class="p">,</span> <span class="s">"Gauge for queue size"</span><span class="p">)</span>
+        <span class="p">.</span><span class="nf">labelNames</span><span class="p">(</span><span class="s">"type"</span><span class="p">)</span>
+        <span class="p">.</span><span class="nf">register</span><span class="p">(</span><span class="n">collectorRegistry</span><span class="p">)</span>
+
+    <span class="k">fun</span> <span class="nf">updateQueuSize</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nc">Long</span><span class="p">)</span> <span class="p">=</span> <span class="n">latencyGauge</span><span class="p">.</span><span class="nf">labels</span><span class="p">(</span><span class="s">"my-app"</span><span class="p">).</span><span class="k">set</span><span class="p">(</span><span class="n">value</span><span class="p">.</span><span class="nf">toDouble</span><span class="p">())</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>I could also use <code class="language-plaintext highlighter-rouge">.inc()</code> and <code class="language-plaintext highlighter-rouge">.dec()</code> to increment the value of my gauge instead of using <code class="language-plaintext highlighter-rouge">.set()</code>.
+As for the usage it’s the same as the Counter one.
+You can also use <a href="https://www.baeldung.com/micrometer">Micrometer</a> for gauge and other metrics.
+Both can work and be used, check the concepts Micrometer <a href="https://micrometer.io/docs/concepts">doc</a> page for more info.</p>
+
+<h2 id="exploit-your-metrics-with-promql">Exploit your metrics with PromQL</h2>
+
+<h3 id="promql">PromQL</h3>
+
+<p>Prometheus Query Language <a href="https://prometheus.io/docs/prometheus/latest/querying/basics/">PromQL</a>
+lets you apply some filters, operators, functions and more to your metrics.
+Particularly useful if you scrape metrics for multiple application on multiple servers.</p>
+
+<h3 id="usage">Usage</h3>
+
+<p>Depending on your metrics you can apply different kind of query.
+Also those query can be used in the default prometheus GUI or 
+if you have it connected with Grafana, you can use them there to create your custom graphs.</p>
+
+<p><a href="https://grafana.com/">Grafana</a> is an “observability platform” that lets you use the data from prometheus to create dashboards.
+You can use the same Prometheus queries and display the data as you wish.</p>
+
+<p>For more information on how to use your metrics, check the other sources, 
+it will pretty much depend on your use case: the data you have or what you want to monitor.</p>
+
+<h3 id="other-sources">Other sources</h3>
+
+<p>Here are some interesting sources you may want to take a look when creating, exploiting your metrics:</p>
+
+<ul>
+  <li><a href="https://tomgregory.com/the-four-types-of-prometheus-metrics/">The four types of Prometheus Metrics</a></li>
+  <li><a href="https://timber.io/blog/promql-for-humans/">PomQL for humans</a></li>
+  <li><a href="https://prometheus.io/docs/prometheus/latest/querying/functions/">Prometheus Query functions</a></li>
+</ul>
+:ET

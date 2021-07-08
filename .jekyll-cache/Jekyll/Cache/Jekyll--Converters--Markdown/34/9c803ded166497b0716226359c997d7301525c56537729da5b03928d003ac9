@@ -1,0 +1,77 @@
+I"<p>Here are some nice tips you can use while on the command line.
+This is not an exhaustive list.</p>
+
+<h3 id="bash-commands">Bash commands</h3>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">sudo !!</code> to redo the command above as sudo. (which is a special case of a wider <a href="https://stackoverflow.com/questions/211378/hidden-features-of-bash/211913#211913">rule</a>)</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">-x</code> while running a script to have debug information.</li>
+</ul>
+
+<h4 id="useful-magic-commands">Useful magic commands</h4>
+
+<p>Search and replace in “.md” files strings. This one has been tested on Mac (the <code class="language-plaintext highlighter-rouge">-i '' -e</code> is necessary for mac)</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find <span class="nb">.</span> <span class="nt">-type</span> f <span class="nt">-name</span> <span class="s2">"*.md"</span> <span class="nt">-exec</span> <span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">''</span> <span class="nt">-e</span> <span class="s1">'s/search/replace/g'</span> <span class="o">{}</span> +
+</code></pre></div></div>
+
+<p>You can also use awk in your grep to select specific things like:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">awk</span> <span class="nt">-F</span><span class="s2">"[:(]"</span> <span class="s1">'{print $2}'</span>
+<span class="c"># this:test(is super cool) -&gt; returns test</span>
+</code></pre></div></div>
+
+<h3 id="bash-shortcuts">Bash shortcuts</h3>
+
+<ul>
+  <li><kbd>ctrl</kbd> + <kbd>R</kbd> (reverse-i-search): allows you to search a command in your historic by typing it</li>
+  <li><kbd>ctrl</kbd> + <kbd>A</kbd>: to go to the beginning of the line</li>
+  <li><kbd>ctrl</kbd> + <kbd>E</kbd>: to go to the end of the line</li>
+  <li><kbd>ctrl</kbd> + <kbd>U</kbd>: to remove from there to the <em>beginning</em> of the line</li>
+  <li><kbd>ctrl</kbd> + <kbd>K</kbd>: to remove from there to the <em>end</em> of the line</li>
+  <li><kbd>ctrl</kbd> + <kbd>W</kbd>: to remove word per word the line</li>
+</ul>
+
+<h3 id="use-bash-files">Use bash files</h3>
+
+<p>Don’t forget to add some of your favourite alias in your <code class="language-plaintext highlighter-rouge">~/.bash_profile</code> or <code class="language-plaintext highlighter-rouge">~/.bashrc</code>.
+Basically they configure the bash for you, the difference is that:</p>
+<ul>
+  <li><em>bash_profile</em> is executed once you log into the system (via ssh or else)</li>
+  <li><em>bashrc</em> is executed at each new interactive terminal window</li>
+</ul>
+
+<p>If you made a change to <em>bash_profile</em> and want to see the result, 
+you can always refresh it using:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">source</span> ~/.bash_profile
+</code></pre></div></div>
+
+<h4 id="alias">Alias</h4>
+
+<p>You can check the one already existing using <code class="language-plaintext highlighter-rouge">alias</code>.
+For example here is how it would look:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">alias </span><span class="nv">ll</span><span class="o">=</span><span class="s1">'ls -la'</span>
+</code></pre></div></div>
+
+<h4 id="proxy">Proxy</h4>
+
+<p>If you use proxy, or need to set/unset some env variable from time to time, 
+you can set a script to do it for you:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">PROXY</span><span class="o">=</span><span class="s2">"http://annoying.proxy:1234"</span>
+
+<span class="k">function </span>setproxy<span class="o">()</span> <span class="o">{</span>
+    <span class="nb">export</span> <span class="o">{</span>http,https<span class="o">}</span><span class="nv">_proxy</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PROXY</span><span class="s2">"</span>
+    <span class="nb">export</span> <span class="o">{</span>HTTP,HTTPS<span class="o">}</span><span class="nv">_PROXY</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PROXY</span><span class="s2">"</span>
+    <span class="nb">env</span> | <span class="nb">grep</span> <span class="nt">-i</span> proxy
+<span class="o">}</span>
+
+<span class="k">function </span>noproxy<span class="o">()</span> <span class="o">{</span>
+    <span class="nb">unset</span> <span class="o">{</span>http,https<span class="o">}</span>_proxy
+    <span class="nb">unset</span> <span class="o">{</span>HTTP,HTTPS<span class="o">}</span>_PROXY
+    <span class="nb">echo </span>no proxy
+<span class="o">}</span>
+</code></pre></div></div>
+:ET

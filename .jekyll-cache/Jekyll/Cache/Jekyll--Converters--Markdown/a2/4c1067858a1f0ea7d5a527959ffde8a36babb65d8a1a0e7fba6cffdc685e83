@@ -1,0 +1,241 @@
+I"#<h1 id="태그">태그</h1>
+
+<p><img src="../../../assets/img/posts/2021-01-04-coding.png" alt="coding" /></p>
+
+<ul>
+  <li>태그(TAG) : HTML을 기술하기 위하여 사용하는 명령어의 집합</li>
+  <li>여는 태그(Opening tag) : 요소의 이름과 열고 닫는 꺽쇠 괄호로 구성된다.</li>
+  <li>닫는 태그(Closing tag) : 꺽쇠 괄호안 요소의 이름 앞에 슬래쉬(<code class="language-plaintext highlighter-rouge">/</code>)가 있다. 닫는 태그가 없는 경우도 있다.(ex. <code class="language-plaintext highlighter-rouge">&lt;br&gt;</code>)</li>
+  <li>내용(Content) : 요소의 내용</li>
+  <li>요소(Element) : 태그와 내용을 같이 이르는 말</li>
+</ul>
+
+<h2 id="1-html-기본-태그">1. HTML 기본 태그</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!doctype html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;body&gt;
+        &lt;/body&gt;
+    &lt;/head&gt;
+&lt;/html&gt;
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">&lt;!doctype html&gt;</code> : 어떤 버전의 HTML 문서로 작성했는지 브라우저에게 알려주는 것으로 웹브라우저가 내용을 올바르게 출력하도록 도와준다.</li>
+  <li><code class="language-plaintext highlighter-rouge">&lt;html&gt;&lt;/html&gt;</code> : 웹페이지의 시작과 끝을 나타낸다.</li>
+  <li><code class="language-plaintext highlighter-rouge">&lt;head&gt;&lt;/head&gt;</code> : 해당 문서에 대한 정보인 메타데이터(metadata)의 집합을 정의할 때 사용한다.</li>
+  <li><code class="language-plaintext highlighter-rouge">&lt;body&gt;&lt;/body&gt;</code> : 브라우저에 실제 표시되는 내용을 나타낸다.</li>
+  <li><code class="language-plaintext highlighter-rouge">&lt;meta&gt;</code> : 문자 인코딩 및 문서 키워드와 요약 정보를 나타낸다.
+예시) <code class="language-plaintext highlighter-rouge">&lt;meta charset="utf-8"&gt;</code> : 웹 페이지의 문자 인코딩 방식을 utf-8로 지정해라.</li>
+</ul>
+
+<h2 id="2-밑줄">2. 밑줄</h2>
+
+<p>밑줄을 치고자 하는 내용을 감싼다.</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;u&gt;밑줄&lt;/u&gt;
+</code></pre></div>  </div>
+  <p><u>밑줄</u></p>
+</blockquote>
+
+<hr />
+
+<h2 id="3-제목">3. 제목</h2>
+<p>내용을 대표하는 제목을 표현하는 태그이다. (HTML headings)</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;h1&gt;제목1&lt;/h1&gt;
+&lt;h2&gt;제목2&lt;/h2&gt;
+&lt;h3&gt;제목3&lt;/h3&gt;
+&lt;h4&gt;제목4&lt;/h4&gt;
+&lt;h5&gt;제목5&lt;/h5&gt;
+&lt;h6&gt;제목6&lt;/h6&gt;
+</code></pre></div>  </div>
+
+  <h1>제목1</h1>
+  <h2>제목2</h2>
+  <h3>제목3</h3>
+  <h4>제목4</h4>
+  <h5>제목5</h5>
+  <h6>제목6</h6>
+</blockquote>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">h1</code>, <code class="language-plaintext highlighter-rouge">h2</code>, …, <code class="language-plaintext highlighter-rouge">h6</code> 숫자가 올라갈수록 글씨의 크기가 작아진다.</li>
+  <li>일반 글씨보다는 글씨가 <strong>두껍게</strong> 써지고, 줄바꿈이 된다.</li>
+</ul>
+
+<hr />
+
+<h2 id="4-줄바꿈">4. 줄바꿈</h2>
+<p>글 사이에 줄을 나누는 태그이다.</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1번 문장&lt;br&gt;2번 문장
+</code></pre></div>  </div>
+
+  <p>1번 문장<br />2번 문장</p>
+</blockquote>
+
+<ul>
+  <li>이 태그는 무언가를 감쌀 필요가 없다.</li>
+</ul>
+
+<hr />
+
+<h2 id="5-단락">5. 단락</h2>
+<p>각각의 단락을 나눈다.</p>
+
+<p>예시)</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;p&gt;첫 번째 단락이 있다.&lt;/p&gt;
+&lt;p&gt;두 번째 단락이 있다.&lt;/p&gt;
+</code></pre></div>  </div>
+
+  <p>첫 번째 단락이 있다.</p>
+  <p>두 번째 단락이 있다.</p>
+</blockquote>
+
+<hr />
+
+<h2 id="6-목록">6. 목록</h2>
+<p>목록을 만들어 정렬해주는 태그이다.</p>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">&lt;li&gt;&lt;/li&gt;</code> : 목차를 표현하는 태그이다.
+이 태그는 단독으로 쓰이지 않고 <code class="language-plaintext highlighter-rouge">&lt;ul&gt;&lt;/ul&gt;</code> 혹은 <code class="language-plaintext highlighter-rouge">&lt;ol&gt;&lt;/ol&gt;</code> 태그 내부에 들어간다.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">&lt;ul&gt;&lt;/ul&gt;</code> : 순서없이 모양으로 (unordered list)목록을 만든다.</p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">&lt;ol&gt;&lt;/ol&gt;</code> : 번호를 매겨 순서가 있는(ordered list)목록을 만든다.
+예시)</p>
+  </li>
+</ul>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;ul&gt;
+    &lt;li&gt;목록1&lt;/li&gt;
+    &lt;li&gt;목록2&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+    &lt;li&gt;목록1&lt;/li&gt;
+    &lt;li&gt;목록2&lt;/li&gt;
+&lt;/ol&gt;
+</code></pre></div>  </div>
+
+  <ul>
+    <li>목록1</li>
+    <li>목록2</li>
+</ul>
+  <ol>
+    <li>목록1</li>
+    <li>목록2</li>
+</ol>
+</blockquote>
+
+<hr />
+
+<h2 id="7-표">7. 표</h2>
+<p>표를 만들어 주는 태그이다.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">&lt;table&gt;&lt;/table&gt;</code> : 각각 셀로 만든다.
+테이블의 속성 이용 : <code class="language-plaintext highlighter-rouge">&lt;table border="1"&gt;</code>에서 border은 테이블의 경계선의 굵기를 지정해준다.</li>
+  <li><code class="language-plaintext highlighter-rouge">&lt;tr&gt;&lt;/tr&gt;</code> : table row의 약자로 가로줄을 만든다. (보통 글씨체, 왼쪽 정렬)</li>
+  <li><code class="language-plaintext highlighter-rouge">&lt;td&gt;&lt;/td&gt;</code> : table data의 약자로 셀을 만든다. (보통 글씨체, 왼쪽 정렬)</li>
+  <li><code class="language-plaintext highlighter-rouge">&lt;th&gt;&lt;/th&gt;</code> : table head 약자로 표의 제목을 쓸 때 사용한다.(굵은 글씨체, 중앙 정렬)</li>
+</ul>
+
+<p>예시)</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;table border = "1"&gt;
+    &lt;tr&gt;
+        &lt;th&gt;학번&lt;/th&gt;
+        &lt;th&gt;이름&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;20&lt;/td&gt;
+        &lt;td&gt;철수&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;21&lt;/td&gt;
+        &lt;td&gt;영희&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre></div>  </div>
+
+  <table border="1">
+    <tr>
+        <th>학번</th>
+        <th>이름</th>
+    </tr>
+    <tr>
+        <td>20</td>
+        <td>철수</td>
+    </tr>
+    <tr>
+        <td>21</td>
+        <td>영희</td>
+    </tr>
+</table>
+</blockquote>
+
+<hr />
+
+<h2 id="8-웹-페이지의-제목">8. 웹 페이지의 제목</h2>
+
+<ul>
+  <li>웹 페이지의 본문에는 보이지 않고 브라우저 탭에서 확인할 수 있다.</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;title&gt;&lt;/title&gt;
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="9-강조">9. 강조</h2>
+
+<ul>
+  <li>강조하고자 하는 내용을 감싼다.</li>
+</ul>
+
+<p>예시)</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;strong&gt;강조&lt;/strong&gt;
+</code></pre></div>  </div>
+
+  <p><strong>강조</strong></p>
+</blockquote>
+
+<hr />
+
+<h2 id="10-이미지">10. 이미지</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;img src="이미지 이름 or 이미지의 경로" width=" "&gt;
+</code></pre></div></div>
+
+<ul>
+  <li>width : 이미지 픽셀 기준 고유 너비이다. 단위 없는 정수 또는 100%를 주로 사용한다.</li>
+</ul>
+
+<hr />
+
+<h2 id="11-링크로-연결하는-태그">11. 링크로 연결하는 태그</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;a href="링크(link)" target="_blank"title="미리보기"&gt;&lt;/a&gt;
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">href="링크"</code> : 클릭했을 때 연결하고자 하는 웹페이지의 주소이다.</li>
+  <li><code class="language-plaintext highlighter-rouge">target="\_blank"</code> : 링크를 연결할 때 새로운 탭을 열게 한다.</li>
+  <li><code class="language-plaintext highlighter-rouge">title="..."</code> : 미리보기를 지원해준다.</li>
+</ul>
+:ET

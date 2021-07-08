@@ -1,0 +1,157 @@
+I"�B<h2 id="other-example-with-d3js">Other example with D3.js</h2>
+
+<p>Because there was a lot of other example that I wanted to bring.
+Let’s say some more advanced ones.
+See <a href="/2020/05/21/Node-network-graph-d3.html">part 1</a> 
+for all the explanation and the inspiration for all of these examples.</p>
+
+<script>
+ color = "rgb(239, 192, 80)"
+</script>
+
+<h3 id="tooltip">Tooltip</h3>
+
+<p>A tooltip is like a little legend that you want to appear floating around 
+when your mouse goes over the element.</p>
+
+<p>In this example inspired by <a href="https://www.d3-graph-gallery.com/graph/interactivity_tooltip.html">interactivity_tooltip</a>
+you can see that “<em>I’m a circle!</em>” is displayed when <strong>hovering</strong> on the circle:</p>
+
+<div id="d3tooltip" class="center"></div>
+
+<p>To add a tooltip, you need to append another <code class="language-plaintext highlighter-rouge">&lt;div&gt;</code> to the one using to display the graph
+with D3.js:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">tooltip</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="dl">"</span><span class="s2">#d3tooltip</span><span class="dl">"</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="dl">"</span><span class="s2">div</span><span class="dl">"</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="dl">"</span><span class="s2">class</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">tooltip</span><span class="dl">"</span><span class="p">)</span> <span class="c1">// define a nice css for it in class .tooltip</span>
+  <span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="dl">"</span><span class="s2">Text here can be overwritten</span><span class="dl">"</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Then on the node that will trigger the tooltip behaviour,
+i.e. making the tooltip visible and at the coordinates of your mouse when you hover on it:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="dl">"</span><span class="s2">#circleBasicTooltip</span><span class="dl">"</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">"</span><span class="s2">mouseover</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="nx">tooltip</span><span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="dl">"</span><span class="s2">visibility</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">visible</span><span class="dl">"</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="dl">"</span><span class="s2">I'm a circle!</span><span class="dl">"</span><span class="p">)))</span>
+  <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">"</span><span class="s2">mousemove</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="nx">tooltip</span><span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="dl">"</span><span class="s2">top</span><span class="dl">"</span><span class="p">,</span> <span class="p">(</span><span class="nx">d3</span><span class="p">.</span><span class="nx">event</span><span class="p">.</span><span class="nx">pageY</span> <span class="o">-</span> <span class="mi">10</span><span class="p">)</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">px</span><span class="dl">"</span><span class="p">).</span><span class="nx">style</span><span class="p">(</span><span class="dl">"</span><span class="s2">left</span><span class="dl">"</span><span class="p">,</span> <span class="p">(</span><span class="nx">d3</span><span class="p">.</span><span class="nx">event</span><span class="p">.</span><span class="nx">pageX</span> <span class="o">+</span> <span class="mi">10</span><span class="p">)</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">px</span><span class="dl">"</span><span class="p">)))</span>
+  <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">"</span><span class="s2">mouseout</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="nx">tooltip</span><span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="dl">"</span><span class="s2">visibility</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">hidden</span><span class="dl">"</span><span class="p">)));</span>
+</code></pre></div></div>
+
+<h3 id="forces">Forces</h3>
+
+<p>You can find the same example <a href="https://www.d3-graph-gallery.com/graph/circularpacking_basic.html">here</a> and play with it</p>
+
+<div id="d3gravity" class="center"></div>
+
+<p>To make the nodes moves, you need to add some forces (check <a href="https://github.com/d3/d3-force">d3-force</a> for the full info on the API).
+Basically your canvas and nodes will behave like a tiny physic simulation which will be constrained by forces:</p>
+
+<ul>
+  <li><strong>center</strong>: define the “<a href="https://github.com/d3/d3-force#centering">center of mass</a>”, like a sun where the nodes will be attracted. (keep them centered in the canvas)</li>
+  <li><strong>charge</strong>: define the force that <a href="https://github.com/d3/d3-force#many-body">interacts</a> with the nodes
+    <ul>
+      <li>referenced as gravity when positive -&gt; attraction</li>
+      <li>referenced as electrostatic charge when negative -&gt; repulsion</li>
+    </ul>
+  </li>
+  <li><strong>collide</strong>: define a force that will stop nodes from <a href="https://github.com/d3/d3-force#collision">overlapping</a> (based on the radius of the node)</li>
+</ul>
+
+<p>You can create the simulation with the forces:</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">simulation</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">forceSimulation</span><span class="p">()</span>
+  <span class="p">.</span><span class="nx">force</span><span class="p">(</span><span class="dl">"</span><span class="s2">center</span><span class="dl">"</span><span class="p">,</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">forceCenter</span><span class="p">().</span><span class="nx">x</span><span class="p">(</span><span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">).</span><span class="nx">y</span><span class="p">(</span><span class="nx">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+  <span class="p">.</span><span class="nx">force</span><span class="p">(</span><span class="dl">"</span><span class="s2">charge</span><span class="dl">"</span><span class="p">,</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">forceManyBody</span><span class="p">().</span><span class="nx">strength</span><span class="p">(</span><span class="mf">0.5</span><span class="p">))</span>
+  <span class="p">.</span><span class="nx">force</span><span class="p">(</span><span class="dl">"</span><span class="s2">collide</span><span class="dl">"</span><span class="p">,</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">forceCollide</span><span class="p">().</span><span class="nx">strength</span><span class="p">(.</span><span class="mi">01</span><span class="p">).</span><span class="nx">radius</span><span class="p">(</span><span class="mi">50</span><span class="p">).</span><span class="nx">iterations</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>Then you apply these forces to the nodes (based on the data) and update their positions.
+The simulation stops once the force algorithm is done. Meaning it has found an equilibrium based on a ‘alpha’ value that is low enough.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">simulation</span>
+  <span class="p">.</span><span class="nx">nodes</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">"</span><span class="s2">tick</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">ticked</span><span class="p">(</span><span class="nx">node_pack</span><span class="p">));</span>
+</code></pre></div></div>
+
+<h3 id="node-update">Node Update</h3>
+
+<p>We can also update nodes within a graph. Let’s recreate one like the first example.
+And we’re going to update the nodes every two seconds:</p>
+
+<div id="d3NodeUpdate" class="center"></div>
+
+<p>To do that we are just going to select the nodes we want from the canvas and 
+update their attributes:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">updateNodes</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="dl">"</span><span class="s2">#d3NodeUpdate</span><span class="dl">"</span><span class="p">).</span><span class="nx">selectAll</span><span class="p">(</span><span class="dl">"</span><span class="s2">circle</span><span class="dl">"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="dl">"</span><span class="s2">fill</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="k">return</span> <span class="nx">d3Color</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">())})</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="dl">"</span><span class="s2">cx</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="nx">width</span><span class="p">})</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="dl">"</span><span class="s2">r</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span><span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We have a div with id <em>d3NodeUpdate</em> and inside we select all of the circle,
+then we apply the change. We call <em>updateNodes()</em> every 2sec to update them.</p>
+
+<h3 id="force-update">Force update</h3>
+
+<p>To update dynamically the forces within the solution, I got inspired by <a href="https://bl.ocks.org/mbostock/aba1a8d1a484f5c5f294eebd353842da">adjustable link strength</a> 
+which gives the idea to use the <em>restart()</em> of the simulation.
+And finally used as a base the <a href="https://observablehq.com/@bryangingechen/force-update-pattern-in-observable">force update pattern</a> that also use
+the <a href="https://bl.ocks.org/HarryStevens/bc938c8d45008d99faed47039fbe5d49">restart</a> to update the simulation.</p>
+
+<div id="d3SimulationUpdate" class="center"></div>
+
+<p>Basically you create your simulation with the base information, and your nodes:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">simulation</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">forceSimulation</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">force</span><span class="p">(</span><span class="dl">"</span><span class="s2">center</span><span class="dl">"</span><span class="p">,</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">forceCenter</span><span class="p">().</span><span class="nx">x</span><span class="p">(</span><span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">).</span><span class="nx">y</span><span class="p">(</span><span class="nx">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="p">.</span><span class="nx">alphaTarget</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">"</span><span class="s2">tick</span><span class="dl">"</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">ticked</span><span class="p">(</span><span class="nx">node</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>Then you build a function <em>restart</em> that will start back your simulation with new data.
+The data could be a list of nodes that can be removed / added.</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">restart</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">node</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+    <span class="nx">node</span><span class="p">.</span><span class="nx">exit</span><span class="p">().</span><span class="nx">remove</span><span class="p">();</span>   <span class="c1">// Remove the nodes that ceased to exist</span>
+    <span class="nx">node</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">enter</span><span class="p">()</span>     <span class="c1">// Create the new nodes and merge</span>
+    <span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="dl">"</span><span class="s2">circle</span><span class="dl">"</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="dl">"</span><span class="s2">fill</span><span class="dl">"</span><span class="p">,</span> <span class="nx">color</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">merge</span><span class="p">(</span><span class="nx">node</span><span class="p">);</span>
+    
+    <span class="nx">simultation</span>             <span class="c1">// Update and restart the simulation.</span>
+    <span class="p">.</span><span class="nx">nodes</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">force</span><span class="p">(</span><span class="dl">"</span><span class="s2">collide</span><span class="dl">"</span><span class="p">,</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">forceCollide</span><span class="p">().</span><span class="nx">strength</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">iterations</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This is a simplified example, you can now call <em>restart()</em> with your data to start and restart the simulation.</p>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+
+<script src="/assets/js/d3.common.js"></script>
+
+<script src="/assets/js/d3.advance.js"></script>
+
+<!-- CSS of the tooltip -->
+<style>
+ .tooltip {
+   background-color: white;
+   padding: 5px;
+   border-radius: 5px;
+   position: absolute;
+   visibility: hidden;
+ }
+ 
+ .center {
+   display: flex;
+   justify-content: center;
+ }
+ 
+ #inner {
+   display: inline-block;
+ }
+</style>
+
+:ET

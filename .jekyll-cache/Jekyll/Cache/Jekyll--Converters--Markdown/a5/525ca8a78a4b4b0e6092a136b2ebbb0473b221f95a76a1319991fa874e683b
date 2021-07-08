@@ -1,0 +1,69 @@
+I"�<h2 id="whats-git-log">What’s git log</h2>
+
+<p>Git log is a powerful tool in git that allows you to browse through the repository history.
+It saves a bunch of information (tag, commit author, message, date, …)</p>
+
+<p>First you may want to pull origin from every repository using:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find <span class="nb">.</span> <span class="nt">-type</span> d <span class="nt">-depth</span> 1 <span class="nt">-exec</span> git <span class="nt">--git-dir</span><span class="o">={}</span>/.git <span class="nt">--work-tree</span><span class="o">=</span><span class="nv">$PWD</span>/<span class="o">{}</span> pull origin master <span class="se">\;</span>
+</code></pre></div></div>
+
+<h2 id="some-nice-alias">Some nice alias</h2>
+
+<p>List of contributes per commits, 
+You can have just the log for the first one <code class="language-plaintext highlighter-rouge">gitlog</code>, or you want a more detail view with the second one <code class="language-plaintext highlighter-rouge">gitauthor</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># gitlog</span>
+git shortlog <span class="nt">--all</span> <span class="nt">-s</span> <span class="nt">-n</span>
+
+<span class="c"># gitauthor Get the number of line per contributors</span>
+git ls-files | <span class="k">while </span><span class="nb">read </span>f<span class="p">;</span> <span class="k">do </span>git blame <span class="nt">-w</span> <span class="nt">-M</span> <span class="nt">-C</span> <span class="nt">-C</span> <span class="nt">--line-porcelain</span> <span class="s2">"</span><span class="nv">$f</span><span class="s2">"</span> | <span class="nb">grep</span> <span class="nt">-I</span> <span class="s1">'^author '</span><span class="p">;</span> <span class="k">done</span> | <span class="nb">sort</span> <span class="nt">-f</span> | <span class="nb">uniq</span> <span class="nt">-ic</span> | <span class="nb">sort</span> <span class="nt">-n</span>
+</code></pre></div></div>
+
+<p>List of commits between two commits:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Get commits at a certain day</span>
+git log <span class="nt">--pretty</span><span class="o">=</span><span class="s1">'format:%H %an %ae %ai'</span> | <span class="nb">grep </span>2019-07-13  
+
+<span class="c"># Print the commits between the two commit SHA</span>
+git log 2fe56fa...efc173d <span class="nt">--oneline</span>
+</code></pre></div></div>
+
+<p>List of commit message with <code class="language-plaintext highlighter-rouge">#&lt;number&gt;</code> between two releases:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Higher Number in the tag</span>
+<span class="nb">export </span><span class="nv">LAST_RELEASE</span><span class="o">=</span><span class="sb">`</span>git tag <span class="nt">--sort</span><span class="o">=</span><span class="nt">-version</span>:refname | <span class="nb">sed</span> <span class="nt">-n</span> 1p<span class="sb">`</span> 
+<span class="c"># Second higher number in the tag</span>
+<span class="nb">export </span><span class="nv">BEFORE_LAST</span><span class="o">=</span><span class="sb">`</span>git tag <span class="nt">--sort</span><span class="o">=</span><span class="nt">-version</span>:refname | <span class="nb">sed</span> <span class="nt">-n</span> 2p<span class="sb">`</span>  
+
+<span class="c"># Get the logs and use some bash magic to it to get only the unique #&lt;number&gt; worked on. </span>
+git log <span class="k">${</span><span class="nv">LAST_RELEASE</span><span class="k">}</span>...<span class="k">${</span><span class="nv">BEFORE_LAST</span><span class="k">}</span> <span class="nt">--oneline</span> | egrep <span class="nt">-o</span> <span class="s2">"#[0-9]{1,}"</span> | <span class="nb">sort</span> | <span class="nb">uniq</span> <span class="nt">-c</span> | <span class="nb">awk</span> <span class="s1">'{$1="";print}'</span> | <span class="nb">sed</span> <span class="s1">'s/^.//'</span>
+</code></pre></div></div>
+
+<p>Get list of comment from somebody during a certain time:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git shortlog <span class="nt">-s</span> <span class="nt">--author</span><span class="o">=</span>John <span class="nt">--format</span><span class="o">=</span><span class="s2">"%cd: %s"</span> <span class="nt">--after</span><span class="o">=</span><span class="s2">"2019-02-12"</span> <span class="nt">--before</span><span class="o">=</span><span class="s2">"2019-04-14"</span>
+</code></pre></div></div>
+
+<p>Show the last commits made on the project:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git log <span class="nt">--graph</span> <span class="nt">--oneline</span> <span class="nt">--abbrev-commit</span> <span class="nt">--decorate</span> <span class="nt">--all</span>
+</code></pre></div></div>
+
+<p>Get the commit time of a commit sha:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git show <span class="nt">-s</span> <span class="nt">--format</span><span class="o">=</span>%ct <span class="nv">$COMMIT_SHA</span>
+</code></pre></div></div>
+
+<h2 id="third-party-tools">Third party tools</h2>
+
+<p>Because some people have already thought of everything.
+Here are a couple of nice third party script you can use to get some data out of your code base:</p>
+
+<ul>
+  <li><a href="https://pypi.org/project/git-fame/">gitfame</a>: Pretty-print git repository collaborators sorted by contributions.</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>git-fame
+git config <span class="nt">--global</span> alias.fame <span class="s2">"!python -m gitfame"</span>
+git fame <span class="nb">.</span>
+</code></pre></div></div>
+:ET

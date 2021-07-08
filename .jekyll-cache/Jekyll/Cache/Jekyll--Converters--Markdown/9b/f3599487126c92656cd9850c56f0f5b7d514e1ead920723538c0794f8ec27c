@@ -1,0 +1,123 @@
+I" <h1 id="creating-python-packages">Creating Python packages</h1>
+
+<p>A Python package is simply an organized collection of python modules. A python module is simply a single python file.</p>
+
+<p>To create a python package, create a directory and then add a <code class="language-plaintext highlighter-rouge">__init__.py</code> file. 
+Creating a package with <code class="language-plaintext highlighter-rouge">__init__.py</code> is all about making it easier to develop large Python projects. It provides an easy way for you to group large folders of many separate python scripts into a single importable module.</p>
+
+<h2 id="use-pypi-to-distribute-your-package">Use PyPI to distribute your package</h2>
+
+<p><a href="https://pypi.org/">PyPI</a> is the Python Package Index a repository of software for the Python programming language. 
+To upload your project you will need:</p>
+
+<ul>
+  <li>Create an account on Pypi</li>
+  <li>Structure your code:</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Repository            <span class="c"># Root repository folder</span>
+├── package
+|   ├── __init__.py	     <span class="c"># To make a python directory, for imports                           </span>
+|   └── module.py	     <span class="c"># Module of the package	  </span>
+├── tests
+|   ├── __init__.py	     
+|   └── test_module.py          <span class="c"># Tests of the module</span>
+├── Readme.rst
+└── setup.py
+</code></pre></div></div>
+
+<h2 id="create-setuppy">Create <code class="language-plaintext highlighter-rouge">setup.py</code></h2>
+
+<p>This is the key file that describe your python package.
+You can create the <code class="language-plaintext highlighter-rouge">setup.py</code> following the <a href="https://packaging.python.org/tutorials/distributing-packages/">guidelines on how to package and distribute your project</a>.</p>
+
+<h3 id="basic-example">Basic example</h3>
+
+<p>Here is a basic example of what you need to create your package. The minimum.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span>
+
+<span class="n">setup</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'package-name'</span><span class="p">,</span>
+      <span class="n">version</span><span class="o">=</span><span class="s">'0.1'</span><span class="p">,</span>
+      <span class="n">description</span><span class="o">=</span><span class="s">'Package description'</span><span class="p">,</span>
+      <span class="n">url</span><span class="o">=</span><span class="s">'http://link.to.the.source.code'</span><span class="p">,</span>
+      <span class="n">author</span><span class="o">=</span><span class="s">'name'</span><span class="p">,</span>
+      <span class="n">author_email</span><span class="o">=</span><span class="s">'name@example.com'</span><span class="p">,</span>
+      <span class="n">license</span><span class="o">=</span><span class="s">'MIT'</span><span class="p">,</span>
+      <span class="n">packages</span><span class="o">=</span><span class="p">[</span><span class="s">'package-name'</span><span class="p">],</span>
+      <span class="n">zip_safe</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="add-more-information">Add more information</h3>
+
+<h4 id="other-attributes">Other Attributes</h4>
+<p>You can add some nice other things to your package:</p>
+
+<ul>
+  <li>The <code class="language-plaintext highlighter-rouge">long_description</code>: Usually you put your readme there in <code class="language-plaintext highlighter-rouge">.rst</code> format</li>
+  <li>The <code class="language-plaintext highlighter-rouge">classifiers</code>: You need to know which classifier to put, copy them from <a href="https://pypi.org/classifiers/">pypi/classifier</a> to avoid typos.</li>
+  <li>The <code class="language-plaintext highlighter-rouge">install_requires</code> to specify dependencies to run the project</li>
+  <li>The <code class="language-plaintext highlighter-rouge">tests_require</code> to specify dependencies to test the project</li>
+</ul>
+
+<h4 id="script-entry-point">Script entry point</h4>
+
+<p>The <code class="language-plaintext highlighter-rouge">entry_points</code> is another special attribute which is what the program will do when called a certain way depending on the context.
+Here is an example from the command line:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">entry_points</span><span class="o">=</span><span class="p">{</span><span class="s">'console_scripts'</span><span class="p">:</span> <span class="p">[</span><span class="s">'package_hello = package.module:hello_world'</span><span class="p">]}</span>
+</code></pre></div></div>
+
+<p>What it does is once you’ve installed the <code class="language-plaintext highlighter-rouge">package_name</code>, then when you call it in bash using the command <code class="language-plaintext highlighter-rouge">package_hello</code>:
+It will execute the <code class="language-plaintext highlighter-rouge">hello_world</code> function of the module <code class="language-plaintext highlighter-rouge">module</code> that is inside the package <code class="language-plaintext highlighter-rouge">package</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>package_hello
+<span class="o">&gt;</span> hello world!
+</code></pre></div></div>
+
+<h4 id="example">Example</h4>
+<p>As for an example from my <strong>gitlab_stats</strong> package:</p>
+
+<ul>
+  <li>The <a href="https://github.com/sylhare/gitlab_stats/blob/master/setup.py"><code class="language-plaintext highlighter-rouge">setup.py</code></a></li>
+  <li>How it looks online <a href="https://pypi.org/project/gitlab-stats/">gitlab-stats</a> on pypi</li>
+</ul>
+
+<h2 id="create-the--readmerst">Create the ` Readme.rst`</h2>
+
+<p>In PyPI, you need to use the <code class="language-plaintext highlighter-rouge">.rst</code> format for your readme which is basically the front page of your package.
+So if you are more familiar with <code class="language-plaintext highlighter-rouge">.md</code>, you can always use pandoc to convert your file from <code class="language-plaintext highlighter-rouge">.md</code> to <code class="language-plaintext highlighter-rouge">.rst</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pandoc <span class="nt">--from</span><span class="o">=</span>markdown <span class="nt">--to</span><span class="o">=</span>rst <span class="nt">--output</span><span class="o">=</span>README.rst docs/README.md
+</code></pre></div></div>
+
+<h2 id="package-and-upload">Package and upload</h2>
+
+<ul>
+  <li>Package your project into a <code class="language-plaintext highlighter-rouge">.tar</code>:</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python setup.py sdist
+</code></pre></div></div>
+
+<ul>
+  <li>Download and install <code class="language-plaintext highlighter-rouge">twine</code> which will allow you to safely upload your project.</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>twine
+</code></pre></div></div>
+
+<ul>
+  <li>Upload your project</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python <span class="nt">-m</span> twine upload dist/<span class="k">*</span>
+</code></pre></div></div>
+
+<p>When you upload your project, it might be refused due to naming problem. If that’s the case you will have to rename your project.</p>
+
+<blockquote>
+  <p>More python example at <a href="https://github.com/sylhare/Python">sylhare/Python</a> or 
+get started with a <a href="https://github.com/sylhare/pyhon-seed">python seed template</a></p>
+</blockquote>
+:ET

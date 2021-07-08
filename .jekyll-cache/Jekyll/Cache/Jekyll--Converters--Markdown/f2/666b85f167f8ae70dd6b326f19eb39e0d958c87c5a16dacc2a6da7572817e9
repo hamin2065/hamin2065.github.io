@@ -1,0 +1,67 @@
+I"�<h1 id="kubernetes">Kubernetes</h1>
+
+<p><a href="https://kubernetes.io/">Kubernetes</a> is an opensource orchestrator allowing to automate the deployment, scaling and management of containerized applications.
+Also named k8s the 8 for the eight letters in “ubernete” plus “s”.</p>
+
+<p>It was originally developed by Google in Go.
+Kubernetes means “Helmsman” the guy who holds “Governor” in greek. Let’s get sailing!</p>
+
+<h2 id="helm">Helm</h2>
+
+<p>With Kubernetes, you have <a href="https://helm.sh/">Helm</a> which act as the packet manager for kubernetes.</p>
+
+<p>Helm comes with <code class="language-plaintext highlighter-rouge">charts</code> that allow oneself to deploy a certain cluster with a single command line.</p>
+
+<p>Most of the charts are community maintained, they help define, install and define the application.
+They work using template with values that can then be changed easily in one place the <code class="language-plaintext highlighter-rouge">values.yml</code> file.</p>
+
+<h2 id="components-high-level">Components High-level</h2>
+
+<p><img src="/assets/img/kubernetes_architecture.jpg" alt="Kubernetes" /></p>
+
+<h3 id="application-from-container-to-pods">Application from Container to Pods</h3>
+
+<p>The <strong>containerized</strong> application is available on multiple replica containers. 
+These containers are regrouped by <strong>Pods</strong>.</p>
+
+<p>On a worker there are multiple pods. 
+A <strong>worker</strong> is a high level application block in Kubernetes.</p>
+
+<p>The worker can have interaction with the outisde of thanks to an <strong>ingress node</strong> which act as a proxy for everything coming in.
+The worker can also interact with the outside, by sending information and else using an <strong>egress node</strong> which act as a reverse proxy for external outgoing communication.</p>
+
+<h3 id="node-overview">Node Overview</h3>
+
+<p>A minion or a <strong>node</strong> is where the worker machine is situated.
+It includes the services for <strong>Docker</strong> (container), <strong>Kubelet</strong> (management) and <strong>Kubeproxy</strong> (network).</p>
+
+<p>The kubelet is the primary “node agent” that runs on each node. The kubelet works in terms of a <strong>PodSpec</strong>. 
+A PodSpec is a YAML or JSON object that describes a pod.
+It then make sure that the pods described by the PodSpec are healthy.</p>
+
+<p>The Kubernetes network proxy or <strong>kubeproxy</strong> runs on each node, it is defined in the Cluster and tells how and through which ports the docker can in the pods can communicate.</p>
+
+<h3 id="kubernetes-cluster">Kubernetes Cluster</h3>
+
+<p>A <strong>cluster</strong> is a group of worker nodes controlled by a master node which controls the replication and the management of the worker nodes.</p>
+
+<p>All the nodes of the cluster uses <strong>etcd</strong>, the backend for service discovery which stores cluster state and configuration.</p>
+
+<p>The <strong>kubernetes API server</strong> is a front head and a REST API for the etcd backend.</p>
+
+<p>The cluster as a cli name <strong>kubectl</strong> which allow to control and get information on the Cluster.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Show Merged kubeconfig settings.</span>
+kubectl config view
+</code></pre></div></div>
+
+<h2 id="sources">Sources</h2>
+
+<p>Mostly the kubernetes website.</p>
+
+<ul>
+  <li><a href="https://kubernetes.io/docs/reference/kubectl/cheatsheet/">Kubectl cheat sheet</a></li>
+  <li><a href="https://kubernetes.io/docs/reference/glossary/?fundamental=true">Kubernetes Glossary</a></li>
+  <li><a href="https://www.cloudops.com/">CloudOps</a></li>
+</ul>
+:ET

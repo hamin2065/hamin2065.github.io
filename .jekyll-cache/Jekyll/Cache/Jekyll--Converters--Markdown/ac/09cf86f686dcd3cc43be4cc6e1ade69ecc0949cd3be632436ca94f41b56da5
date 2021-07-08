@@ -1,0 +1,49 @@
+I"'<h2 id="creating-the-docker">Creating the docker</h2>
+
+<p>I will first create a simple dockerfile with python <code class="language-plaintext highlighter-rouge">3.6</code> and <code class="language-plaintext highlighter-rouge">pytest</code> in order to have a ready docker to run some tests.</p>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> python:3.6.6</span>
+
+<span class="k">RUN </span>pip <span class="nb">install </span>pytest pytest-cov
+</code></pre></div></div>
+
+<p>Building my docker using:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nb">.</span> <span class="nt">-t</span> python3-pytest
+</code></pre></div></div>
+
+<p>I can make sure it works as intended using:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-t</span> python3-pytest python <span class="nt">-m</span> pytest
+</code></pre></div></div>
+
+<h2 id="uploading-to-the-registry">Uploading to the registry</h2>
+
+<p>First let’s prepare the docker image using this command from <a href="https://stackoverflow.com/questions/28349392/how-to-push-a-docker-image-to-a-private-repository">how to push docker image to private repository</a>.
+I want to upload it in my private artifactory registry at <a href="artifactory.private.registry.ca:5000">artifactory.private.registry.ca:5000</a></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># docker tag [OPTIONS] IMAGE[:TAG] [REGISTRYHOST/][USERNAME/]NAME[:TAG]</span>
+docker tag python3-pytest artifactory.private.registry.ca:5000/python/python3-pytest:1
+</code></pre></div></div>
+
+<p>Before the upload I need to login using:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker login artifactory.private.registry.ca:5000
+</code></pre></div></div>
+<p>Then I just need to push it and it’s done:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker push artifactory.private.registry.ca:5000/python/python3-pytest:1
+</code></pre></div></div>
+
+<h2 id="using-a-docker-from-that-registry">Using a docker from that registry</h2>
+
+<p>Now that you have upload your image, let’s pull it to use it:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull artifactory.private.registry.ca:5000/python/python3-pytest:1
+
+<span class="c"># Run the docker with the -t to allocate a pseudo-TTY</span>
+docker run <span class="nt">-t</span> artifactory.private.registry.ca:5000/python/python3-pytest:1
+</code></pre></div></div>
+
+<p>And that’s it!</p>
+:ET

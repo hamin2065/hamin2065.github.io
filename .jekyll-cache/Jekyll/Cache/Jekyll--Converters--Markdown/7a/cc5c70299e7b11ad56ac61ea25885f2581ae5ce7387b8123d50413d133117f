@@ -1,0 +1,196 @@
+I"/<p>There are some information, that I feel are pertinent while messing around with a docker 🐳.
+May it be alone or to be deploy in a cluster. Here is my list of tips.</p>
+
+<h2 id="make-that-docker-run">Make that Docker run</h2>
+
+<p>Let’s say you have an image named <code class="language-plaintext highlighter-rouge">image</code> to ease the annotation. 
+And let’s assume <code class="language-plaintext highlighter-rouge">mycontainer</code> is a terrific name for a container.</p>
+
+<h3 id="difference-between-entrypoint-and-cmd">Difference between ENTRYPOINT and CMD</h3>
+
+<p>Let’s say you have you have a dockerfile like that:</p>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> ubuntu:16.04</span>
+
+<span class="k">ENTRYPOINT</span><span class="s"> ["echo", "Hello"]</span>
+<span class="k">CMD</span><span class="s"> ["World"]</span>
+</code></pre></div></div>
+
+<p>If you run the docker you should get:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker <span class="nt">--rm</span> run <span class="nt">--name</span> mycontainer image
+Hello world
+docker <span class="nt">--rm</span> run github <span class="nt">--name</span> mycontainer image 
+Hello github
+</code></pre></div></div>
+
+<p>Basically, you can use both or just one of them. When you run the docker they will behave like:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">ENTRYPOINT</code> can’t be overridden, but can take argument (or not) and will be executed.</li>
+  <li><code class="language-plaintext highlighter-rouge">CMD</code> is a command that will be run by default, that can be overridden with <code class="language-plaintext highlighter-rouge">exec</code>.</li>
+</ul>
+
+<h3 id="some-override-examples">Some override examples</h3>
+
+<p>Here are some tips, I found useful in different occasion to make your docker run.</p>
+
+<ul>
+  <li>Running detached using <code class="language-plaintext highlighter-rouge">-d</code>:</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-d</span> <span class="nt">--name</span> mycontainer image
+</code></pre></div></div>
+<ul>
+  <li>Delete the container after running <code class="language-plaintext highlighter-rouge">--rm</code> to avoid the <code class="language-plaintext highlighter-rouge">docker rm --force mycontainer</code></li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker run <span class="nt">--rm</span> <span class="nt">--name</span> mycontainer image
+</code></pre></div></div>
+<ul>
+  <li>Execute yolo within the container using <code class="language-plaintext highlighter-rouge">exec</code> which run a process in your docker:</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker run <span class="nt">--name</span> mycontainer image
+ docker <span class="nb">exec</span> <span class="nt">-it</span> mycontainer /bin/bash
+ docker <span class="nb">exec </span>mycontainer /bin/sh <span class="nt">-c</span> <span class="s2">"echo 'hello';echo 'world';echo '!'"</span>
+</code></pre></div></div>
+
+<h2 id="using-variables">Using variables</h2>
+
+<h3 id="internal-env-variables">Internal env variables</h3>
+
+<p>The basic to have environment variables in your docker would be to use <code class="language-plaintext highlighter-rouge">ENV</code> like:</p>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> ubuntu:16.04</span>
+
+<span class="k">ENV</span><span class="s"> FIRST=hello</span>
+<span class="k">ENV</span><span class="s"> SECOND=world!</span>
+
+<span class="k">CMD</span><span class="s"> ['echo $FIRST $SECOND']</span>
+</code></pre></div></div>
+
+<p>But sometime you want those variables to be secret and not saved in your dockerfile.
+To do so, you may have multiple options</p>
+
+<h3 id="external-env-variables">External env variables</h3>
+
+<p>You can also define environment variables from the command line using <code class="language-plaintext highlighter-rouge">-e</code> for each variables, 
+or use <code class="language-plaintext highlighter-rouge">-env-file</code> if you have a file with all of your variables.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> example <span class="nb">.</span>
+docker run <span class="nt">-e</span> <span class="nv">FIRST</span><span class="o">=</span><span class="s1">'hello'</span> <span class="nt">-e</span> <span class="nv">SECOND</span><span class="o">=</span><span class="s1">'world!'</span> example
+docker run <span class="nt">--env-file</span> ./env_file.txt example
+</code></pre></div></div>
+
+<p>You dockerfile will be like, notice the absence of <code class="language-plaintext highlighter-rouge">ENV</code>.</p>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> ubuntu:16.04</span>
+
+<span class="k">CMD</span><span class="s"> ['echo $FIRST $SECOND']</span>
+</code></pre></div></div>
+
+<h3 id="using-arguments">Using arguments</h3>
+
+<p>You can use arguments, which are defines already in your dockerfile and can be set to have default 
+values. Like all commands above, it can be used both in <code class="language-plaintext highlighter-rouge">docker build</code> or <code class="language-plaintext highlighter-rouge">docker run</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> example <span class="nb">.</span>
+docker run <span class="nt">--build-arg</span> <span class="nv">FIRST</span><span class="o">=</span><span class="s1">'hello'</span> <span class="nt">--build-arg</span> <span class="nv">SECOND</span><span class="o">=</span><span class="s1">'world!'</span> example
+</code></pre></div></div>
+
+<p>You dockerfile will be like, notice the usage of <code class="language-plaintext highlighter-rouge">ARG</code>.</p>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> ubuntu:16.04</span>
+
+<span class="k">ARG</span><span class="s"> FIRST</span>
+<span class="k">ARG</span><span class="s"> SECOND</span>
+
+<span class="k">CMD</span><span class="s"> ['echo $FIRST $SECOND']</span>
+</code></pre></div></div>
+
+<h2 id="exchange-files-and-folder-with-your-container">Exchange files and folder with your container</h2>
+<h3 id="directly-in-your-dockerfile">Directly in your dockerfile</h3>
+
+<p>Sometime your docker file is in your project and all the files you need are already there.
+So you can just create a work directory with <code class="language-plaintext highlighter-rouge">WORKDIR</code> so you don’t mess your docker internals by placing your stuff directly 
+at the root <code class="language-plaintext highlighter-rouge">/</code>. And then just copy your project in that working directory.</p>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> ubuntu:16.04</span>
+
+<span class="k">WORKDIR</span><span class="s"> /app</span>
+<span class="k">COPY</span><span class="s"> . /app</span>
+
+<span class="k">ENTRYPOINT</span><span class="s"> ["/bin/bash"]</span>
+</code></pre></div></div>
+
+<p>But some other time, you want to add some files while running your docker, 
+That’s when you need to inject files in your container.</p>
+
+<h3 id="mount-files-in-your-container">Mount files in your container</h3>
+
+<p>You can directly mount in your docker files using <code class="language-plaintext highlighter-rouge">-v</code>. 
+Note that you need to give the absolute path on the host for it work, you can use <code class="language-plaintext highlighter-rouge">$PWD</code> which give your current location.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--net</span><span class="o">=</span>host <span class="nt">-v</span> <span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/src"</span>:/target <span class="nt">--name</span> mycontainer image
+</code></pre></div></div>
+
+<p>This way you inject your <code class="language-plaintext highlighter-rouge">/src</code> directory as <code class="language-plaintext highlighter-rouge">/target</code> at root level in your docker container. 
+You can also use <code class="language-plaintext highlighter-rouge">--network="host"</code> to map localhost of the machine with localhost of the docker.</p>
+
+<h3 id="copy-from-and-to-the-container">Copy from and to the container</h3>
+<h4 id="get-your-container-id">Get your container ID</h4>
+
+<p>Before copying you need to know which container you want to operate.
+Let say you are running a docker, knowing its name, you want to get its id:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--name</span> mycontainer image 
+<span class="nb">id</span><span class="o">=</span><span class="si">$(</span>docker ps <span class="nt">-aqf</span> <span class="s2">"name=mycontainer"</span><span class="si">)</span>
+<span class="nb">echo</span> <span class="nv">$id</span>
+</code></pre></div></div>
+
+<h4 id="manage-files-in-your-container">Manage files in your container</h4>
+
+<p>Then you can use that id to manage files with the container:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># From your container to the host</span>
+docker <span class="nb">cp</span> <span class="nv">$id</span>:/src/. target
+<span class="c"># From the host to your container</span>
+docker <span class="nb">cp </span>src/. <span class="nv">$id</span>:/target
+</code></pre></div></div>
+
+<h2 id="docker-images">Docker images</h2>
+
+<p>There are multiple base images that can be used to create a docker file.
+And based on those the subsequent commands might differ.</p>
+
+<h3 id="centos">Centos</h3>
+
+<p>This is a centos one, you can use <code class="language-plaintext highlighter-rouge">yum</code> or <code class="language-plaintext highlighter-rouge">dnf</code>:</p>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> centos:centos8</span>
+
+<span class="k">RUN </span>dnf update <span class="nt">-y</span> <span class="o">&amp;&amp;</span> dnf <span class="nb">install</span> <span class="nt">-y</span> python3-pip
+<span class="k">RUN </span>yum <span class="nb">install </span>python3-pip
+</code></pre></div></div>
+
+<h3 id="ubuntu">Ubuntu</h3>
+
+<p>This one is a classic ubuntu, behaves like it.</p>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> python:3.6</span>
+
+<span class="k">RUN </span>apt-get <span class="nb">install</span> &lt;package&gt;
+</code></pre></div></div>
+
+<h3 id="alpine">Alpine</h3>
+
+<p>Those ones are like the <code class="language-plaintext highlighter-rouge">-alpine</code> on them. They are light distribution of Unix.
+You use <code class="language-plaintext highlighter-rouge">apk</code> to add package like:</p>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> python:3.6-alpine</span>
+
+<span class="k">RUN </span>apk update <span class="o">&amp;&amp;</span> apk <span class="nt">--no-cache</span> add bash
+</code></pre></div></div>
+
+<p>They don’t have bash installed, they use <code class="language-plaintext highlighter-rouge">/bin/sh</code> by default.</p>
+:ET

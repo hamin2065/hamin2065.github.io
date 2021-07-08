@@ -1,0 +1,145 @@
+I")<h2 id="introduction">Introduction</h2>
+
+<p>We are going to host a kotlin based project as a maven package using all the dev tools that Github provides.</p>
+
+<h3 id="github-actions">Github Actions</h3>
+
+<p>Github actions, is an integrated solution that allows you to create automated workflow.
+Mainly CI / CD for continuous development and integration.
+But it can also operate on issues, on the code and repository thanks to the Github API.
+The yaml interface is still a bit clunky but once you get the hang of it, it’s clearly a plus when you don’t know the syntax.</p>
+
+<p>And the main thing of all, it works as intended! Either I got better with time, or it’s well made, but I had no major issues with it. 
+And most of my interrogations were already answered on <a href="https://github.community/t5/GitHub-Actions/bd-p/actions">Github Community</a>.</p>
+
+<h3 id="github-package-registry">Github package registry</h3>
+
+<p><a href="https://github.com/features/package-registry">Github package registry</a> is still in Beta, 
+it aims to replace basically everything else that currently store packages.
+With the Github Actions as CI / CD. You would have the whole development ecosystem with one platform.</p>
+
+<p>Where we are going to put our maven package <a href="https://github.com/sylhare/codokar">sylhare/codokar</a> in there and test the whole thing.</p>
+
+<h2 id="uploading-the-maven-package">Uploading the Maven package</h2>
+
+<h3 id="set-up-your-gradle">Set up your gradle</h3>
+
+<p>Because who would use maven for a maven package?
+Add the plugin in the gradle file as <a href="https://help.github.com/en/articles/configuring-gradle-for-use-with-github-package-registry#authenticating-to-github-package-registry">explained here</a>, 
+I used the Kotlin DSL:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">plugins</span> <span class="p">{</span>
+    <span class="n">`maven-publish`</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>I had to say that intelliJ took a bit of time to recognize the <code class="language-plaintext highlighter-rouge">publishing</code>.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">publishing</span> <span class="p">{</span>
+    <span class="nf">repositories</span> <span class="p">{</span>
+        <span class="nf">maven</span> <span class="p">{</span>
+            <span class="n">name</span> <span class="p">=</span> <span class="s">"GitHubPackages"</span>
+            <span class="n">url</span> <span class="p">=</span> <span class="nf">uri</span><span class="p">(</span><span class="s">"https://maven.pkg.github.com/OWNER/REPOSITORY"</span><span class="p">)</span>
+            <span class="nf">credentials</span> <span class="p">{</span>
+                <span class="n">username</span> <span class="p">=</span> <span class="n">project</span><span class="p">.</span><span class="nf">findProperty</span><span class="p">(</span><span class="s">"gpr.user"</span><span class="p">)</span> <span class="k">as</span> <span class="nc">String</span><span class="p">?</span> <span class="o">?:</span> <span class="nc">System</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="s">"GPR_USER"</span><span class="p">)</span>
+                <span class="n">password</span> <span class="p">=</span> <span class="n">project</span><span class="p">.</span><span class="nf">findProperty</span><span class="p">(</span><span class="s">"gpr.key"</span><span class="p">)</span> <span class="k">as</span> <span class="nc">String</span><span class="p">?</span> <span class="o">?:</span> <span class="nc">System</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="s">"GPR_API_KEY"</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="nf">publications</span> <span class="p">{</span>
+        <span class="n">create</span><span class="p">&lt;</span><span class="nc">MavenPublication</span><span class="p">&gt;(</span><span class="s">"REPOSITORY"</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nf">from</span><span class="p">(</span><span class="n">components</span><span class="p">[</span><span class="s">"java"</span><span class="p">])</span>
+            <span class="nf">artifact</span><span class="p">(</span><span class="n">tasks</span><span class="p">[</span><span class="s">"fatJar"</span><span class="p">])</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="publish-your-package">Publish your package</h3>
+
+<p>Everything is well documented on Github Help:</p>
+
+<ul>
+  <li>Create a <a href="https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line">token</a>:</li>
+  <li>Settings &gt; Developer Settings &gt; Personal Access Token</li>
+  <li>Add the package rights:
+    <ul>
+      <li>write:packages</li>
+      <li>read:packages</li>
+    </ul>
+  </li>
+  <li>Locally you can set up your token as <code class="language-plaintext highlighter-rouge">GPR_API_KEY</code>, and your username as <code class="language-plaintext highlighter-rouge">GPR_USER</code></li>
+  <li>Then you can publish it by running</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./gradlew publish
+</code></pre></div></div>
+
+<h2 id="set-up-the-automated-workflow">Set up the Automated workflow</h2>
+
+<p>Now that you have published it once to github registry, you don’t want to do it again.
+This is the time to use the automated workflow provided by Github Actions.</p>
+
+<h2 id="use-your-secrets">Use your secrets</h2>
+
+<p>Remember that token? Well now you need a little bit of work to use it within your workflow.</p>
+
+<h2 id="build-test-publish">Build, Test, Publish</h2>
+
+<p>Add in .github &gt; workflows a new file like <code class="language-plaintext highlighter-rouge">cicd.yml</code> with:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">CICD</span>
+
+<span class="na">on</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">push</span><span class="pi">]</span>
+
+<span class="na">jobs</span><span class="pi">:</span> 
+  <span class="na">test_build</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v1</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Set up JDK </span><span class="m">1.8</span>
+      <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/setup-java@v1</span>
+      <span class="na">with</span><span class="pi">:</span>
+        <span class="na">java-version</span><span class="pi">:</span> <span class="m">1.8</span>
+        
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Unit Test</span>
+      <span class="na">run</span><span class="pi">:</span> <span class="s">./gradlew test</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Build with Gradle</span>
+      <span class="na">run</span><span class="pi">:</span> <span class="s">./gradlew build</span>   
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Deploy to Github Registry</span>
+      <span class="na">run</span><span class="pi">:</span> <span class="s">./gradlew publish</span>
+</code></pre></div></div>
+
+<p>With that you can build and test your project at each push.
+When you want to deploy, let’s say anytime you create a new tag with the version, you can add another workflow <code class="language-plaintext highlighter-rouge">publish.yml</code>:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">Publish to Github Registry on Tag</span>
+
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">push</span><span class="pi">:</span>
+    <span class="na">tags</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s1">'</span><span class="s">*'</span>
+    
+<span class="na">jobs</span><span class="pi">:</span> 
+  <span class="na">publish</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v1</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Set up JDK </span><span class="m">1.8</span>
+      <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/setup-java@v1</span>
+      <span class="na">with</span><span class="pi">:</span>
+        <span class="na">java-version</span><span class="pi">:</span> <span class="m">1.8</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Publish to Github registry</span>
+      <span class="na">env</span><span class="pi">:</span> 
+        <span class="na">GPR_USER</span><span class="pi">:</span> <span class="s">${{ secrets.GPR_USER }}</span>
+        <span class="na">GPR_API_KEY</span><span class="pi">:</span> <span class="s">${{ secrets.GPR_API_KEY }}</span>
+      <span class="na">run</span><span class="pi">:</span> <span class="s">./gradlew publish</span>
+</code></pre></div></div>
+
+<p>Also Github generates automatically a token <code class="language-plaintext highlighter-rouge">GITHUB_TOKEN</code> that can be use in the workflow, 
+which means you could have done that to use the defined one instead of creating a secret:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">GPR_API_KEY</span><span class="pi">:</span> <span class="s">${{ secrets.GITHUB_TOKEN }}</span> 
+</code></pre></div></div>
+
+:ET

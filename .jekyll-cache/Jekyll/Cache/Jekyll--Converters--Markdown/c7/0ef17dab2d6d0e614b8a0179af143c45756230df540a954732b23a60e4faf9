@@ -1,0 +1,76 @@
+I"�<h1 id="get-started-with-github">Get started with Github</h1>
+
+<p>The github site is really nice for easy commits, there are multiple tools provided to manage that on multiple platform. (<a href="https://desktop.github.com/">Github Desktop</a>, <a href="https://support.gitkraken.com/how-to-install">Kraken</a>).
+However I wanted to document and explore the command line way of committing.</p>
+
+<h2 id="source">Source</h2>
+
+<p>My main source will be from gitlab plus some precision over certain steps that I’ve encountered while doing them at a beginner level. But there’s also a very good documentation made by github.</p>
+
+<ul>
+  <li><a href="https://help.github.com/">github help</a></li>
+  <li><a href="https://docs.gitlab.com/ce/README.html">Full documentation links</a></li>
+  <li><a href="https://docs.gitlab.com/ce/gitlab-basics/README.html">Start with basics</a></li>
+  <li><a href="https://docs.gitlab.com/ce/university/training/user_training.html#committing">Workshop step by step</a> (my favourite)</li>
+  <li><a href="https://github.com/settings/keys">Online tutorial</a></li>
+</ul>
+
+<h2 id="configure-your-environment">Configure your environment</h2>
+
+<p>Windows Os: Install <a href="https://git-for-windows.github.io">Git for Windows</a> which is an emulated terminal with git.</p>
+
+<p>MacOs: Type <code class="language-plaintext highlighter-rouge">git</code> in the Terminal application. If it’s not installed, it will prompt you to install it.</p>
+
+<p>Linux:</p>
+<ul>
+  <li>Debian: <code class="language-plaintext highlighter-rouge">sudo apt-get install git-all</code></li>
+  <li>Red Hat: <code class="language-plaintext highlighter-rouge">sudo yum install git-all</code></li>
+</ul>
+
+<h2 id="configure-git">Configure Git</h2>
+
+<p>One-time configuration of the Git client. Replace what’s in <code class="language-plaintext highlighter-rouge">" "</code> by your information.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	git config <span class="nt">--global</span> user.name <span class="s2">"Your Name"</span>
+	git config <span class="nt">--global</span> user.email you@example.com
+</code></pre></div></div>
+
+<p>All these information will be store in the git config file:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> ~/.gitconfig
+
+<span class="c"># This is Git's per-user configuration file.</span>
+<span class="o">[</span>user]
+	name <span class="o">=</span> <span class="s2">"Your Name"</span>
+	email <span class="o">=</span> you@example.com
+
+</code></pre></div></div>
+<h2 id="configure-ssh-key">Configure SSH Key</h2>
+
+<p>Type on the command prompt <code class="language-plaintext highlighter-rouge">cmd.exe</code> (on Windows, not in the git one).</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	ssh-keygen <span class="nt">-t</span> rsa <span class="nt">-b</span> 4096 <span class="nt">-C</span> <span class="s2">"you@computer-name"</span>
+</code></pre></div></div>
+
+<p>You will be prompted for the following information. Press enter to accept the defaults. Defaults appear in parentheses.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Generating public/private rsa key pair.
+    Enter file <span class="k">in </span>which to save the key <span class="o">(</span>/Users/you/.ssh/id_rsa<span class="o">)</span>:
+    Enter passphrase <span class="o">(</span>empty <span class="k">for </span>no passphrase<span class="o">)</span>:
+    Enter same passphrase again:
+    Your identification has been saved <span class="k">in</span> /Users/you/.ssh/id_rsa.
+    Your public key has been saved <span class="k">in</span> /Users/you/.ssh/id_rsa.pub.
+    The key fingerprint is:
+    39:fc:ce:94:f4:09:13:95:64:9a:65:c1:de:05:4d:01 you@computer-name
+</code></pre></div></div>
+
+<p>Then find your rsa key in the repository (by default, from the command prompt on windows):</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nb">cat</span> ~/.ssh/id_rsa.pub
+</code></pre></div></div>
+
+<p>Copy it in the right place on <a href="(https://github.com/settings/keys)">Github</a> or <a href="(https://gitlab.com/profile/keys)">Gitlab</a> or via command line (for windows, on the git one, to copy something into the git bash on Windows use <code class="language-plaintext highlighter-rouge">insert</code>):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh-rsa AAAAB3NzaC1yc2EAAAADAQEL17Ufacg8cDhlQMS5NhV8z3GHZdhCrZbl4gz you@example.com
+</code></pre></div></div>
+:ET

@@ -1,0 +1,169 @@
+I"<h2 id="user-story">User story</h2>
+
+<p>A bit more information about user stories.</p>
+
+<h3 id="definition">Definition</h3>
+
+<p>User story should be about a customer, what feature they want for the product. It’s business oriented. 
+The user stories are gathered through multiple workshops:</p>
+
+<ul>
+  <li>Story-writing workshop</li>
+  <li>Tres amigos</li>
+  <li>User Interviews</li>
+  <li>Observation</li>
+  <li>Questionnaires</li>
+</ul>
+
+<p>User stories can be built such as:</p>
+
+<blockquote>
+  <p><strong>As</strong> ..who..<strong>, I want</strong> ..what.. <strong>so that</strong> ..why..</p>
+</blockquote>
+
+<p>User story are validated with acceptance test, test cases (+ non functional requirements)</p>
+
+<blockquote>
+  <p><strong>Given</strong> ..condition.. <strong>When</strong> ..action.. <strong>Then</strong>..expected reaction</p>
+</blockquote>
+
+<h3 id="creating-the-story">Creating the story</h3>
+
+<h4 id="the-3c-rule">The 3C rule</h4>
+<p>The 3C rule to create User stories.</p>
+
+<ul>
+  <li>Components 3C:
+    <ul>
+      <li><strong>C</strong>ard</li>
+      <li><strong>C</strong>onversation</li>
+      <li><strong>C</strong>onfirmation</li>
+    </ul>
+  </li>
+  <li>Lifecycles +2C:
+    <ul>
+      <li><strong>C</strong>onstruction</li>
+      <li><strong>C</strong>onsequences</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="invest-model">INVEST model</h4>
+<p>The Invest model signification to create user stories.</p>
+
+<ul>
+  <li><strong>I</strong>ndependant</li>
+  <li><strong>N</strong>egotiable</li>
+  <li><strong>V</strong>aluable</li>
+  <li><strong>E</strong>stimable</li>
+  <li><strong>S</strong>mall</li>
+  <li><strong>T</strong>estable</li>
+</ul>
+
+<h3 id="grooming-the-story">Grooming the story</h3>
+
+<h4 id="dor---definition-of-ready">DoR - Definition of Ready</h4>
+
+<p>The Definition of Ready is an artifact that the team creates 
+which contains the set of <em>minimum</em> conditions a user story must meet before it will be considered ‘Ready to be worked on’ by the development team.</p>
+
+<p>It is set to avoid surprises during a sprint, example:</p>
+
+<ul>
+  <li>User story described</li>
+  <li>Acceptance criteria defined</li>
+  <li>The story have been estimated</li>
+</ul>
+
+<p>After a grooming, the story that is decided ready could be added to the next sprint during the sprint planning.
+If a story is not ready then it should not go inside the sprint planning.</p>
+
+<h4 id="tres-amigos">Tres amigos</h4>
+
+<p>The tres amigos (Three amigos) comes from the BDD (Behaviour driven development) where 
+a PO, and two other people from the team will gather.</p>
+
+<h5 id="explanation">Explanation</h5>
+
+<ul>
+  <li>The PO represents the customer’s view</li>
+  <li>One team member, usually a more senior one represents the development point of view, the technical aspect</li>
+  <li>Another team member represents the quality insurance and look at who we can test it.</li>
+</ul>
+
+<p>Out of that meeting 3 things should come out:</p>
+
+<ul>
+  <li>The questions on what we don’t know.</li>
+  <li>The rules or assumptions made on the feature.</li>
+  <li>The acceptance criteria of the story: <code class="language-plaintext highlighter-rouge">Given ... When ... Then ...</code></li>
+</ul>
+
+<h5 id="example">Example</h5>
+
+<p>Here is a short example so you get the idea.</p>
+
+<p>Story name: <code class="language-plaintext highlighter-rouge">As a customer I want to be able to buy a cookie with the app</code></p>
+
+<ul>
+  <li>Rules: The customer can’t buy something with a higher price than what’s in his account</li>
+  <li>Question: How can we check the customer’s account?</li>
+  <li>Acceptance Criteria: Given the customer click on pay on the app the money goes he can buy the cookie</li>
+  <li>Question: How can we assert that the cookie is bought?
+    <ul>
+      <li>Doesn’t have to be just a <code class="language-plaintext highlighter-rouge">cookie</code> that is irrelevant and untestable. We can change the name of the story</li>
+      <li>We need to assert the money is out of the account transfer with seller account’s number</li>
+    </ul>
+  </li>
+  <li>Revised Acceptance Criteria: Given the customer click on pay on the app, his money gets transferred to the seller account’s number</li>
+</ul>
+
+<h4 id="story-points">Story points</h4>
+
+<p>Story Points is the abstract way to consider the size of a task. 
+It is not based on time because some resource can finish the same task at different speed.</p>
+
+<p>So we speak of size of work for a task using the a fibonacci distribution to assess the number of points:</p>
+<blockquote>
+  <p>0.5, 1, 3, 5, 8, 12, 20+, ?</p>
+</blockquote>
+
+<p>These numbers can change depending on the team. 
+Basically a task that take more than 12 points is too big and need to be breakdown. 
+A task at 20+ points need to be send back to the PO for refinement.
+A task that is not estimable because there’s too many unknown can be used as a spike (timed experimentation during a sprint)</p>
+
+<h4 id="moscow">MoSCoW</h4>
+
+<p>The MoSCoW model is to set priorities on User stories</p>
+
+<ul>
+  <li><strong>M</strong>ust priority 1</li>
+  <li><strong>S</strong>hould priority 2</li>
+  <li><strong>C</strong>ould nice to have</li>
+  <li><strong>W</strong>on’t do low priority will not be implemented</li>
+</ul>
+
+<p>Prioritization is done with other tasks so you have a reference.</p>
+
+<h3 id="working-on-the-story">Working on the story</h3>
+
+<p>The story can be decompose at any time in task if the need be.
+Depending on your workflow, you might want to review or pair program.</p>
+
+<p>But in any case, the story can only be done if it meets the DOD.</p>
+
+<h4 id="dod---definition-of-done">DoD - Definition of Done</h4>
+
+<p>The definition of done is an artifact that the team derives that contains the <em>minimum</em> conditions a story must meet before a piece of work (or user story) can be declared done.</p>
+
+<p>Gives everyone the same definition of a done story, it may include:</p>
+
+<ul>
+  <li>User story is coded and reviewed</li>
+  <li>Unit tests were passed successfully</li>
+  <li>QA tests were passed</li>
+  <li>Meets the acceptance criteria</li>
+  <li>Sufficiently documented</li>
+</ul>
+:ET

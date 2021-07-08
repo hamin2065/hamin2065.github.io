@@ -1,0 +1,252 @@
+I"^I<h2 id="logging">Logging</h2>
+
+<p>In your software, you want to log information for troubleshooting and make sure that everything behaves as 
+it should. And in case an error occurred, to be able to find the root cause looking at the logs.</p>
+
+<p>There a multiple logging levels, here some you would encounter with logging frameworks:</p>
+<ul>
+  <li>TRACE: the most detailed informational events.</li>
+  <li>DEBUG: fine-grained informational events that are most useful to debug an application.</li>
+  <li>INFO: informational messages that highlight the progress of the application.</li>
+  <li>WARN: potentially harmful situations.</li>
+  <li>ERROR: error events.</li>
+</ul>
+
+<h2 id="slf4j-for-logging-facade">SLF4J for logging facade</h2>
+
+<p>SLF4J is the Simple Logging Facade for Java (<a href="http://www.slf4j.org/manual.html">SLF4J</a>) serves as a simple facade or abstraction for various logging frameworks (e.g. java.util.logging, logback, log4j) allowing the end user to plug in the desired logging framework.
+As name suggest it is a <a href="https://medium.com/@krishankantsinghal/logback-slf4j-log4j2-understanding-them-and-learn-how-to-use-d33deedd0c46">facade library</a> which provide abstraction for logging libraries like 
+<code class="language-plaintext highlighter-rouge">log4j</code>, <code class="language-plaintext highlighter-rouge">logback</code> , <code class="language-plaintext highlighter-rouge">java.util.logger</code> and don’t do actual logging.
+It acts as an interface so you switch easily for any logging library.</p>
+
+<h3 id="bridge-handler">Bridge Handler</h3>
+
+<p>Logger from <code class="language-plaintext highlighter-rouge">java.util.logging.Logger</code> (j.u.l.) needs to be bridged to with the slf4j handler.
+You need in your <em>build.gradle.kts</em>:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">implementation</span><span class="p">(</span><span class="s">"org.slf4j:jul-to-slf4j:1.7.28"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Then you can use it like:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.slf4j.bridge.SLF4JBridgeHandler</span>
+
+<span class="nc">SLF4JBridgeHandler</span><span class="p">.</span><span class="nf">removeHandlersForRootLogger</span><span class="p">()</span>
+<span class="nc">SLF4JBridgeHandler</span><span class="p">.</span><span class="nf">install</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>If used with logback, to be able to propagate its configuration, 
+you need to add this in your <em>logabck.xml</em> to reset J.U.L (Java Util Logger):</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;contextListener</span> <span class="na">class=</span><span class="s">"ch.qos.logback.classic.jul.LevelChangePropagator"</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- reset all previous level configurations of all j.u.l. loggers --&gt;</span>
+    <span class="nt">&lt;resetJUL&gt;</span>true<span class="nt">&lt;/resetJUL&gt;</span>
+<span class="nt">&lt;/contextListener&gt;</span>
+</code></pre></div></div>
+
+<h2 id="logback">Logback</h2>
+
+<p><a href="http://logback.qos.ch/">Logback</a> is a logging framework for Java applications. 
+The Logback project is <a href="https://stackify.com/logging-logback/">organized</a> in main 3 modules:</p>
+
+<ul>
+  <li>logback-core: contains the basic logging functionality</li>
+  <li>logback-classic: contains additional logging improvements, such as slf4j support</li>
+  <li>logback-access: provides integration with servlet containers, such as Tomcat and Jetty</li>
+</ul>
+
+<p>You may want to add those dependencies inside your <em>build.gradle.kts</em> depending on your needs.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nf">implementation</span><span class="p">(</span><span class="s">"ch.qos.logback:logback-classic:1.2.3"</span><span class="p">)</span>
+    <span class="nf">implementation</span><span class="p">(</span><span class="s">"ch.qos.logback:logback-core:1.2.3"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="logbackxml">Logback.xml</h3>
+
+<p>You use a <code class="language-plaintext highlighter-rouge">logback.xml</code> to specify the logback configuration, here is a basic <a href="https://www.javacodegeeks.com/2012/04/using-slf4j-with-logback-tutorial.html">example</a>.
+The file should be located in your resources folder.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="nt">&lt;configuration&gt;</span>
+
+    <span class="nt">&lt;appender</span> <span class="na">name=</span><span class="s">"CONSOLE"</span> <span class="na">class=</span><span class="s">"ch.qos.logback.core.ConsoleAppender"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;layout</span> <span class="na">class=</span><span class="s">"ch.qos.logback.classic.PatternLayout"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;Pattern&gt;</span>
+                %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n
+            <span class="nt">&lt;/Pattern&gt;</span>
+        <span class="nt">&lt;/layout&gt;</span>
+    <span class="nt">&lt;/appender&gt;</span>
+
+    <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">"com.example"</span> <span class="na">level=</span><span class="s">"debug"</span> <span class="na">additivity=</span><span class="s">"false"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;appender-ref</span> <span class="na">ref=</span><span class="s">"CONSOLE"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/logger&gt;</span>
+
+    <span class="nt">&lt;root</span> <span class="na">level=</span><span class="s">"error"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;appender-ref</span> <span class="na">ref=</span><span class="s">"CONSOLE"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/root&gt;</span>
+
+<span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div></div>
+
+<p>You can also do all that configuration in java/kotlin code.
+To debug your configuration and show logback logs, you can add in the <code class="language-plaintext highlighter-rouge">&lt;configuration&gt;</code> tag a <code class="language-plaintext highlighter-rouge">debug="true"</code>.
+You usually add a <code class="language-plaintext highlighter-rouge">logback-test.xml</code> for your tests.</p>
+
+<p>All loggers are descendants of the predefined <a href="https://www.baeldung.com/logback#create_context">root logger</a>.</p>
+
+<h3 id="start-logging">Start logging</h3>
+
+<p>Logback <a href="http://logback.qos.ch/manual/introduction.html">documentation</a> to get started.
+Here how it would look in your kotlin code:</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">org.slf4j.LoggerFactory</span>
+
+<span class="kd">val</span> <span class="py">logger</span> <span class="p">=</span> <span class="nc">LoggerFactory</span><span class="p">.</span><span class="nf">getLogger</span><span class="p">(</span><span class="k">this</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span><span class="p">.</span><span class="n">canonicalName</span><span class="p">)</span>
+<span class="n">logger</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s">"Hello world."</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>And the output in the console:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> 12:49:22.203 <span class="o">[</span>main] INFO io.github.sylhare.hello - Hello world.
+</code></pre></div></div>
+
+<h3 id="appender">Appender</h3>
+
+<p>The loggers forward LoggingEvents to Appender. Logback-core provides several useful <a href="https://mkyong.com/logging/slf4j-logback-tutorial/">appender</a>.
+Appender do the actual work of logging. 
+We usually think of logging as something that goes to a file or the console, but Logback is capable of much more.</p>
+
+<h4 id="consoleappender">ConsoleAppender</h4>
+
+<p>Despite its name, ConsoleAppender appends messages to System.out or System.err.
+That’s why it’s often named “<em>STDOUT</em>” because that’s where the messages will be redirected.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;appender</span> <span class="na">name=</span><span class="s">"STDOUT"</span> <span class="na">class=</span><span class="s">"ch.qos.logback.core.ConsoleAppender"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;layout</span> <span class="na">class=</span><span class="s">"ch.qos.logback.classic.PatternLayout"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;Pattern&gt;</span>
+            %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n
+        <span class="nt">&lt;/Pattern&gt;</span>
+    <span class="nt">&lt;/layout&gt;</span>
+<span class="nt">&lt;/appender&gt;</span>
+</code></pre></div></div>
+
+<h4 id="fileappender">FileAppender</h4>
+
+<p>FileAppender appends logs to a file. You can have them log in a single file, or use a rolling appender
+that will save your logs on multiple files based on your configuration</p>
+
+<h5 id="singe-file">Singe File</h5>
+
+<p>FileAppender use <code class="language-plaintext highlighter-rouge">&lt;file&gt;</code> to specify the filename, the logs will be saved in. 
+The <code class="language-plaintext highlighter-rouge">&lt;append&gt;</code> tag instructs the Appender to append messages to existing file rather than truncating it.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;appender</span> <span class="na">name=</span><span class="s">"FILE"</span> <span class="na">class=</span><span class="s">"ch.qos.logback.core.FileAppender"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;file&gt;</span>testFile.log<span class="nt">&lt;/file&gt;</span>
+    <span class="nt">&lt;append&gt;</span>true<span class="nt">&lt;/append&gt;</span>
+    <span class="nt">&lt;encoder&gt;</span>
+      <span class="nt">&lt;pattern&gt;</span>%-4relative [%thread] %-5level %logger{35} - %msg%n<span class="nt">&lt;/pattern&gt;</span>
+    <span class="nt">&lt;/encoder&gt;</span>
+ <span class="nt">&lt;/appender&gt;</span>
+</code></pre></div></div>
+
+<h4 id="rolling-appender">Rolling Appender</h4>
+
+<p>RollingFileAppender rotate log file, by date and size:</p>
+
+<ul>
+  <li><em>fileNamePattern</em>: how the name of the logs will be formatted</li>
+  <li><em>maxFileSize</em>: Max size of each archived file</li>
+  <li><em>totalSizeCap</em>: total size of all archive files, here set to 20GB so if total size &gt; 20GB, it will delete old archived file</li>
+  <li><em>maxHistory</em>: here set to 60, so 60 days to keep</li>
+</ul>
+
+<p>Here <code class="language-plaintext highlighter-rouge">&lt;file&gt;</code> is used to specify the home directory of the logs.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;appender</span> <span class="na">name=</span><span class="s">"FILE-ROLLING"</span> <span class="na">class=</span><span class="s">"ch.qos.logback.core.rolling.RollingFileAppender"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;file&gt;</span>${LOG_DIR}<span class="nt">&lt;/file&gt;</span>
+
+    <span class="nt">&lt;rollingPolicy</span> <span class="na">class=</span><span class="s">"ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;fileNamePattern&gt;</span>logs/archived/app.%d{yyyy-MM-dd}.%i.log<span class="nt">&lt;/fileNamePattern&gt;</span>
+        <span class="c">&lt;!-- each archived file, size max 10MB --&gt;</span>
+        <span class="nt">&lt;maxFileSize&gt;</span>10MB<span class="nt">&lt;/maxFileSize&gt;</span>
+        <span class="c">&lt;!-- total size of all archive files, if total size &gt; 20GB, it will delete old archived file --&gt;</span>
+        <span class="nt">&lt;totalSizeCap&gt;</span>20GB<span class="nt">&lt;/totalSizeCap&gt;</span>
+        <span class="c">&lt;!-- --&gt;</span>
+        <span class="nt">&lt;maxHistory&gt;</span>60<span class="nt">&lt;/maxHistory&gt;</span>
+    <span class="nt">&lt;/rollingPolicy&gt;</span>
+
+    <span class="nt">&lt;encoder&gt;</span>
+        <span class="nt">&lt;pattern&gt;</span>%d %p %c{1.} [%t] %m%n<span class="nt">&lt;/pattern&gt;</span>
+    <span class="nt">&lt;/encoder&gt;</span>
+<span class="nt">&lt;/appender&gt;</span>
+</code></pre></div></div>
+
+<p>As you can it uses a variable <code class="language-plaintext highlighter-rouge">${HOME_LOG}</code> that can pass through system properties, or directly when 
+running your application.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>java <span class="nt">-DLOG_DIR</span><span class="o">=</span>/var/log/app app.jar
+</code></pre></div></div>
+
+<p>Or adding a property tag like that:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"LOG_DIR"</span> <span class="na">value=</span><span class="s">"/var/log/application"</span> <span class="nt">/&gt;</span>
+</code></pre></div></div>
+
+<h3 id="asyncappender">AsyncAppender</h3>
+
+<p>AsyncAppender logs asynchronously, faster, 
+but drop events of level TRACE, DEBUG and INFO if its queue is 80% full, keeping only events of level WARN and ERROR.</p>
+
+<p>Appender are cumulative, to avoid duplicated logs, you can use additivity=false.
+You can also use reference to other appender for logging different modules, classes or levels.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;configuration&gt;</span>
+    <span class="nt">&lt;appender</span> <span class="na">name=</span><span class="s">"ASYNC"</span> <span class="na">class=</span><span class="s">"ch.qos.logback.classic.AsyncAppender"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;appender-ref</span> <span class="na">ref=</span><span class="s">"STDOUT"</span> <span class="nt">/&gt;</span> <span class="c">&lt;!-- given you have defined the STDOUT appender --&gt;</span>
+        <span class="nt">&lt;queueSize&gt;</span>10000<span class="nt">&lt;/queueSize&gt;</span>
+    <span class="nt">&lt;/appender&gt;</span>
+    
+    <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">"transactions"</span> <span class="na">level=</span><span class="s">"info"</span> <span class="na">additivity=</span><span class="s">"false"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;appender-ref</span> <span class="na">ref=</span><span class="s">"ASYNC"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/logger&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div></div>
+
+<h3 id="encoder-and-layout">Encoder and Layout</h3>
+
+<h4 id="logstash-encoder">Logstash encoder</h4>
+
+<p><a href="https://www.elastic.co/logstash">Logstash</a> from <em>elastic</em> is an open source, server-side data processing pipeline that ingests data from a multitude of sources simultaneously, 
+transforms it, and then sends it to your favorite “stash.”</p>
+
+<p>You can use the logstash encoder which provides logback encoders, layouts, and appender to log in JSON and other formats supported by Jackson.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">implementation</span><span class="p">(</span><span class="s">"net.logstash.logback:logstash-logback-encoder:6.2"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Here an example in a ConsoleAppender:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;appender</span> <span class="na">name=</span><span class="s">"FILE"</span> <span class="na">class=</span><span class="s">"ch.qos.logback.core.FileAppender"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;file&gt;</span>testFile.log<span class="nt">&lt;/file&gt;</span>
+    <span class="nt">&lt;append&gt;</span>true<span class="nt">&lt;/append&gt;</span>
+    <span class="nt">&lt;encoder</span> <span class="na">class=</span><span class="s">"net.logstash.logback.encoder.LogstashEncoder"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;pattern&gt;</span>%-4relative [%thread] %-5level %logger{35} - %msg%n<span class="nt">&lt;/pattern&gt;</span>
+    <span class="nt">&lt;/encoder&gt;</span>
+ <span class="nt">&lt;/appender&gt;</span>
+</code></pre></div></div>
+
+<h4 id="layout">Layout</h4>
+
+<p>Layout is responsible for transforming an incoming LoggingEvents into a String. PatternLayout is included in Logback. 
+It implements a large variety of conversion words and format modifiers for creating patterns. 
+It recognizes conversion words with a %. Here are some commonly used conversion patterns:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">%d{HH:mm:ss.SSS}</code>: a timestamp with hours, minutes, seconds and milliseconds</li>
+  <li><code class="language-plaintext highlighter-rouge">%date{ISO8601}</code>: a date with ISO 8601 format</li>
+  <li><code class="language-plaintext highlighter-rouge">[%thread]</code>: the thread name generating the log message, surrounded by square brackets</li>
+  <li><code class="language-plaintext highlighter-rouge">%-5level</code>: the level of the logging event, padded to 5 characters</li>
+  <li><code class="language-plaintext highlighter-rouge">%logger{36}</code>: the class name the log message occurred in. The number inside the brackets represents the maximum length of the package plus the class name. If the output is longer than the specified length, it will take a substring of the first character of each individual package starting from the root package until the output is below the maximum length. The class name will never be reduced</li>
+  <li><code class="language-plaintext highlighter-rouge">%msg%n</code>: the actual log messages followed by a new line</li>
+</ul>
+:ET

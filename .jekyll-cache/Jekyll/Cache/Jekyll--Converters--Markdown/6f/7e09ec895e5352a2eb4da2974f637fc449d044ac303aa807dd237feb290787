@@ -1,0 +1,149 @@
+I"mB<p>As per the website says, <a href="https://gulpjs.com/">gulp.js</a> is:</p>
+
+<blockquote>
+  <p>A toolkit to automate &amp; enhance your workflow.
+Leverage gulp and the flexibility of JavaScript to automate slow, 
+repetitive workflows and compose them into efficient build pipelines.”</p>
+</blockquote>
+
+<p>You can follow the get started process <a href="https://gulpjs.com/docs/en/getting-started/quick-start/">guide</a>, but
+if you already have node, it’s as easy as:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install</span> <span class="nt">--global</span> gulp-cli
+
+<span class="c"># Test it with</span>
+gulp <span class="nt">--version</span>
+</code></pre></div></div>
+
+<p>The perfect kind of tool, that can be used when working with a static blog, css, js and jekyll I believe.
+Let me share the experience, I had using it with the jekyll theme <a href="https://github.com/sylhare/Type-on-Strap">Type-on-Strap</a>.</p>
+
+<h2 id="images">Images</h2>
+
+<h3 id="minify-image-size">Minify image size</h3>
+
+<p>This one use <a href="https://www.npmjs.com/package/gulp-imagemin">gulp-imagemin</a>.
+It works great on a lot of format (those not supported are simply ignored).
+You can pass configuration option like <code class="language-plaintext highlighter-rouge">imagemin({ ... })</code>.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">gulp</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">imagemin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">gulp-imagemin</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="dl">"</span><span class="s2">img</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span> <span class="nx">imging</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">img/**/*.{png,svg,jpg,webp,jpeg,gif}</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">imagemin</span><span class="p">())</span>
+    <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span> <span class="p">})</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="dl">'</span><span class="s1">img/</span><span class="dl">'</span><span class="p">))</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>This tasks takes all of the images in the folder and sub folder under <em>img/</em> minify them and then put them back 
+where they were.</p>
+
+<h3 id="thumbnails">Thumbnails</h3>
+
+<p>For this one, I tried <a href="https://www.npmjs.com/package/gulp-responsive">gulp-responsive</a> which is based on <a href="https://github.com/lovell/sharp">sharp</a>.
+Sharp is a powerful image toolset for images built running solely with Node. 
+However it does not provide stream capabilities yet which makes it hard to work with gulp right out of the box.</p>
+
+<p>Go gulp-responsive is a gulp wrapper around sharp. And I had some issue with it. 
+For instance, you need to set a settings for the responsiveness and when you go through the folder and sub folders, the <code class="language-plaintext highlighter-rouge">'*': settings</code> does not work, you need to select also <code class="language-plaintext highlighter-rouge">**/* : settings</code> to select also all sub folders.<br />
+If no file is found, it generates an exception which is rather annoying. A simple info message would suffice.
+Nevertheless the settings can be highly customized and provide some great features.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Supported formats: heic, heif, jpeg, jpg, png, raw, tiff, webp</span>
+<span class="kd">const</span> <span class="nx">responsive</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">gulp-responsive</span><span class="dl">'</span><span class="p">);</span> 
+
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="dl">'</span><span class="s1">thumbnails</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">settings</span> <span class="o">=</span> <span class="p">{</span> <span class="na">width</span><span class="p">:</span> <span class="dl">'</span><span class="s1">50%</span><span class="dl">'</span> <span class="p">};</span>
+
+  <span class="k">return</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">img/**/*.{png,jpg,jpeg,webp}</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">responsive</span><span class="p">({</span>
+      <span class="dl">'</span><span class="s1">**/*.*</span><span class="dl">'</span><span class="p">:</span> <span class="nx">settings</span><span class="p">,</span>
+      <span class="dl">'</span><span class="s1">*.*</span><span class="dl">'</span><span class="p">:</span> <span class="nx">settings</span><span class="p">,</span>
+    <span class="p">}))</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="dl">'</span><span class="s1">thumbnails</span><span class="dl">'</span><span class="p">))</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>This task basically takes all of the images in <em>img/</em> reduce the size by half and put them into a <em>thumbnails/</em> folder at the same level as <em>img/</em>.</p>
+
+<h2 id="uglify-js">Uglify JS</h2>
+
+<p>This one is a simple uglify / minify the javascript. It takes all of the partials and the create one big <code class="language-plaintext highlighter-rouge">main.min.js</code> file.
+It’s useful so that you can keep nice and separated each js parts of your website, and concat everything into one at the end.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">uglify</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">gulp-uglify</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">concat</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">gulp-concat</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="dl">'</span><span class="s1">js</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="nx">minijs</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">([</span><span class="dl">'</span><span class="s1">js/partials/**.js</span><span class="dl">'</span><span class="p">])</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">concat</span><span class="p">(</span><span class="dl">'</span><span class="s1">main.min.js</span><span class="dl">'</span><span class="p">))</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">uglify</span><span class="p">())</span>
+    <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span> <span class="p">})</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="dl">"</span><span class="s2">js/</span><span class="dl">"</span><span class="p">))</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>I chose <a href="https://www.npmjs.com/package/gulp-uglify">gulp-uglify</a> because it seemed maintained and highly used.</p>
+
+<h2 id="css-tasks">CSS tasks</h2>
+
+<h3 id="clean-css">Clean CSS</h3>
+
+<p>This one was a particular task for some css handling.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">cleanCSS</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">gulp-clean-css</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="dl">'</span><span class="s1">css</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="nx">minicss</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">css/vendor/bootstrap-iso.css</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">cleanCSS</span><span class="p">())</span>
+    <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">error</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">toString</span><span class="p">())</span> <span class="p">})</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">concat</span><span class="p">(</span><span class="dl">'</span><span class="s1">bootstrap-iso.min.css</span><span class="dl">'</span><span class="p">))</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="dl">'</span><span class="s1">css/vendor/</span><span class="dl">'</span><span class="p">));</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>Basically it uses <a href="https://www.npmjs.com/package/gulp-clean-css">gulp-clean-css</a> (a wrapper around clean-css), to clean the css.
+Which means minify, and make sure that there’s no issue with it.</p>
+
+<h3 id="process-with-less">Process with Less</h3>
+
+<p>Then amazingly you can gulp your less tasks to process you css.</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">less</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">gulp-less</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">replace</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">gulp-replace</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="dl">'</span><span class="s1">isolate</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="nx">isolateBootstrap</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">css/bootstrap-iso.less</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">less</span><span class="p">({</span><span class="na">strictMath</span><span class="p">:</span> <span class="dl">'</span><span class="s1">on</span><span class="dl">'</span><span class="p">}))</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">replace</span><span class="p">(</span><span class="dl">'</span><span class="s1">.bootstrap-iso html</span><span class="dl">'</span><span class="p">,</span> <span class="dl">''</span><span class="p">))</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">replace</span><span class="p">(</span><span class="dl">'</span><span class="s1">.bootstrap-iso body</span><span class="dl">'</span><span class="p">,</span> <span class="dl">''</span><span class="p">))</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="dl">'</span><span class="s1">css/vendor/</span><span class="dl">'</span><span class="p">));</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>This one was to isolate bootstrap css using less to wrap it all around the <code class="language-plaintext highlighter-rouge">.bootstrap-iso</code> class.
+But then because of some conflicts, I had to replace html and body with nothing so it doesn’t alter the overall css of the blog.
+It’s quite an annoying manual task that go automated in a couple of lines.</p>
+
+<h3 id="serializing-tasking">Serializing tasking</h3>
+
+<p>Finally you can serialize tasks, have them executed one after the other.
+Which is good when you don’t want to have to type multiple times the same gulp methods.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="dl">"</span><span class="s2">isolate-bootstrap-css</span><span class="dl">"</span><span class="p">,</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">series</span><span class="p">(</span><span class="dl">'</span><span class="s1">isolate</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">css</span><span class="dl">'</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>You can also have a <em>“default”</em> that runs all of your very used tasks (js, css, img, …). 
+So you run it all at once.</p>
+
+<h2 id="issues">Issues</h2>
+
+<p>The only issues I have, are not directly with Gulp, but rather the javascript eco system with its
+millions of libraries.</p>
+
+<p>It’s a good point to have options, but when they get out dated, or out of support. 
+You end up with security alert for outdated dependencies in your package lock (it’s hard to track the dependencies of your dependencies of their dependencies ..).
+Or sometime it just stops working.</p>
+
+:ET

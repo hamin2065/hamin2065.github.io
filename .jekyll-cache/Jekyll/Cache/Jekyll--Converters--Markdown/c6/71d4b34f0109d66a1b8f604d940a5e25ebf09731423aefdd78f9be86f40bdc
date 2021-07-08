@@ -1,0 +1,47 @@
+I":<p>I wrote a post on <a href="https://stackoverflow.com/questions/2186931/java-pass-method-as-parameter/53219950#53219950">stackoverflow</a> 
+on how to use <code class="language-plaintext highlighter-rouge">java.util.function.Function</code> for simple method as parameter function.</p>
+
+<p>Here is a simple example:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.util.function.Function</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Foo</span> <span class="o">{</span>
+
+  <span class="cm">/** Foo constructor **/</span>
+  <span class="kd">private</span> <span class="nf">Foo</span><span class="o">(</span><span class="nc">String</span> <span class="n">parameter</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"I'm a Foo "</span> <span class="o">+</span> <span class="n">parameter</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="cm">/** Static method `bar` from Foo class **/</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="nc">Foo</span> <span class="nf">bar</span><span class="o">(</span><span class="kd">final</span> <span class="nc">String</span> <span class="n">parameter</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">Foo</span><span class="o">(</span><span class="n">parameter</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kd">static</span> <span class="nc">Function</span> <span class="nf">parametrisedMethod</span><span class="o">(</span><span class="nc">Function</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Foo</span><span class="o">&gt;</span> <span class="n">function</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">function</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">parametrisedMethod</span><span class="o">(</span><span class="nl">Foo:</span><span class="o">:</span><span class="n">bar</span><span class="o">).</span><span class="na">apply</span><span class="o">(</span><span class="s">"from a method"</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Basically you have a <code class="language-plaintext highlighter-rouge">Foo</code> object with a default constructor. 
+A method <code class="language-plaintext highlighter-rouge">bar</code> that will be called as a parameter from the <code class="language-plaintext highlighter-rouge">parametrisedMethod</code> which is of type <code class="language-plaintext highlighter-rouge">Function&lt;String, Foo&gt;</code>.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Function&lt;String, Foo&gt;</code> means that the function takes a <code class="language-plaintext highlighter-rouge">String</code> as parameter and return a <code class="language-plaintext highlighter-rouge">Foo</code>.</li>
+  <li>The <code class="language-plaintext highlighter-rouge">Foo::bar</code> correspond to a lambda like <code class="language-plaintext highlighter-rouge">x -&gt; Foo.bar(x);</code></li>
+  <li><code class="language-plaintext highlighter-rouge">parametrisedMethod(Foo::bar)</code> could be seen as <code class="language-plaintext highlighter-rouge">x -&gt; parametrisedMethod(Foo.bar(x))</code></li>
+  <li>The <code class="language-plaintext highlighter-rouge">.apply("from a method")</code> is basically to do <code class="language-plaintext highlighter-rouge">parametrisedMethod(Foo.bar("from a method"))</code></li>
+</ul>
+
+<p>Which will then return in the output:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;</span> I<span class="s1">'m a Foo from a method
+</span></code></pre></div></div>
+
+<p>The example should be running as is, 
+you can then try more complicated stuff from the above answers with different classes and interfaces.</p>
+:ET

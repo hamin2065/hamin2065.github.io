@@ -1,0 +1,114 @@
+I"P<p><a href="https://azure.microsoft.com/en-us/services/kubernetes-service/#overview">Azure</a> AKS (Azure Kubernetes Cluster) is a serverless Kubernetes offer.
+Deploy and manage containerized applications more easily with a fully managed Kubernetes service.</p>
+
+<h2 id="azure-kubernetes-service">Azure Kubernetes Service</h2>
+
+<h3 id="create-your-cluster">Create your cluster</h3>
+
+<p>When you log into Azure Cloud you get a lot of possibilities and resources to play with.
+Almost everything can be done via the <a href="https://portal.azure.com">Azure Cloud Portal</a> (a GUI), but that would be a very bad idea.
+The GUI is great to get a look at metrics, existing deployment or for testing around, 
+however it is advised to use the <a href="https://docs.microsoft.com/en-us/azure/aks/azure-ad-integration-cli">command line</a> as much as possible because more generic and reliable.</p>
+
+<p>Creating a simple Kubernetes cluster with the <code class="language-plaintext highlighter-rouge">az aks</code> which is the <a href="https://docs.microsoft.com/en-us/cli/azure/aks?view=azure-cli-latest#az_aks_create">Azure CLI</a>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az aks create <span class="nt">--resource-group</span> MyResourceGroup <span class="nt">--name</span> MyManagedCluster <span class="nt">--node-count</span> 2
+</code></pre></div></div>
+
+<p>That will <a href="https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough">create</a> all the necessary infrastructure components you need for your cluster.
+They will be referenced as resources in your Azure Dashboard and will be part of the <code class="language-plaintext highlighter-rouge">MyResourceGroup</code> which is the specify group.
+The name of the cluster can’t be change later.</p>
+
+<div class="row">
+    
+    <div style="flex: 100.0%">
+        <img class="single" src="/assets/img/azure-dashboard.png" alt="azure-dashboard.png" />
+    </div>
+    
+</div>
+
+<p>Once created (it can take a couple of minutes) you can access your Kubernetes cluster via your PC,
+or using the Azure Cloud Terminal (available as Bash or Powershell) with all the tools already installed.</p>
+
+<h3 id="add-rbac-with-azure-ad">Add RBAC with Azure AD</h3>
+
+<p>You can use Kubernetes role-based access control (Kubernetes RBAC) with an addition with the Azure Active Directory.
+That way you can fine tune what users can do within your cluster.</p>
+
+<p>You can update your cluster with <a href="https://docs.microsoft.com/en-us/azure/aks/managed-aad">Azure Active Directory (aad)</a> or create a new cluster. 
+Here is how you should do to update your cluster with a newly created AD group:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create your AD Group</span>
+az ad group create <span class="nt">--display-name</span> myAKSAdminGroup <span class="nt">--mail-nickname</span> myAKSAdminGroup
+az aks update <span class="nt">-g</span> MyResourceGroup <span class="nt">-n</span> MyManagedCluster <span class="nt">--enable-aad</span> <span class="nt">--aad-admin-group-object-ids</span> &lt;id-1&gt;
+</code></pre></div></div>
+
+<p>That step is not mandatory but good to know that it is possible to secure even further your cluster.
+One of the good point of Azure its all the possibility it provides, 
+but it also be quiet complex to get a full understanding at the whole architecture and component in azure.
+You may need to get credentials so you can access your Kubernetes:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az aks get-credentials <span class="nt">--resource-group</span> MyResourceGroup <span class="nt">--name</span> MyManagedCluster
+</code></pre></div></div>
+
+<p>And then it should be all traditional Kubernetes/helm commands to update your cluster.
+And that’s the good thing about it, you don’t need to learn new special commands to manage your cluster,
+you can still use <code class="language-plaintext highlighter-rouge">kubectl</code>.</p>
+
+<h2 id="get-started-with-your-kubernetes-cluster">Get started with your Kubernetes Cluster</h2>
+
+<h3 id="create-new-deployment">Create new deployment</h3>
+
+<p>Apply new deployment using yaml file instead of the GUI using:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply <span class="nt">-f</span> deployment.yaml
+</code></pre></div></div>
+
+<p>If you are using an Azure registry to store your artifacts and docker images, you can use the <a href="https://docs.microsoft.com/en-us/cli/azure/ad?view=azure-cli-latest">Azure CLI</a> 
+to attach it to your deployment using with <code class="language-plaintext highlighter-rouge">azureRegistry</code> the name of the registry:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az aks update <span class="nt">--resource-group</span> MyResourceGroup <span class="nt">--name</span> MyManagedCluster <span class="nt">--attach-acr</span> registryAzure
+</code></pre></div></div>
+
+<p>That way you can pull images from your own registry and have your pods created.
+Once done, it should also be all be visible in the GUI</p>
+
+<h3 id="view-created-resources-on-the-portal">View created resources on the Portal</h3>
+
+<p>Talking about the GUI once you have some pods, services and else, you can click on kubernetes resources and select one.
+You then have some visualization options there on the side (Yaml, Events, Changelog)</p>
+
+<div class="row">
+    
+    <div class="column">
+        <img src="/assets/img/azure-k8resources.png" alt="azure-k8resources.png" />
+    </div>
+    
+    <div class="column">
+        <img src="/assets/img/azure-deployment.png" alt="azure-deployment.png" />
+    </div>
+    
+</div>
+
+<p>All these info can be viewed with <code class="language-plaintext highlighter-rouge">kubectl describe</code> but it’s still cool to have it there as well.
+In case you lost the file, or want to check the deployment from the GUI.
+Also you will see that a lot of Azure stuff will be added to your deployment Yaml files (timestamp, uuid, …).</p>
+
+<h3 id="add-metrics-for-monitoring">Add metrics for monitoring</h3>
+
+<p>Once you have a couple pods, you can create default metrics charts from the Monitoring panel in your dashboard from your kubernetes cluster.
+It has basic pods and cpu information.
+Still on the monitoring side you have access to a broad range of features like Alerts, Logs, and other diagnostic tools.</p>
+
+<div class="row">
+    
+    <div style="flex: 100.0%">
+        <img class="single" src="/assets/img/azure-metrics.png" alt="azure-metrics.png" />
+    </div>
+    
+</div>
+
+<p>But that’s not all, you can also configure a prometheus instance and plug it to your cluster for added functionality.
+For that you can use some <a href="https://prometheus.io/docs/instrumenting/exporters/">prometheus exporters</a> with a <a href="https://docs.microsoft.com/en-us/azure/azure-monitor/insights/container-insights-prometheus-integration">prometheus container</a>
+or directly through the Azure Monitor so that you can <em>scrap</em> the metrics and display them.</p>
+:ET

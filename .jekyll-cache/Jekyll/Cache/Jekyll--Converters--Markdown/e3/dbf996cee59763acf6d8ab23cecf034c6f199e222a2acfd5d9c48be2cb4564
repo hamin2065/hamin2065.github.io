@@ -1,0 +1,228 @@
+I"�*<p>Intended for Centos or Redhat.</p>
+
+<h2 id="general">General</h2>
+<p>Run commands as root</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo -i
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">root</code> is a super user, to use root use <code class="language-plaintext highlighter-rouge">su</code> (which can also be used to switch account, you need to know the password to the account you wish to use).
+Another option is to use <code class="language-plaintext highlighter-rouge">sudo</code> using your own password where you have been pre-approved to use root privilege.</p>
+
+<h2 id="files">Files</h2>
+<h3 id="listing-filename">Listing filename</h3>
+<p>List the file in the directory <code class="language-plaintext highlighter-rouge">-l</code> Give the file with information on rights, creator, size and creation date, and <code class="language-plaintext highlighter-rouge">-R</code> and to list all the subdirectories</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ls -l -R
+</code></pre></div></div>
+
+<p>List the file in the directory that contain the word”</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ls *word*
+</code></pre></div></div>
+
+<p>list files that contains word1 or word2,</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ls [word1,word2]*
+</code></pre></div></div>
+
+<p>can work for just a character</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ls *word[12]*
+</code></pre></div></div>
+
+<p>look for file containing 2013, 2014, 2015</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ls *{2013..2015}
+</code></pre></div></div>
+
+<p>Look for a file beginning with a letter between H to C, the second letter can be between A to Z, the third letter would be a number from 0 to 9, the last three character can be anything</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ls [HC][A-Z][0-9]???
+</code></pre></div></div>
+
+<h3 id="file-manipulation">File Manipulation</h3>
+<p>Allow to print on the command the content of a file</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat file.txt
+</code></pre></div></div>
+
+<p>Create a file</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>touch file.txt
+</code></pre></div></div>
+
+<h4 id="using-pipes-in-the-command">Using pipes in the command</h4>
+<p>Show and sort the file alphabetically the left column</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat file | sort
+</code></pre></div></div>
+
+<p>The same as before however grep is used to find words and the “v” in grep suppress the line that contains “Word” or “last”</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat file | sort | grep -v "Word" | grep -v "last"
+</code></pre></div></div>
+
+<h3 id="input---output">Input - output</h3>
+<p>store in a file the results of the command</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ls -R &gt; file.txt
+</code></pre></div></div>
+
+<p>add the result of the command to file.txt without erasing it</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ls &gt;&gt; file.txt
+</code></pre></div></div>
+
+<p>grep look for the “word” of the input file.txt</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>grep -1 "word" &lt; file.txt
+</code></pre></div></div>
+
+<p>Sort the element of the left side (default) from the input file.txt</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sort &lt; file.txt
+</code></pre></div></div>
+
+<p>save the results with file.txt as an input in filesorted.txt as an output</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sort &lt; file.txt &gt; filesorted.txt 
+</code></pre></div></div>
+
+<h3 id="finding-files">Finding files</h3>
+<h4 id="using-locate">Using locate</h4>
+<p>Get file statistic on the system</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>locate -S
+</code></pre></div></div>
+
+<p>Tell you where the file exist, it is stored in the <code class="language-plaintext highlighter-rouge">mlocate.db</code> that is updated automatically</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>locate file
+</code></pre></div></div>
+
+<p>Search non case sensitive file name location, i for the non sensitive case, c to count the number of results</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>locate -ic file
+</code></pre></div></div>
+
+<h4 id="using-which">Using Which</h4>
+<p>Get the location of binary executable, details about linux content</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>which ifconfig
+</code></pre></div></div>
+
+<h4 id="using-find">Using find</h4>
+<p>Print working directory</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pwd 
+</code></pre></div></div>
+
+<p>will look for every directory that begin with “word” (the * does that)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find -name "word*"
+</code></pre></div></div>
+
+<p>Count the number of files in the current directory. The <code class="language-plaintext highlighter-rouge">.</code> is for the current directory, <code class="language-plaintext highlighter-rouge">-type f</code> is for a file, <code class="language-plaintext highlighter-rouge">-print</code> to print there name, <code class="language-plaintext highlighter-rouge">wc -l</code> will count the number of lines (1 line = 1 file).</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find . -type f -print | wc -l 
+</code></pre></div></div>
+
+<p>Will show the files created in the directory in the last 3 minutes</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find -cmin -3
+</code></pre></div></div>
+
+<p>Perform actions on files that are found
+Find files from a specific user <code class="language-plaintext highlighter-rouge">-user username</code> with a specific title <code class="language-plaintext highlighter-rouge">-name</code> that are bigger than 500 characters <code class="language-plaintext highlighter-rouge">-size 500c</code> then <code class="language-plaintext highlighter-rouge">-exec</code> will run <code class="language-plaintext highlighter-rouge">Move</code> to the result of the search to the /home folder with <code class="language-plaintext highlighter-rouge">{}</code> as the result, and <code class="language-plaintext highlighter-rouge">\;</code> to mark the end.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find -user username -name "file[0-9][0-9].txt" -size 500c -exec Move {} /home \;
+</code></pre></div></div>
+
+<p>Move files with -size bigger than 500 characters</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>find -type f  -exec mv {} /home/large \; 
+</code></pre></div></div>
+
+<h2 id="terminal">Terminal</h2>
+<h3 id="bash-shell">Bash Shell</h3>
+<p>clear the command screen</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>clear 
+</code></pre></div></div>
+
+<p>Change user to root, the password will be asked</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>su root
+</code></pre></div></div>
+
+<p>Open a new sub shell environment</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash
+</code></pre></div></div>
+
+<p>Show all variables and value of the environment</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>env
+</code></pre></div></div>
+
+<p>to quit the root session, or quit the terminal</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>exit
+</code></pre></div></div>
+
+<p>Create a variable in the environment and export it to all sub shell</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>VARIABLE = "test"
+export VARIABLE
+</code></pre></div></div>
+
+<p>The variable SHELL will tell you which shell you are currently using</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo $SHELL 
+</code></pre></div></div>
+
+<h2 id="directories">Directories</h2>
+
+<p>Delete a directory</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rm dir path/to/directory
+</code></pre></div></div>
+
+<h2 id="c-shell">C Shell</h2>
+<p>Change the shell from bash to the C Shell</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>csh 
+</code></pre></div></div>
+
+<p>Show all variables and value of an environment</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>setenv
+</code></pre></div></div>
+
+<p>Set a value and show it</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>setenv VARIABLE "test"
+echo $VARIABLE
+</code></pre></div></div>
+
+<h2 id="tty---teletype-writer">TTY - teletype writer</h2>
+<p>show who is connected on the computer and on which session</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>who
+</code></pre></div></div>
+
+<p>Give which user you are</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>whoami
+</code></pre></div></div>
+
+<p>Console per default, with graphical environment</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tty1
+</code></pre></div></div>
+
+<p>Use <kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>f2</kbd> to go to tty2 session. 
+Use <kbd>ctrl</kbd> + <kbd>alt</kbd> + <kbd>f3</kbd> to go to tty3 session, and so on.</p>
+
+:ET

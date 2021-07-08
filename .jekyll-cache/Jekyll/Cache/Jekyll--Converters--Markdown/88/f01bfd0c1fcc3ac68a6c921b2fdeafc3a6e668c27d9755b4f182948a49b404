@@ -1,0 +1,49 @@
+I"¬<p>Letâ€™s see how to make a ruby gem using the right format and specs, 
+using the <code class="language-plaintext highlighter-rouge">type-on-strap</code> gem as an example.</p>
+
+<!--more-->
+
+<h2 id="prepare-the-gemspec">Prepare the gemspec</h2>
+
+<p>I make sure the gem encompass all the files that I want using this regex in my <code class="language-plaintext highlighter-rouge">gemspec</code>:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">spec</span><span class="p">.</span><span class="nf">files</span> <span class="o">=</span> <span class="no">Dir</span><span class="p">.</span><span class="nf">glob</span><span class="p">(</span><span class="s2">"**/{*,.*}"</span><span class="p">).</span><span class="nf">select</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span>
+    <span class="n">f</span><span class="p">.</span><span class="nf">match</span><span class="p">(</span><span class="sr">%r{^(assets|pages|_(includes|layouts|sass)/|(Gemfile|index.html)((</span><span class="se">\.</span><span class="sr">(txt|md|markdown)|$)))}i</span><span class="p">)</span>
+  <span class="k">end</span>
+</code></pre></div></div>
+
+<p>Here it uses a complex regex to select folder and files from all folder and sub folders.</p>
+
+<blockquote>
+  <p>I could have used a <code class="language-plaintext highlighter-rouge">.reject</code> to remove some files, or a <code class="language-plaintext highlighter-rouge">&amp;</code> after <code class="language-plaintext highlighter-rouge">end</code> to add manually a directory/page with <code class="language-plaintext highlighter-rouge">Dir[file, directory/**]</code>.</p>
+</blockquote>
+
+<h2 id="check-the-gem">Check the gem</h2>
+
+<p>First to test that the gem gets all the required documents:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem build type-on-strap.gemspec 
+gem unpack type-on-strap-x.x.gem 
+</code></pre></div></div>
+
+<h2 id="run-the-gem-locally">Run the gem locally</h2>
+
+<p>Here I had a jekyll gem so I updated my Gemfile with the current gem version I wanted to test:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">source</span> <span class="s2">"https://rubygems.org"</span>
+<span class="n">gem</span> <span class="s2">"type-on-strap"</span><span class="p">,</span> <span class="s2">"1.x.x"</span><span class="p">,</span> <span class="ss">path: </span><span class="s2">"."</span>
+</code></pre></div></div>
+
+<p>And the did the usual <code class="language-plaintext highlighter-rouge">bundle exec jekyll serve</code>.</p>
+
+<h2 id="deploy-the-gem">Deploy the gem</h2>
+
+<p>No I want to push the gem online and test it from there.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Push the gem online</span>
+gem push type-on-strap-x.x.gem 
+<span class="c"># Delete the gem online</span>
+gem yank type-on-strap <span class="nt">-v</span> x-x 
+</code></pre></div></div>
+
+<p>Observe the result on <a href="https://rubygems.org/gems/type-on-strap">https://rubygems.org/</a></p>
+:ET

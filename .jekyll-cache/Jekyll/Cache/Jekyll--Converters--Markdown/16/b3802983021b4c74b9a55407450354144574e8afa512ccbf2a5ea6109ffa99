@@ -1,0 +1,108 @@
+I"<p><a href="https://mermaid-js.github.io/mermaid/">Mermaid.js</a> is a js library that transforms text into diagrams 
+(sequence, Gantt or class diagrams, flow charts, …).</p>
+
+<p>So far the ones that I am particularly keen on using are the sequence diagrams, you can find all of the documentation, 
+on the mermaid <a href="https://mermaid-js.github.io/mermaid/diagrams-and-syntax-and-examples/">site</a>.</p>
+
+<h2 id="sequence-diagram">Sequence Diagram</h2>
+
+<p>So let’s have a simple example. 
+We will be mapping with some notes and colors the simple call flow of a client talking to an app.
+This is pretty basic but covers most of our daily needs.</p>
+
+<p>Writing down in simple mermaid script a call flow:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sequenceDiagram
+  participant C as client
+  participant A as App
+  participant B as Database
+  rect rgba<span class="o">(</span>216,240,232, .7<span class="o">)</span>
+  C <span class="nt">--</span><span class="o">&gt;&gt;</span> A : Init connection
+  A <span class="nt">--</span><span class="o">&gt;&gt;</span> C: Acknowledge connection
+  end
+  C -&gt;&gt; A : Send request
+  Note over C,A : Each request have a unique ID
+  A -&gt;&gt; B : Query the database
+  opt Concurrency
+    B <span class="nt">--</span><span class="o">&gt;&gt;</span> B : Other operation occuring <span class="k">in </span>the database
+  end
+  B -&gt;&gt; A : Retrieve information
+  Note left of B: Retrieve <span class="nb">time</span> &lt; 10ms
+  A -&gt;&gt; C : Send requested information
+</code></pre></div></div>
+
+<p>By default gitlab understand the markdown formatting <code class="language-plaintext highlighter-rouge">mermaid</code> so it’s pretty straightforward in your markdown file.
+But elsewhere like in this blog I am putting the above syntax in a <code class="language-plaintext highlighter-rouge">&lt;div class="mermaid"&gt;</code> so that it will get picked up and rendered. 
+(Kramdown which is the highlighting engine for jekyll and Github is not yet mermaid compatible).</p>
+
+<p>And here it is the rendered diagram:</p>
+
+<div class="mermaid"> 
+sequenceDiagram
+  participant C as client
+  participant A as App
+  participant B as Database
+  rect rgba(216,240,232, .7)
+  C --&gt;&gt; A : Init connection
+  A --&gt;&gt; C: Acknowledge connection
+  end
+  C -&gt;&gt; A : Send request
+  Note over C,A : Each request have a unique ID
+  A -&gt;&gt; B : Query the database
+  opt Concurrency
+    B --&gt;&gt; B : Other operation occuring in the database
+  end
+  B -&gt;&gt; A : Retrieve information
+  Note left of B: Retrieve time &lt; 10ms
+  A -&gt;&gt; C : Send requested information
+</div>
+
+<h3 id="cheat-sheet">Cheat sheet</h3>
+
+<h4 id="basics">Basics</h4>
+
+<p>The Basic, like using tabs and <code class="language-plaintext highlighter-rouge">sequenceDiagram</code> to create a sequence diagram.
+You can also <code class="language-plaintext highlighter-rouge">autonumber</code> to add a number to each step of the sequence.</p>
+
+<blockquote>
+  <p>Note that <code class="language-plaintext highlighter-rouge">%%</code> is used to add comments and won’t be rendered.</p>
+</blockquote>
+
+<p>And here is some cheat sheet for the things you can do with it.</p>
+
+<ul>
+  <li>Participants with just letters: <code class="language-plaintext highlighter-rouge">participant C as client</code></li>
+  <li>Specific squared actions with <em>par</em>, <em>loop</em> or <em>opt</em> blocks
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="o">[</span> par | loop | opt <span class="o">]</span> title
+      ... content ...
+  end
+</code></pre></div>    </div>
+  </li>
+  <li>Add block of notes in yellow using. If multiple actors, use the comma to separate them (usually when you want your note over multiples actors).
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  Note <span class="o">[</span> right | left | over <span class="o">]</span> of <span class="o">[</span> Participant <span class="o">]</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h4 id="lines">Lines</h4>
+
+<p>Lines are basically the steps in your sequence diagram:</p>
+
+<ul>
+  <li>You have the syntax looking like that:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span> Participant <span class="o">]</span> <span class="o">[</span> Link <span class="o">]</span> <span class="o">[</span> Participant <span class="o">]</span>: Message.
+</code></pre></div>    </div>
+  </li>
+  <li>If the Participant is the same, the line will just kind of loop on itself (like with database step above).</li>
+</ul>
+
+<p>For the lines it always have <code class="language-plaintext highlighter-rouge">-</code>:</p>
+
+<ul>
+  <li>Two dash <code class="language-plaintext highlighter-rouge">--</code> means dotted (like <code class="language-plaintext highlighter-rouge">--&gt;</code>)</li>
+  <li>Two chevrons <code class="language-plaintext highlighter-rouge">&gt;&gt;</code> means arrow head (like <code class="language-plaintext highlighter-rouge">-&gt;&gt;</code>)</li>
+  <li>A cross <code class="language-plaintext highlighter-rouge">x</code> means cross in the arrow (like <code class="language-plaintext highlighter-rouge">-x</code>)</li>
+</ul>
+
+<p>You can also have a <code class="language-plaintext highlighter-rouge">+</code> or <code class="language-plaintext highlighter-rouge">-</code> that will create a box at the edge of the link to indicate it’s <em>activated</em> or <em>deactivated</em>.</p>
+:ET

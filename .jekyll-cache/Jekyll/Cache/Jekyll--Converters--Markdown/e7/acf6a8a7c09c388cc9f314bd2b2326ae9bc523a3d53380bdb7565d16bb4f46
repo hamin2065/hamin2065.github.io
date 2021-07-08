@@ -1,0 +1,164 @@
+I"y,<p>Kotlin is made by JetBrains (the same as that did IntelliJ the IDE).</p>
+
+<p>See their website here:</p>
+<ul>
+  <li><a href="https://kotlinlang.org/">Kotlin</a></li>
+  <li><a href="https://kotlinlang.org/docs/tutorials/getting-started.html">Getting started</a></li>
+</ul>
+
+<blockquote>
+  <p>Check out some real examples at <a href="https://github.com/sylhare/Kotlin">Sylhare/Kotlin</a>!</p>
+</blockquote>
+
+<h2 id="project-structure">Project Structure</h2>
+
+<p>Assuming you know how to work with Gradle.
+You need to create the gradle file <code class="language-plaintext highlighter-rouge">build.gradle.kts</code> then add dependencies and <a href="(https://kotlinlang.org/docs/reference/using-gradle.html)">configurations</a>.
+An example with <a href="https://sylhare.github.io/2019/09/27/Kotlin-dsl-with-gradle.html">Kotlin dsl with gradle 4.8</a>.
+But you might want to take the latest <em>Gradle</em> version available, you’ll have up to date and better information.</p>
+
+<p>For gradle to pick up the source and test files, you will need to organise your folders like:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>└── src
+    ├── main
+    │   └── kotlin
+    │       └── package
+    └── <span class="nb">test</span>
+        └── kotlin
+            └── package
+
+</code></pre></div></div>
+
+<h2 id="kotlin-specifics">Kotlin Specifics</h2>
+
+<h3 id="miscellaneous">Miscellaneous</h3>
+
+<ul>
+  <li>Use <code class="language-plaintext highlighter-rouge">`</code> (back tick) to define method’s name with space:</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="k">fun</span> <span class="nf">`valid</span> <span class="nf">parameters`</span> <span class="p">{</span> <span class="o">..</span><span class="p">.</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Overload Objects to generates new ones easily:</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">Number</span><span class="p">.</span><span class="n">teaspoons</span> <span class="k">get</span><span class="p">()</span> <span class="p">=</span> <span class="nc">Quantity</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nc">Unit</span><span class="p">.</span><span class="n">teaspoon</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>So then you can use it this way:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Quantity(1.5, Unit.teasponn) 
+1.5.teaspoons
+</code></pre></div></div>
+
+<ul>
+  <li>Before a recursion, ask yourself these questions:
+    <ul>
+      <li>What is the original question?</li>
+      <li>What is the recursive question?</li>
+      <li>What are the Terminal condition? (when the recursive stops)</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="handling-null">Handling null</h3>
+
+<ul>
+  <li>The <code class="language-plaintext highlighter-rouge">?</code> is used in Kotlin to handle null:</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// The Rectangle? makes the function returns Rectangle or null</span>
+<span class="k">fun</span> <span class="nf">mayReturnRectangleOrNull</span><span class="p">()</span> <span class="p">:</span> <span class="nc">Rectangle</span><span class="p">?</span> <span class="p">{</span> <span class="o">..</span><span class="p">.</span> <span class="p">}</span>
+
+<span class="c1">// With "?." the .rectangleMethod() will only occur when mayReturnRectangleOrNull() returns a rectangle</span>
+<span class="nf">mayReturnRectangleOrNull</span><span class="p">()</span><span class="o">?.</span><span class="nf">rectangleMethod</span><span class="p">()</span> 
+
+<span class="c1">// Elvis ?: to have another value if the preceeding one return null</span>
+<span class="kd">val</span> <span class="py">somethingNotNull</span> <span class="p">=</span> <span class="nf">emptyRectangle</span><span class="p">()</span>
+<span class="k">return</span> <span class="nf">mayReturnRectangleOrNull</span><span class="p">()</span> <span class="o">?:</span> <span class="n">somethingNotNull</span> 
+</code></pre></div></div>
+
+<ul>
+  <li>The <code class="language-plaintext highlighter-rouge">!!</code> to force the function to operate even though it can be null:</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">return</span> <span class="k">if</span> <span class="p">(</span><span class="n">list</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">)</span> <span class="p">-</span><span class="mi">1</span> <span class="k">else</span> <span class="n">list</span><span class="p">.</span><span class="nf">min</span><span class="p">()</span><span class="o">!!</span> <span class="c1">//list can be null, without !! it would complain, but can still return null</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Using the <code class="language-plaintext highlighter-rouge">this@Class</code> inside of a <code class="language-plaintext highlighter-rouge">list.apply { this.prepend(this@Class) }</code>, you are calling the <code class="language-plaintext highlighter-rouge">this</code> of the class (so <code class="language-plaintext highlighter-rouge">this@Class</code> to differentiate from the other <code class="language-plaintext highlighter-rouge">this</code> (element of the list that you apply to).</li>
+</ul>
+
+<h3 id="keywords">Keywords</h3>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Any</code> for any type</li>
+  <li><code class="language-plaintext highlighter-rouge">init {}</code> to initiate the values at the creation of the class</li>
+  <li><code class="language-plaintext highlighter-rouge">override</code> at the beginning of the function to override it:</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">override</span> <span class="k">fun</span> <span class="nf">equals</span><span class="p">(</span><span class="n">other</span><span class="p">:</span> <span class="nc">Any</span><span class="p">?)</span> <span class="p">{</span> <span class="o">..</span><span class="p">.</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">operator</code> to override an operator function. Here an example with the comparison operator (<code class="language-plaintext highlighter-rouge">&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;</code>, …)</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">operator</span> <span class="k">fun</span> <span class="nf">compareTo</span><span class="p">(</span><span class="n">other</span><span class="p">:</span> <span class="nc">Probability</span><span class="p">)</span> <span class="p">{</span> <span class="o">..</span><span class="p">.</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">infix</code> function are function where you can omit the <code class="language-plaintext highlighter-rouge">.</code>:</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">infix</span> <span class="k">fun</span> <span class="nf">isCompatibleWith</span><span class="p">(</span><span class="n">other</span><span class="p">:</span> <span class="nc">Unit</span><span class="p">):</span> <span class="nc">Boolean</span> <span class="p">{</span> <span class="o">..</span><span class="p">.</span> <span class="p">}</span>
+
+<span class="c1">// calling the function using the infix notation</span>
+<span class="n">unit</span> <span class="n">isCompatibleWith</span> <span class="n">otherUnit</span>
+
+<span class="c1">// is the same as</span>
+<span class="n">unit</span><span class="p">.</span><span class="nf">isCompatibleWith</span><span class="p">(</span><span class="n">otherUnit</span><span class="p">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">typealias</code> is used to define a name for a function signature (hence alias) usually used to simplify simple functions into a type:</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">internal</span> <span class="k">typealias</span> <span class="nc">CostStrategy</span> <span class="p">=</span> <span class="p">(</span><span class="nc">Double</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nc">Double</span>
+</code></pre></div></div>
+
+<ul>
+  <li>For Properties unless they are private, a getter / setter is automatically “build” but you can custom its behaviour through:</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// To custom the Getter / Setter of a field</span>
+<span class="k">private</span> <span class="kd">var</span> <span class="py">field</span><span class="p">:</span> <span class="nc">String</span> <span class="p">=</span> <span class="s">"field"</span> 
+<span class="kd">var</span> <span class="py">proxyField</span><span class="p">:</span> <span class="nc">String</span>
+    <span class="k">get</span><span class="p">()</span> <span class="p">=</span> <span class="n">field</span>
+    <span class="k">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span> <span class="n">field</span> <span class="p">=</span> <span class="n">value</span> <span class="p">}</span>
+
+<span class="c1">// Public Getter and private Setter   </span>
+<span class="kd">var</span> <span class="py">abc</span><span class="p">:</span> <span class="nc">String</span> <span class="p">=</span> <span class="s">""</span><span class="p">;</span> <span class="k">private</span> <span class="k">set</span>
+</code></pre></div></div>
+
+<h3 id="operation-on-lists">Operation on lists</h3>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">flatMap</code> transforms a list of list of stuff into a simple list of stuff</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">list</span><span class="p">.</span><span class="nf">flatMap</span> <span class="p">{</span> <span class="nc">List</span><span class="p">&lt;</span><span class="nc">List</span><span class="p">&lt;</span><span class="nc">Path</span><span class="p">&gt;&gt;</span> <span class="p">}</span> <span class="c1">// returns List&lt;Path&gt;</span>
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">onEach</code> is the same as <code class="language-plaintext highlighter-rouge">list.map{ this.apply { ... } }</code></p>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">sumByDouble</code> is the same as  <code class="language-plaintext highlighter-rouge">list.map{}.sum{}</code></p>
+  </li>
+</ul>
+:ET

@@ -1,0 +1,48 @@
+I"Ø<p>During the competition there was at some point a Craiglist kind of paper for a synapse experiment
+with Neurosoft (The company that implements chips in your brain).</p>
+
+<p>On the coupon was a website <a href="neuro://synapse-trials.ctf">neuro://synapse-trials.ctf</a> and a phone number <code class="language-plaintext highlighter-rouge">1-647-490-NSEC</code>.
+After checking the website, we could find in the source page of the page this flag:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Flag-CraigsListIsSo2011
+</code></pre></div></div>
+
+<p>Next was the number, the <code class="language-plaintext highlighter-rouge">NSEC</code> correspond to <code class="language-plaintext highlighter-rouge">6732</code> (looking at an old phone keyboard).
+After calling the <code class="language-plaintext highlighter-rouge">1-647-490-NSEC</code> number we get the what seemed to be NeuroSoft hotline.</p>
+
+<p>They greet you and inform you that the waiting time is unusually long, before putting some 
+music. After multiple <code class="language-plaintext highlighter-rouge">your call is important to us</code> and <code class="language-plaintext highlighter-rouge">2'30"</code> of music we finally get to ear Cameron, 
+which soon starts shooting binaries at us:</p>
+
+<audio controls="" src="/assets/sound/neurosoft-last.wav">
+<p>Your browser doesn't support HTML5 audio. Here is a <a href="/assets/sound/dolphin.wav">link to the audio</a> instead.</p></audio>
+
+<p>After using software phone, we can record the whole call, then thanks to our own Voice To Text implementation
+(we could have used a software available online) we manage to get the message:</p>
+
+<div class="language-coffeescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Please</span> <span class="nx">verify</span> <span class="nx">that</span> <span class="nx">you</span> <span class="nx">are</span> <span class="o">not</span> <span class="nx">fully</span> <span class="na">human</span><span class="o">:</span>
+<span class="mi">1000110100110010000011</span> <span class="mi">000111010110110000111100001110</span> <span class="mi">110011011001001101110010110011</span> <span class="mi">011100001111100111000101100101</span>
+</code></pre></div></div>
+
+<p>Now itâ€™s time to decrypt the binary, it will surely be something in ascii starting like <code class="language-plaintext highlighter-rouge">FLAG-</code>.
+However when converting to 8-bits we get gibberish:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BIN <span class="o">(</span>8bit<span class="o">)</span>	2u7,&gt;qe
+</code></pre></div></div>
+
+<p>However something is intriguing because the first bits almost looks like F (<code class="language-plaintext highlighter-rouge">01000110</code> very much like <code class="language-plaintext highlighter-rouge">1000110</code>).
+As if it was missing a <code class="language-plaintext highlighter-rouge">0</code> in front.</p>
+
+<p>We got the answer a bit too late, after using <a href="https://www.dcode.fr/code-ascii">dcode.fr</a>, we manage to get 
+the flag which was 7-bits encoded.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BIN <span class="o">(</span>7bit<span class="o">)</span>	FLAG-CallMeMaybe
+</code></pre></div></div>
+
+<p>Here is how 7 bit and 8 bit encoding looks like next to each other. The first <code class="language-plaintext highlighter-rouge">0</code> is just trimmed.</p>
+<div class="language-coffeescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 8 bit</span>
+<span class="mi">01000110</span> <span class="mi">01001100</span> <span class="mi">01000001</span> <span class="mi">01000111</span> <span class="mi">00101101</span> <span class="mi">01000011</span> <span class="mi">01100001</span> <span class="mi">01101100</span> <span class="mi">01101100</span> <span class="mi">01001101</span> <span class="mi">01100101</span> <span class="mi">01001101</span> <span class="mi">01100001</span> <span class="mi">01111001</span> <span class="mi">01100010</span> <span class="mi">01100101</span>
+<span class="c1"># 7 bit</span>
+ <span class="mi">1000110</span>  <span class="mi">1001100</span>  <span class="mi">1000001</span>  <span class="mi">1000111</span>  <span class="mi">0101101</span>  <span class="mi">1000011</span>  <span class="mi">1100001</span>  <span class="mi">1101100</span>  <span class="mi">1101100</span>  <span class="mi">1001101</span>  <span class="mi">1100101</span>  <span class="mi">1001101</span>  <span class="mi">1100001</span>  <span class="mi">1111001</span>  <span class="mi">1100010</span>  <span class="mi">1100101</span>
+</code></pre></div></div>
+:ET

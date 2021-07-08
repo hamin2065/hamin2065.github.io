@@ -1,47 +1,130 @@
-# SITE CONFIGURATION
-baseurl: ""
-url: "https://hamin2065.github.io"
-title: "Hamin's blog"
-description: "Team Websolute"
+# -----------------------------------------------------------------------------
+#  User configuration
+# -----------------------------------------------------------------------------
 
-# THEME-SPECIFIC CONFIGURATION
-# Meta
-avatar: assets/img/avatars/websolute_square.jpg
-color_image: /assets/img/lineart.png # In post when you set color
-favicon: assets/favicon.ico
+title:               Hamin's Blog
 
-# Header and footer text
-header_text: Pave the Way Websolute!
-header_feature_image: assets/img/pexels/CoreValue.jpg
-footer_text: Copyright 2020
+# The unique resource location of your page.
+# Set to `https://<username>.github.io` when hosting on GitHub Pages
+url:                 https://hamin2065.github.io
 
-# Blog
-excerpt: truncate
+# Set to '' when hosting a blog on GitHub Pages, ie on `//<username>.github.io`
+# Set to '/<reponame>' when using the `gh-pages` branch of a repository
+baseurl:             ""
 
-# Scripts / Features
-google_analytics: "UA-142123817-1"
-katex: true # Enable if using math markup
-mermaid: true
+# A very short description of your page
+#tagline:             가장 게으르기위해 가장 부지런한 개발자
 
-# Post navigation
-post_navigation: true
+# A short description of the page, used in the sidebar and as fallback for the meta description tag.
+# Markdown enabled, but don't use more than one paragraph (enforced by `>`)
+#description:         >
+#  게으르기 때문에 게발자.
+#  글쓰는 걸 좋아하고, 디자인과 개발을 좋아한다.
 
-# Colours, typography and padding
-# Open the "_sass > base" folder, and open "_variables.scss"
+# This should be the same author as first entry in `_data/authors.yml`
+author:
+  name:              Hamin Koo
+  email:             hamin2065@gmail.com
 
-# PAGINATION
-paginate: 10
-paginate_path: "blog/page:num"
+# Fallback image and color
+image:               /assets/img/nap.jpg
+color:               '#4f86aa'
 
-# PORTFOLIO
+# The font used for headings. Expects a string that is a valid CSS font-family value.
+font_heading:        "'Lato', 'Sans-serif'"
+
+# The text font. Expects a string that is a valid CSS font-family value.
+font:                "'Lato', 'Sans-serif'"
+
+# The string encoding what fonts to fetch from Google Fonts.
+# See: https://qwtel.com/hydejack/docs/configuration/
+google_fonts:        Lato
+
+# If you do not use a Google Fonts, uncomment the line below
+# no_google_fonts:     true
+
+# Set your Google Analytics id to receive `pageview` events.
+# To remove Google Anaylics from your page, remove the line below.
+#google_analytics:    UA-92346434-1
+
+# Setting a disqus shortname will enable the comment section on pages with `comments: true` in the front matter
+disqus_shortname:    hamin
+
+# This text will appear in the footer of every page. Markdown enabled.
+copyright:           '&copy; 2021. by Hamin'
+
+# Format of the permalinks
+permalink:           pretty
+
+# Pagination configuration (used by the `blog` layout)
+paginate:            8
+paginate_path:       '/page-:num/'
+
+# If you are upgrading form a v5 verison of Hydejack, uncomment the two lines below,
+# so that the location of the feed XML stays the same.
+# feed:
+#   path:              atom.xml
+
+# Set to true when building with the `--lsi` option
+# See: https://jekyllrb.com/docs/variables/#site-variables
+# use_lsi:             true
+
+# Set to `true` if you don't want to show an icon after each link that opens to an external site
+# no_mark_external:    true
+
+# Uncomment this line if third party plugins fail to work with dynimically loaded pages
+# disable_push_state:  true
+
+# Uncomment this line if want to disable the touch drawer on mobile
+# disable_drawer: true
+
+# -----------------------------------------------------------------------------
+#  Collections
+# -----------------------------------------------------------------------------
+
 collections:
-  portfolio:
-    output: true
-    permalink: /:collection/:name
+  featured_categories:
+    permalink:       /category/:name/
+    output:          true
+  featured_tags:
+    permalink:       /tag/:name/
+    output:          true
+  projects:
+    permalink:       /projects/:path/
+    output:          true
 
-# BUILD SETTINGS
-plugins: [jekyll-paginate, jekyll-seo-tag]
-exclude: [".jekyll-cache", "Gemfile", "Gemfile.lock", "type-on-strap.gemspec", "*.gem", ".idea", ".github", "SECURITY.md",
-          "LICENSE", "README.md", "screenshot.png", "assets/package.json", "assets/node_modules", "assets/gulpfile.js", "themes"]
-remote_theme: sylhare/Type-on-Strap
-theme: type-on-strap # Sends warnings on github pages
+# -----------------------------------------------------------------------------
+#  Advanced configuration
+# -----------------------------------------------------------------------------
+
+gems:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-paginate
+  - jekyll-redirect-from
+
+exclude:
+  - README.md
+  - LICENSE.md
+  - node_modules
+  - package.json
+  - package-lock.json
+  - Gemfile
+  - Gemfile.lock
+
+kramdown:
+  footnote_backlink: '&#x21a9;&#xfe0e;'
+  math_engine:       mathjax
+  math_engine_opts:
+    preview:         true
+    preview_as_code: true
+
+compress_html:
+  comments:          ["<!-- ", " -->"]
+  clippings:         all
+  endings:           all
+  ignore:
+    envs:            [development]
+
+sass:
+  style:             compressed

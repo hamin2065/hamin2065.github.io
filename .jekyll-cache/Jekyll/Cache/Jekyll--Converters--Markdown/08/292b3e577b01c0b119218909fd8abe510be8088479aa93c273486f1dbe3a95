@@ -1,0 +1,197 @@
+I"�$<h2 id="git-commands">Git commands</h2>
+
+<p>Some of the basic git commands and what they do.</p>
+
+<h3 id="simple-workflow-to-get-started">Simple workflow to get started</h3>
+
+<p>Let say you have set up your repository, you can access it via <a href="https://sylhare.github.io/2017/04/19/Get-started-with-Github.html">ssh</a> or https.
+You have its link (we usually prefer via SSH, but the commands are the same with both).</p>
+
+<p>You first clone the repository:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Cloning a repo via ssh</span>
+git clone git@github.com:sylhare/Type-on-Strap.git
+</code></pre></div></div>
+
+<p>The you can do some modification, review them using and prepare your commit</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Review the state of repo</span>
+git status
+<span class="c"># Add a the file name `new_file.md`</span>
+git add new_file.md
+<span class="c"># Or add everything you've modified</span>
+git add <span class="nt">--All</span>
+</code></pre></div></div>
+
+<p>If you redo <code class="language-plaintext highlighter-rouge">git status</code>, you will see the changes you have added are now <code class="language-plaintext highlighter-rouge">staged</code>.
+You can commit them and push it to remote using:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create a commit with a message using</span>
+git commit <span class="nt">-m</span> <span class="s2">"Add new_file.md"</span>
+<span class="c"># Make sure you have the last version of the repo, the --rebase for a smoother pull </span>
+git pull <span class="nt">--rebase</span>
+<span class="c"># Push your commit to remote</span>
+git push 
+</code></pre></div></div>
+
+<p>And that’s it.</p>
+
+<h3 id="see-log-of-the-repository">See log of the repository</h3>
+
+<p>Use:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git log
+</code></pre></div></div>
+
+<p>To exit <code class="language-plaintext highlighter-rouge">git log</code> type <code class="language-plaintext highlighter-rouge">q</code> on the terminal.
+For more magic with <code class="language-plaintext highlighter-rouge">git log</code> check out <a href="https://sylhare.github.io/2019/07/28/Magic-stats-with-git.html">Magic stats with git</a></p>
+
+<h3 id="stash-changes">Stash changes</h3>
+
+<p>This can be used when you are updating your local repository with the remote one and avoid conflicts. 
+For example when you have changes not committed and you need to pull before a commit.
+A basic workflow would be to stash, pull, commit and re apply your stash.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># To save your local changes as 'stash'</span>
+git stash 
+<span class="c"># To delete a stash</span>
+git drop &lt;stash sha&gt;
+
+<span class="c"># To get back the last modification from stash and delete it</span>
+git pop 
+<span class="c"># To get the local changes from a stash and keep it</span>
+git apply &lt;stash sha&gt;
+</code></pre></div></div>
+
+<h3 id="create-a-branch">Create a branch</h3>
+
+<p>Get the states of the repository</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># See the repo remotely</span>
+git remote <span class="nt">-v</span>
+<span class="c"># See the branch locally</span>
+git branch
+</code></pre></div></div>
+
+<p>step by step:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create the branch</span>
+git branch patch-1
+<span class="c"># Go inside the branch</span>
+git checkout patch-1
+</code></pre></div></div>
+
+<p>Other use case:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Create a branch locally and checkout in one line</span>
+git checkout <span class="nt">-b</span> patch-1
+<span class="c"># Add a remote branch and fetch it</span>
+git checkout <span class="nt">--track</span> origin/patch-1
+</code></pre></div></div>
+
+<h3 id="revert-a-commit">Revert a commit</h3>
+
+<p>Commits are identified by a special number, a commit hash (SHA) like <code class="language-plaintext highlighter-rouge">860652a4ab3749a72401b2ceaacf68b27afbc404</code>.
+It can also be identified with the first 7 numbers like <code class="language-plaintext highlighter-rouge">860652a</code></p>
+
+<p>To revert you need to use:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git revert 860652a 
+</code></pre></div></div>
+
+<p>Which will revert the commit <code class="language-plaintext highlighter-rouge">860652a</code>. The HEAD be at the previous commit state.
+You can also revert multiple commits from HEAD using:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git revert <span class="nt">--no-commit</span> HEAD~3..
+</code></pre></div></div>
+
+<p>This way you can revert the last 3 commits (The <code class="language-plaintext highlighter-rouge">..</code> creates the range).</p>
+
+<blockquote>
+  <p>This will not work if some commits are merge commits</p>
+</blockquote>
+
+<p>That w</p>
+
+<h3 id="amend-a-commit">Amend a commit</h3>
+
+<p>When you have made a mistake or you want to modify your last commit. (Usually the one not pushed to master)
+Try using:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git commit <span class="nt">--amend</span>
+<span class="c"># Amend commit with change of author</span>
+git commit <span class="nt">--amend</span> <span class="nt">--author</span><span class="o">=</span><span class="s2">"John Doe &lt;john@doe.org&gt;"</span>
+</code></pre></div></div>
+
+<p>It will allow you to change the commit name and the modifications included in the commit.
+If you want to modify multiple commits you can also do:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git rebase <span class="nt">-i</span> HEAD~4 <span class="nt">-x</span> <span class="s2">"git commit --amend --author 'John Doe &lt;john@doe.org&gt;' --no-edit"</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>You may need to force push, or if the branch is protected, you will need to temporarily disable that protection or your changes will be rejected.</p>
+</blockquote>
+
+<h3 id="rename-multiple-commits">Rename multiple commits</h3>
+
+<p>Using rebase:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># To return three commits back</span>
+git rebase <span class="nt">-i</span> HEAD~3
+</code></pre></div></div>
+
+<p>You will see the commits, use <code class="language-plaintext highlighter-rouge">reword</code> in the one to change.
+Validate by doing:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git rebase <span class="nt">--continue</span>
+</code></pre></div></div>
+
+<p>At the end, to push remote, don’t forget to add <code class="language-plaintext highlighter-rouge">--force</code>. 
+Bear in mind that you’ll mess up the history for whoever had a previous version.
+So use with caution.</p>
+
+<p>If your commit started with <code class="language-plaintext highlighter-rouge">#</code> which is by default a comment. 
+You can change the comment symbol using:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git config core.commentChar <span class="s2">";"</span>
+<span class="c"># Then put it back with</span>
+git config core.commentChar <span class="s2">"#"</span>
+</code></pre></div></div>
+
+<h3 id="push-only-a-commit-at-a-time">Push only a commit at a time</h3>
+
+<p>When you have multiple commits in waiting. Or during/after a rebase.
+You can select the SHA of the commits you want to push and execute:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git push &lt;remotename&gt; &lt;commit SHA&gt;:&lt;remotebranchname&gt;
+</code></pre></div></div>
+
+<h3 id="other-tips">Other tips</h3>
+
+<h4 id="remote-folder-and-repository-links">Remote folder and repository links</h4>
+
+<p>Remove a folder from git but not local:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git rm -r --cached myFolder
+</code></pre></div></div>
+
+<p>Remove a folder from git</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git remote add &lt;remote nickname&gt; https://github.com/user/repository
+git rm -r one-of-the-directories
+git commit -m "Remove duplicated directory"
+git push origin &lt;your-git-branch&gt; # typically 'master', but not always	
+</code></pre></div></div>
+
+<h3 id="other-sources">Other sources</h3>
+
+<p>Learn with:</p>
+
+<ul>
+  <li><a href="https://github.com/jlord/git-it">git-it</a></li>
+  <li><a href="https://github.com/jlord/git-it-electron">git-it-electron</a></li>
+  <li><a href="https://github.com/k88hudson/git-flight-rules">git-flight-rules</a></li>
+  <li><a href="https://ohshitgit.com/">Oh shit, git!</a></li>
+</ul>
+:ET
