@@ -1,7 +1,7 @@
 ---
 layout: tag-blog
-title: 강의내용 정리
-slug: 강의내용 정리
+title: Lectures
+slug: lectures
 category: algorithms
 menu: false
 order: 1

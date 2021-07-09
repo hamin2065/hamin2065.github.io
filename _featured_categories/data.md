@@ -2,7 +2,7 @@
 layout: list
 title: DATA
 slug: data
-menu: false
+menu: true
 submenu: false
 order: 3
 description: >
