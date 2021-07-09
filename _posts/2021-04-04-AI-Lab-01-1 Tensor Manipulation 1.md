@@ -1,8 +1,9 @@
 ---
 layout: post
-title: Lab-01-1 Tensor Manipulation 1
-color: rgb(242,85,44)
-tags: [AI, PyTorch]
+title:  Tensor Manipulation 1
+subtitle:   
+categories:  ai
+tags: season-2
 ---
 # 학습목표
 

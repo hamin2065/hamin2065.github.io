@@ -1,8 +1,9 @@
 ---
 layout: post
-title: Version Control (Hufs Missing Semester)
-color: rgb(242,85,44)
-tags: [Git, Github, Branch, Checkout]
+title:  "Version Control"
+subtitle:   
+categories:  hufs
+tags: hufs-missing-semester
 ---
 
 # 버전관리?

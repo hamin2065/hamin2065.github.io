@@ -2,8 +2,8 @@
 layout: post
 title:  "Shell&Shell_Editors"
 subtitle:   
-categories:  Hufs
-tags: Hufs Missing Semester
+categories:  hufs
+tags: hufs-missing-semester
 ---
 
  `Hufs Missing Semester` 강의 내용 정리

@@ -1,8 +1,9 @@
 ---
 layout: post
-title: Lab-09-02 Weight initialization
-color: rgb(242,85,44)
-tags: [AI, PyTorch]
+title:  Weight Initialization
+subtitle:   
+categories:  ai
+tags: season-2
 ---
 
 # 학습목표

@@ -1,8 +1,9 @@
 ---
 layout: post
-title: ReactHooks 2. UseEffect(useNotification, useAxios)
-color: rgb(242,85,44)
-tags: [ReactHooks]
+title:  "React Hooks #2.useEffect(useNotification, useAxios)"
+subtitle:   
+categories:  web
+tags: react
 ---
 # useNotification
 

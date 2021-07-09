@@ -1,8 +1,9 @@
 ---
 layout: post
-title: ReactHooks 2. UseEffect(useNetwork, useScroll, useFullscreen)
-color: rgb(242,85,44)
-tags: [ReactHooks]
+title:  "React Hooks #2.useEffect(useNetwork, useScroll, useFullscreen)"
+subtitle:   
+categories:  web
+tags: react
 ---
 # useNetwork 
 :navigator가 online또는 offline으로 바뀔 때 작동하게한다.

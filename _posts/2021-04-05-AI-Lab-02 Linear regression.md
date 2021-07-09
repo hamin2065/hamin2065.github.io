@@ -1,8 +1,9 @@
 ---
 layout: post
-title: Lab-02 Linear regression
-color: rgb(242,85,44)
-tags: [AI, PyTorch]
+title:  Linear Regression
+subtitle:   
+categories:  ai
+tags: season-2
 ---
 
 # 학습목표

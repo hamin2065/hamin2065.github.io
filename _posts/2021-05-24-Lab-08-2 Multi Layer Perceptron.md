@@ -1,8 +1,9 @@
 ---
 layout: post
-title: Lab-08-2 Multi Layer Perceptron
-color: rgb(242,85,44)
-tags: [AI, PyTorch]
+title:  Multi Layer Perceptron
+subtitle:   
+categories:  ai
+tags: season-2
 ---
 
 # 학습목표

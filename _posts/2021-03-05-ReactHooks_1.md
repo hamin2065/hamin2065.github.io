@@ -1,8 +1,9 @@
 ---
 layout: post
-title: ReactHooks 1. UseState
-color: rgb(242,85,44)
-tags: [ReactHooks]
+title:  "React Hooks #1.useState"
+subtitle:   
+categories:  Web
+tags: react
 ---
 
 실습 방법 : 

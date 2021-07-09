@@ -1,8 +1,9 @@
 ---
 layout: post
-title: Application & Tips
-color: rgb(242,85,44)
-tags: [AI]
+title:  Application & Tips
+subtitle:   
+categories:  ai
+tags: season-1
 ---
 
 # Learning Rate

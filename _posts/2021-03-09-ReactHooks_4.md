@@ -1,8 +1,9 @@
 ---
 layout: post
-title: ReactHooks 2. UseEffect(useBeforeLeave, useFadeIn)
-color: rgb(242,85,44)
-tags: [ReactHooks]
+title:  "React Hooks #2.useEffect(useBeforeLeave, useFadeIn)"
+subtitle:   
+categories:  web
+tags: react
 ---
 # useBeforeLeave
 

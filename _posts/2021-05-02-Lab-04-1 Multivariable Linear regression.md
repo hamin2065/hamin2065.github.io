@@ -1,8 +1,9 @@
 ---
 layout: post
-title: Lab-04-1 Multivariable Linear regression
-color: rgb(242,85,44)
-tags: [AI, PyTorch]
+title:  Multivariable Linear Regression
+subtitle:   
+categories:  ai
+tags: season-2
 ---
 # 학습목표
 다항 선형 회귀(Multivariable Linear regression)에 대해 알아본다.

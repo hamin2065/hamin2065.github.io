@@ -1,8 +1,9 @@
 ---
 layout: post
-title: Lab-08 Perceptron
-color: rgb(242,85,44)
-tags: [AI, PyTorch]
+title:  Perceptron
+subtitle:   
+categories:  ai
+tags: season-2
 ---
 
 # 학습목표

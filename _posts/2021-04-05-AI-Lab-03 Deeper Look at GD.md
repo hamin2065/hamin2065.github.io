@@ -1,8 +1,9 @@
 ---
 layout: post
-title: Lab-03 Deeper Look at GD
-color: rgb(242,85,44)
-tags: [AI, PyTorch]
+title:  Deeper Look at GD
+subtitle:   
+categories:  ai
+tags: season-2
 ---
 
 # 학습 목표

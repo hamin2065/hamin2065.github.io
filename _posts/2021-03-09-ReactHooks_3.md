@@ -1,9 +1,11 @@
 ---
 layout: post
-title: ReactHooks 2. UseEffect(useConfirm, usePreventLeave)
-color: rgb(242,85,44)
-tags: [ReactHooks]
+title:  "React Hooks #2.useEffect(useConfirm, usePreventLeave)"
+subtitle:   
+categories:  web
+tags: react
 ---
+
 # useConfirm 
 useEffect와 useState를 사용하지 않음
 

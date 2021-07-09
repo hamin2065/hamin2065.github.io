@@ -1,8 +1,9 @@
 ---
 layout: post
-title: Lab-04-2 Loading Data
-color: rgb(242,85,44)
-tags: [AI, PyTorch]
+title:  Loading Data
+subtitle:   
+categories:  ai
+tags: season-2
 ---
 
 # 학습목표

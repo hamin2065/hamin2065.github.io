@@ -1,8 +1,9 @@
 ---
 layout: post
-title: Lab-06 Softmax Classification
-color: rgb(242,85,44)
-tags: [AI, PyTorch]
+title:  Softmax Classification
+subtitle:   
+categories:  ai
+tags: season-2
 ---
 
 # 학습목표

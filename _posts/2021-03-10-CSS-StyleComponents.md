@@ -1,8 +1,9 @@
 ---
 layout: post
-title: CSS Styled Components
-color: rgb(242,85,44)
-tags: [CSS]
+title:  "CSS Styled Components"
+subtitle:   
+categories:  web
+tags: other
 ---
 
 # Styled Component를 쓰기 전

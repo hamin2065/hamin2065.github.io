@@ -1,8 +1,9 @@
 ---
 layout: post
-title: Logistic(Regression) Classification
-color: rgb(242,85,44)
-tags: [AI]
+title:  Logistic(Regression) Classification
+subtitle:   
+categories:  ai
+tags: season-1
 ---
 
 # Classification

@@ -1,8 +1,9 @@
 ---
 layout: post
-title: Softmax Classification(Multinomial Classification)
-color: rgb(242,85,44)
-tags: [AI]
+title:  Softmax Classification
+subtitle:   
+categories:  ai
+tags: season-1
 ---
 
 
