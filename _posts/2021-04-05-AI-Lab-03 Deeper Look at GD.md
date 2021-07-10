@@ -60,7 +60,7 @@ cost function값을 최소화하려면 기울기가 음수일때는 W가 더 커
 기울기가 클수록 cost값이 큰 것이므로 
 
 
-![coding](../../../assets/img/posts/pytorch_Lab03_1.png)
+![coding](/assets/img/posts/pytorch_Lab03_1.png)
 
 Gradient Descent를 코드로 구현
 

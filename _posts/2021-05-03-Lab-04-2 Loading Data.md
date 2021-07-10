@@ -26,11 +26,11 @@ Problem
 
 
 Minibatch Gradient descent : 전체 데이터를 균일하게 나눠서 학습한다.
-![coding](../../../assets/img/posts/pytorch_Lab04_1.png)
+![coding](/assets/img/posts/pytorch_Lab04_1.png)
 
 -> 업데이트를 좀 더 빠르게 할 수 있다.
 -> 전체 데이터를 쓰지 않아서 잘못된 방향으로 업데이트를 할 수도 있다.
-![coding](../../../assets/img/posts/pytorch_Lab04_2.png)
+![coding](/assets/img/posts/pytorch_Lab04_2.png)
 
 Pytorch Dataset
 ```py

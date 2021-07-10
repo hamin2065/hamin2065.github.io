@@ -15,7 +15,7 @@ tags: season-1
 # Data Preprocessing
 값의 차이가 많이 큰 데이터셋을 학습시키는 경우 조금만 값을 잘못 설정해도 설정한 범위에서 벗어날 수 있기 때문에 normalize를 시켜야한다.
 
-![coding](../../../assets/img/posts/lec7_data_preprocessing.png)
+![coding](/assets/img/posts/lec7_data_preprocessing.png)
 - `zero-centered data` : 데이터의 중심을 가운데(0,0)로 맞히는 것
 - `normalized data` : 데이터 값 전체의 범위가 특정 범위안에 항상 들어오도록 하는 것
 
@@ -37,7 +37,7 @@ X_std[:,0] = (X[:,0] - X[:,0].mean()) / X[:,0].std()
 
     -> weight값을 너무 크게 갖지 않도록 한다.
 
-    -> 저번에 구한 L의 식에 $$λ\log{W^2}$$ 를 더해주면 된다.
+    -> 저번에 구한 L의 식에 $λ\log{W^2}$ 를 더해주면 된다.
 
     -> 이 식은 λ값이 0일 때는 L에 아무것도 더하지 않겠다는 것이고 λ의 값이 1일때는 아주 큰 값을 더하겠다는 뜻이다.
 
@@ -47,6 +47,7 @@ X_std[:,0] = (X[:,0] - X[:,0].mean()) / X[:,0].std()
     ```py
     l2reg = 0.001 * tf.reduce_sum(tf.square(W))
     ```
+
 - - -
 # Learning and Test data sets
 training data set만 가지고 모델을 학습 시키고 그 data set으로 실제 test를 해보면 100퍼센트의 정확도가 나온다. 

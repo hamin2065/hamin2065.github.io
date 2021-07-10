@@ -14,7 +14,7 @@ tags: Git & Github
  
  - 깃을 사용하지 않았을 때 발생할 수 있는 문제들
 
- ![coding](../../../assets/img/posts/Git_problem.png)
+ ![coding](/assets/img/posts/Git_problem.png)
 
  1. A는 코드를 구현 완료했지만 B로부터 코드를 공유받지 못해서 프로젝트의 진행이 불가능한 경우
 
@@ -32,7 +32,7 @@ tags: Git & Github
 
 ## 1. Repository (저장소)
 
-![coding](../../../assets/img/posts/Repository.png)
+![coding](/assets/img/posts/Repository.png)
 
 - Local Repository
  : 직접 관리하는 저장소, 내 개인 PC에 저장된다.
@@ -43,23 +43,23 @@ tags: Git & Github
 
 ## 2. Commit
 
-![coding](../../../assets/img/posts/Commit.png)
+![coding](/assets/img/posts/Commit.png)
 
  : 파일 및 폴더의 추가사항이나 변경사항을 기록하는 것이다.
    Commit은 시간 순으로 저장이 되고 거슬러 올라가면 과거 변경이력와 내용을 확인하는 것이다.
 
 ## 3. Stage
 
-![coding](../../../assets/img/posts/Stage.png)
+![coding](/assets/img/posts/Stage.png)
  
  - Index : 커밋을 통해서 변경사항이 반영되기 전 해당 변경사항들이 저장되는 공간
  - 특정 파일이나 코드를 변경할 때, 해당 이력을 Index에 기록해놓고 이 기록되는 행위를 Stage혹은 Staging이라고 한다.
 
 ## 4. Branch
 
-![coding](../../../assets/img/posts/Branch_1.png)
+![coding](/assets/img/posts/Branch_1.png)
 
-![coding](../../../assets/img/posts/Branch_2.png)
+![coding](/assets/img/posts/Branch_2.png)
 
  : 여러 개발자가 같은 코드를 공유하며 협업하는 경우 흐름을 나누고 합쳐야 하는데 이때 브랜치는 흐름을 나누는 기점이다.
 
@@ -70,7 +70,7 @@ tags: Git & Github
 
 ## 6. Merge
 
-![coding](../../../assets/img/posts/Merge.png)
+![coding](/assets/img/posts/Merge.png)
 
  : 여러 사람이 코드를 공유하며 협업을 할 때, 나누었던 흐름을 다시 합치는 것이다.
  - Fast-Forward : 두 개의 브랜치를 자동 병합시키는것 -> 일부 문법에서 충돌(Conflict)이 발생할 수 있다.
@@ -94,7 +94,7 @@ tags: Git & Github
 
 # Flow : 고수준 관리 기법
 
-![coding](../../../assets/img/posts/Git_Flow.png)
+![coding](/assets/img/posts/Git_Flow.png)
 
  - 목적에 맞추어 `Feature > Develop > Release > Hotfix > Master`의 5개로 관리한다.
  - 위 순서들은 왼쪽으로 갈수록 포괄적인 가지이며 master branch를 병합할 경우 그 왼쪽에 있는 hotfix등 모든 가지들에 있는 커밋들도 병합하도록 구성하게 된다.

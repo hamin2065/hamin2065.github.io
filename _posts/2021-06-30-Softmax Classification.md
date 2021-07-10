@@ -20,7 +20,7 @@ tags: season-1
 
 위의 예시와 같이 A,B,C를 구분하는 상황이 있다.
 
-![coding](../../../assets/img/posts/lec6_graph.jpg)
+![coding](/assets/img/posts/lec6_graph.jpg)
 
 이 때 우리는 binary classification을 했을 때처럼 선을 그어서 분류를 할 수 있다.
 
@@ -28,11 +28,11 @@ tags: season-1
 
 여러개의 변수가 있는 상황에서는 아래의 식과 같이 벡터의 곱셈을 통해서 값을 예측한다.
 
-![coding](../../../assets/img/posts/lec6_for1.jpg)
+![coding](/assets/img/posts/lec6_for1.jpg)
 
 3개의 값을 예측해야하므로 위의 식을 3번을 써서 계산해야하는데, 밑의 식처럼 하나의 행렬로 써서 표현할 수 있다.
 
-![coding](../../../assets/img/posts/lec6_for2.jpg)
+![coding](/assets/img/posts/lec6_for2.jpg)
 
 $$\bar{y}_A$$ 에 2.0, $$\bar{y}_B$$ 에는 1.0 $$\bar{y}_C$$ 에 0.1의 값이 주어졌을 때 어떻게 0과 1사이로 나타낼 수 있을까?
 
@@ -53,13 +53,13 @@ S는 예측값, L은 실제 정답이다.
 
 밑의 예시를 보면
 
-![coding](../../../assets/img/posts/lec6_ex.jpg)
+![coding](/assets/img/posts/lec6_ex.jpg)
 
 L이 실제 정답이고 이 정답이 B라고 나왔다고 가정하자.
 
 1번은 L과 똑같이 B가 나오는데 Cost Function을 계산을 해보면 0이 나오고, 이와 다르게 2번은 무한대가 나오면서 cost값이 굉장히 크게 계산되는 것을 확인할 수 있다.
 
-![coding](../../../assets/img/posts/lec6_cost.jpg)
+![coding](/assets/img/posts/lec6_cost.jpg)
 
 training set이 많을 때 쓰는 cost function이다.
 
@@ -67,7 +67,7 @@ training set이 많을 때 쓰는 cost function이다.
 
 마지막으로 cost값을 줄이기 위해서 미분을 통해서 기울기를 구하고 step의 크기를 곱해준다.
 
-![coding](../../../assets/img/posts/lec6_gradient_descent.jpg)
+![coding](/assets/img/posts/lec6_gradient_descent.jpg)
 
 참고
 

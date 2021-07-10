@@ -37,31 +37,31 @@ tags: season-1
 
 이 때 사용하는 함수는 sigmoid function(logistic function)이다.
 
-![coding](../../../assets/img/posts/sigmoid_function.png)
+![coding](/assets/img/posts/sigmoid_function.png)
 
 이 시그모이드 함수를 사용하면 Logistic Hypothesis의 수식은 다음과 같이 된다.
 
-![coding](../../../assets/img/posts/lec5_hypothesis.png)
+![coding](/assets/img/posts/lec5_hypothesis.png)
 
 ## Cost Function
 
-![coding](../../../assets/img/posts/lec5_cost_function.png)
+![coding](/assets/img/posts/lec5_cost_function.png)
 
 `H(x) = W*x + b` 일 때, cost function을 구하면 밥그릇을 뒤집은 모양이 나와서 최솟값을 구할 수 있지만 우리가 새롭게 만든 H(x)로는 둥근 모양이 나오지 않기 때문에 (global minimum을 찾아야하는데 local을 찾으면서 오차가 커진다.) cost function을 새롭게 정의할 필요가 있다.
 
 __New Cost function for logistic__
 
-![coding](../../../assets/img/posts/lec5_logistic_cost_function.png)
+![coding](/assets/img/posts/lec5_logistic_cost_function.png)
 
 위의 경우를 각각 나눠서 보자.
 
-![coding](../../../assets/img/posts/lec5_-logx_function.PNG)
+![coding](/assets/img/posts/lec5_-logx_function.PNG)
 
 `y = 1`의 경우이다.
 - H(x) = 1 으로 값을 알맞게 예측한 경우 cost(1) = 0이다.
 - H(x) = 0 으로 값을 틀리게 예측한 경우 cost(0) = ∞ (무한대)
 
-![coding](../../../assets/img/posts/lec5_-log1-x_function.PNG)
+![coding](/assets/img/posts/lec5_-log1-x_function.PNG)
 
 `y = 0`의 경우이다.
 - H(x) = 1 으로 값을 틀리게 예측한 경우 cost(1) = ∞ (무한대)
@@ -79,7 +79,7 @@ y = 0인 경우 c = -1 * log(1-H(x))이다.
 
 마지막으로 구한 cost를 최소화시키는 단계이다.
 
-![coding](../../../assets/img/posts/lec5_gradient_decent_algorithm.png)
+![coding](/assets/img/posts/lec5_gradient_decent_algorithm.png)
 
 __code__
 ```py

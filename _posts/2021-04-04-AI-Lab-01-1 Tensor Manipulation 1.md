@@ -24,7 +24,7 @@ PyTorch Basic Tensor Manipulaion
 
 파이토치는 넘파이와 굉장히 유사하다.
 
-![coding](../../../assets/img/posts/pytorch_Lab01_1.png)
+![coding](/assets/img/posts/pytorch_Lab01_1.png)
 
 - 차원이 없는 값 -> 스칼라!
 - 1차원 -> 벡터

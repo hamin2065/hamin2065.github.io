@@ -53,11 +53,11 @@ matmul() 함수는 더 간결하고 x의 길이가 바뀌어도 코드를 바꿀
 
 # Multivariable의 Cost Function
 cost function:MSE는 simple Linear Regression과 동일
-![coding](../../../assets/img/posts/pytorch_Lab02_1.png)
+![coding](/assets/img/posts/pytorch_Lab02_1.png)
 
 # Gradient Descent with torch.optim
 
-![coding](../../../assets/img/posts/pytorch_Lab03_1.png)
+![coding](/assets/img/posts/pytorch_Lab03_1.png)
 
 ```python
     #optimizer 설정

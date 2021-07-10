@@ -58,7 +58,7 @@ linear Regression에서는 `Mean Squared Error(MSE)`라는 함수로 loss를 계
 
 
 
-![coding](../../../assets/img/posts/pytorch_Lab02_1.png)
+![coding](/assets/img/posts/pytorch_Lab02_1.png)
 
 위의 식을 코드 한 줄로 계산할 수 있다.
 ```py
