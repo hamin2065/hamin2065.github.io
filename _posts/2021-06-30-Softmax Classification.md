@@ -10,6 +10,7 @@ tags: season-1
 
 
 # Multinomial Classification
+
 |x1(hours)|x2(attendance)|y(grade)|
 |:---:|:---:|:---:|
 |10|5|A|
