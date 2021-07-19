@@ -2,7 +2,7 @@
 layout: post
 title:  "React Hooks #1.useState"
 subtitle:   
-categories:  Web
+categories:  web
 tags: react
 ---
 
