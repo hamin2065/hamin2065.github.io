@@ -1,3 +1,4 @@
+  
 {% assign post = include.post %}
 
 <article id="post-{{ post.id | slice: 1,9999 }}" class="post{% if include.link_title %} mb6{% endif %}" role="article">
@@ -22,7 +23,7 @@
   {% endunless %}
   {% endfor %}
 
-  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
   {% unless include.excerpt %}
   <div class="markdown-body">
 
@@ -34,12 +35,12 @@
     <style>
       .myAd1190 {
         width: 48%;
-        height: 0px;
+        height: 280px;
       }
 
       .myAd1290 {
         width: 48%;
-        height: 0px;
+        height: 280px;
       }
 
       @media(max-width: 800px) {
@@ -48,7 +49,7 @@
         }
 
         .myAd1290 {
-          width: 0%;
+          width: 98%;
         }
       }
 
@@ -65,15 +66,23 @@
         height: 258px;
       }
     </style>
-    
+    <!--
+    <div class='row'>
+      <ins class="adsbygoogle myAd1190" data-ad-client="ca-pub-9134477021095729" data-ad-slot="6559875097"></ins>
+      <ins class="adsbygoogle myAd1290" data-ad-client="ca-pub-9134477021095729" data-ad-slot="6559875097"></ins>
     </div>
-
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>-->
 
     <br />
     {{ post.content }}
     <br />
     <br />
   </div>
+  <!--<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>-->
   {% else %}
   {{ post.excerpt }}
   <p class="read-more"><a class="heading" href="{{ post.url | relative_url }}" data-flip="title">Continue reading </a>
@@ -81,9 +90,6 @@
   {% endunless %}
 
 </article>
-<script type="text/javascript" async
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
 {% unless include.link_title %}
 <hr class="dingbat" />
 
