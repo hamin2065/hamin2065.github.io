@@ -1,8 +1,8 @@
 ---
 layout: tag-blog
-title: Other
-slug: other
+title: BOJ
+slug: boj
 category: algorithms
 menu: false
-order: 1
+order: 2
 ---
