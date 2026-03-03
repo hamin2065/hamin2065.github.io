@@ -1,4 +1,5 @@
 # Code from http://movb.de/jekyll-details-support.html
+require 'liquid'
 
 module Jekyll
   module Tags

@@ -11,6 +11,10 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
+      RUBYOPT: -EUTF-8:UTF-8
 
     steps:
       - name: Checkout 🛎️
