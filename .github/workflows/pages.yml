@@ -39,8 +39,17 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "2.7"
+          ruby-version: "3.2"
           bundler-cache: true
+
+      - name: Install bundler
+        run: gem install bundler -v 2.6.9
+
+      - name: Bundle install
+        run: bundle _2.6.9_ install --jobs 4 --retry 3
+
+      - name: Build site
+        run: bundle _2.6.9_ exec jekyll build --destination _site
 
       - name: Build with Jekyll
         env:
