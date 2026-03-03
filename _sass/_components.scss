@@ -107,6 +107,10 @@ ul.task-list input[type="checkbox"] {
         color: var(--global-card-bg-color) !important;
         background-color: var(--global-theme-color) !important;
       }
+
+      &:first-child {
+        border-top: none;
+      }
     }
   }
 }

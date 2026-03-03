@@ -32,3 +32,15 @@
 "planck":
   - firstname: ["Max"]
     url: https://en.wikipedia.org/wiki/Max_Planck
+
+# "Kim":
+#   - firstname: ["Minseon", "M.K.", "M.K. Kim"]
+#     url: https://kim-minseon.github.io/
+
+#   - firstname: ["Jaehyung", "J.H.", "J.H. Kim"]
+#     url: https://sites.google.com/view/jaehyungkim
+
+# "Hwang":
+#   - firstname: ["Sungju", "S.J.", "S.J. Hwang"]
+#     url: http://www.sungjuhwang.com/
+

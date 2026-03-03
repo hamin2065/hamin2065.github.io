@@ -1,6 +1,12 @@
 ---
 layout: default
 ---
+{% if page._styles %}
+  <!-- Page style (e.g. from cv.md front matter) -->
+  <style type="text/css">
+    {{ page._styles }}
+  </style>
+{% endif %}
 {% comment %}
   Unified CV layout that handles both RenderCV (YAML) and JSONResume (JSON) formats
   - If page.cv_format is set, it determines which format to render:
@@ -121,8 +127,15 @@ layout: default
         {% endif %}
 
         <!-- RenderCV Sections - Merge Experience and Volunteer -->
-        {% comment %} First, combine Experience and Volunteer entries {% endcomment %}
-        {% assign combined_experience = cv.sections.Experience | concat: cv.sections.Volunteer %}
+        {% comment %} First, combine Experience and Volunteer entries (do not use split on array - it would turn entries into characters) {% endcomment %}
+        {% if cv.sections.Experience %}
+          {% assign combined_experience = cv.sections.Experience %}
+        {% else %}
+          {% assign combined_experience = "" | split: "x" %}
+        {% endif %}
+        {% if cv.sections.Volunteer %}
+          {% assign combined_experience = combined_experience | concat: cv.sections.Volunteer %}
+        {% endif %}
         {% if combined_experience.size > 0 %}
           <a class="anchor" id="experience"></a>
           <div class="card mt-3 p-3">

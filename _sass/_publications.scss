@@ -41,6 +41,10 @@
 
       .preview {
         display: inline-block;
+        width: 100%;
+        max-width: 100%;
+        object-fit: contain;
+        box-shadow: none !important;
       }
 
       .abbr {
@@ -50,15 +54,25 @@
           display: inline-block;
           background-color: var(--global-theme-color);
           margin-bottom: 0.5rem;
-          color: var(--global-card-bg-color) !important;
+          color: white !important;
 
           a {
-            color: white;
+            color: white !important;
 
             &:hover {
               text-decoration: none;
             }
           }
+          
+          div {
+            color: white !important;
+          }
+        }
+        
+        color: white;
+        
+        * {
+          color: white;
         }
 
         .award {

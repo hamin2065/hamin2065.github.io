@@ -3,10 +3,19 @@ layout: cv
 permalink: /cv/
 title: CV
 nav: true
-nav_order: 5
-cv_pdf: /assets/pdf/example_pdf.pdf # you can also use external links here
+nav_order: 2
+cv_pdf: /assets/pdf/CV_HaminKoo.pdf # you can also use external links here
 cv_format: rendercv # options: rendercv, jsonresume
-description: This is a description of the page. You can modify it in '_pages/cv.md'. You can also change or remove the top pdf download button.
+description: This page provides a summary of my academic background, research experience, and publications. A full PDF version of my CV is available for download.
 toc:
-  sidebar: left
+  sidebar: right
+_styles: >
+  #toc-sidebar {
+    max-height: calc(100vh - 120px) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+  .card {
+    overflow: visible !important;
+  }
 ---
