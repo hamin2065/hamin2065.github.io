@@ -60,6 +60,9 @@ jobs:
           npm install -g purgecss
           purgecss -c purgecss.config.js
 
+      - name: Disable GitHub Pages built-in Jekyll
+        run: touch _site/.nojekyll
+
       - name: Deploy 🚀
         if: github.event_name != 'pull_request'
         uses: JamesIves/github-pages-deploy-action@v4
