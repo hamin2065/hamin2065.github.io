@@ -92,8 +92,7 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-Hello! I am a Master student in AI at Yonsei University, advised by Prof. [Jaehyung Kim](https://sites.google.com/view/jaehyungkim) in the [Machine and Language Learning Lab (ML3)](https://ml3.yonsei.ac.
-kr/).
+Hello! I am a Master student in AI at Yonsei University, advised by Prof. [Jaehyung Kim](https://sites.google.com/view/jaehyungkim) in the [Machine and Language Learning Lab (ML3)](https://ml3.yonsei.ac.kr/).
 
 <!--
 My research interests center on building fair and safe Large Language Models, with a focus on robustness, bias mitigation, and reliable evaluation across diverse languages and usage scenarios.
