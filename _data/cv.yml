@@ -110,7 +110,7 @@ cv:
         releaseDate: 2026
         url: https://arxiv.org/abs/2511.01375
         summary: We introduce AMIS (**A**lign to **MIS**align), a bi-level optimization framework for jointly evolving jailbreak prompts and scoring templates.
-      
+
       - title: Extracting and Emulsifying Cultural Explanation to Improve Multilingual Capability of LLMs
         authors:
           - Hamin Koo
@@ -119,7 +119,7 @@ cv:
         releaseDate: 2025
         url: https://arxiv.org/abs/2503.05846
         summary: We propose EMCEE (**E**xtracting synthetic **M**ultilingual **C**ont**e**xt and m**e**rging), a multilingual prompting framework that enhances LLMs on non-English queries by extracting and merging query-relevant knowledge with reasoning.
-      
+
       - title: Optimizing Query Generation for Enhanced Document Retrieval in RAG
         authors:
           - Hamin Koo
@@ -129,7 +129,7 @@ cv:
         releaseDate: 2024
         url: https://arxiv.org/abs/2407.12325
         summary: We introduce QOQA (**Q**uery **O**ptimization using **Q**uery exp**A**nsion), an LLM-based query optimization method that refines RAG queries improving document retrieval quality and reducing hallucinations.
-      
+
     # Skills:
     #   - name: Physics
     #     level: Master

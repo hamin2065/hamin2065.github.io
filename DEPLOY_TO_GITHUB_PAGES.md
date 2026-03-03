@@ -32,7 +32,7 @@ git remote add pages https://github.com/hamin2065/hamin2065.github.io.git
 
 ### 3. Enable GitHub Pages and GitHub Actions
 
-1. On GitHub: **Settings → Pages**  
+1. On GitHub: **Settings → Pages**
    - Source: **GitHub Actions** (not “Deploy from a branch”).
 2. The **Deploy site** workflow (`.github/workflows/deploy.yml`) will run on push and deploy the built `_site` to Pages.
 

@@ -20,7 +20,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: "2.7.8"
-          bundler-cache: true   # Gemfile.lock 기준으로 bundle install까지 자동
+          bundler-cache: true # Gemfile.lock 기준으로 bundle install까지 자동
 
       - name: Setup Python 🐍
         uses: actions/setup-python@v5
