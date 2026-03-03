@@ -1,7 +1,14 @@
 source "https://rubygems.org"
 
-# GitHub Pages 표준: github-pages gem이 jekyll, jekyll-feed, jekyll-sitemap, webrick 등 포함
-gem "github-pages", group: :jekyll_plugins
+# Ruby 2.7: needed for jekyll-scholar/bibtex-ruby (Ruby 3.x breaks with "Proc without block").
+ruby "~> 2.7.0"
+
+# Pin deps that default to Ruby 3+ when using Ruby 2.7
+gem "ffi", "~> 1.15.0"       # 1.17+ requires Ruby 3.0+
+gem "nokogiri", "~> 1.15.0"  # 1.16.2+ requires Ruby 3.1+
+
+# GitHub Pages: 227 allows nokogiri 1.15.x (Ruby 2.7). 232+ requires nokogiri 1.16+ (Ruby 3.1+).
+gem "github-pages", "227", group: :jekyll_plugins
 
 # al-folio 전용 플러그인 (github-pages에 없는 것들)
 group :jekyll_plugins do
