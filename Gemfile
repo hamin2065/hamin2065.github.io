@@ -37,5 +37,5 @@ group :other_plugins do
   gem "observer"
 end
 
-# Ruby 2.7 default gem compatibility on GitHub Actions (prevents uri activation conflicts).
-gem "uri", "0.10.0"
+# Ruby 2.7 default gem compatibility on GitHub Actions.
+gem "uri", "0.10.0.2"
