@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-[**EMCEE**](https://arxiv.org/abs/2503.05846) is accepted to ACL 2026 as a oral presentation! See you in San Diego 🇺🇸
+[**EMCEE**](https://arxiv.org/abs/2503.05846) is accepted to ACL 2026 as an oral presentation! See you in San Diego 🇺🇸

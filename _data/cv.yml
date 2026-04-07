@@ -94,11 +94,7 @@ cv:
         # summary: The Nobel Prizes are five separate prizes that, according to Alfred Nobel's will of 1895, are awarded to 'those who, during the preceding year, have conferred the greatest benefit to humankind.'
 
       - title: Academic Excellence Scholarship, Hankuk University of Foreign Studies, Korea
-        # authors:
-        #   - "German Physical Society"
         date: 2020 & 2021
-        # awarder: German Physical Society
-        # summary: Awarded for outstanding scientific achievement
 
     Publications:
       - title: Extracting and Emulsifying Cultural Explanation to Improve Multilingual Capability of LLMs
@@ -129,55 +125,3 @@ cv:
         releaseDate: 2024
         url: https://arxiv.org/abs/2407.12325
         summary: We introduce QOQA (**Q**uery **O**ptimization using **Q**uery exp**A**nsion), an LLM-based query optimization method that refines RAG queries improving document retrieval quality and reducing hallucinations.
-
-    # Skills:
-    #   - name: Physics
-    #     level: Master
-    #     icon: fa-solid fa-hashtag
-    #     keywords: "Quantum Mechanics, Quantum Computing, Quantum Information, Quantum Cryptography, Quantum Communication, Quantum Teleportation"
-
-    # Languages:
-    #   - name: German
-    #     summary: "Native speaker"
-
-    #   - name: English
-    #     summary: "Fluent"
-
-    # Interests:
-    #   - name: Physics
-    #     icon: fa-solid fa-tag
-    #     keywords: "Quantum Mechanics, Quantum Computing, Quantum Information, Quantum Cryptography, Quantum Communication, Quantum Teleportation"
-
-    # Certificates:
-    #   - name: Machine Learning
-    #     date: 2018-01-01
-    #     issuer: Stanford University
-    #     icon: fa-solid fa-location-dot
-
-    #   - name: Quantum Computing
-    #     date: 2018-01-01
-    #     issuer: Stanford University
-    #     icon: fa-solid fa-tag
-
-    #   - name: Quantum Information
-    #     date: 2018-01-01
-    #     issuer: Stanford University
-    #     icon: fa-solid fa-envelope
-
-    # Projects:
-    #   - name: Quantum Computing
-    #     summary: Quantum computing is the use of quantum-mechanical phenomena such as superposition and entanglement to perform computation. Computers that perform quantum computations are known as quantum computers.
-    #     highlights:
-    #       - Quantum Teleportation
-    #       - Quantum Cryptography
-    #     start_date: 2018-01-01
-    #     end_date: 2018-01-01
-
-    # References:
-    #   - name: Professor John Doe
-    #     icon: fa-solid fa-laptop
-    #     reference: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condimentum, diam quis convallis euismod, arcu mi ullamcorper lorem, a vestibulum nunc magna at sem. Sed in risus ac felis varius blandit.
-
-    #   - name: Professor Jane Smith
-    #     icon: fa-solid fa-thumbtack
-    #     reference: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condimentum, diam quis convallis euismod, arcu mi ullamcorper lorem, a vestibulum nunc magna at sem. Sed in risus ac felis varius blandit.
