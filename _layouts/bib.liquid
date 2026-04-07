@@ -181,8 +181,10 @@
     {% if entry.location %}
       {% capture entrytype %}{{ entrytype }}{{ ", " }}{{ entry.location }}{% endcapture %}
     {% endif -%}
-    {% if entry.additional_info %}
-      {% capture entrytype %}{{ entrytype }}{{ entry.additional_info | markdownify | remove: '<p>' | remove: '</p>' }}{% endcapture %}
+    {% if entry.additional_info != blank %}
+      {% capture entrytype -%}
+        {{- entrytype -}}, {{ entry.additional_info | strip | markdownify | remove: '<p>' | remove: '</p>' | strip -}}
+      {%- endcapture %}
     {% endif %}
     {% assign entrytype_text = entrytype | strip_html | strip %}
     {% capture periodical %}{{ entrytype }}{% if entrytype_text != "" and entryyear != "" %}, {% endif %}{{ entrymonth }}{{ entryyear }}{% endcapture %}
@@ -246,6 +248,13 @@
       {% endif %}
       {% if entry.code %}
         <a href="{{ entry.code }}" class="btn btn-sm z-depth-0" role="button">Code</a>
+      {% endif %}
+      {% if entry.url %}
+        {% if entry.url contains '://' %}
+          <a href="{{ entry.url }}" class="btn btn-sm z-depth-0" role="button">Website</a>
+        {% else %}
+          <a href="{{ entry.url | relative_url }}" class="btn btn-sm z-depth-0" role="button">Website</a>
+        {% endif %}
       {% endif %}
       {% if entry.poster %}
         {% if entry.poster contains '://' %}

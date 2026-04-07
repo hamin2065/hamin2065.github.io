@@ -101,6 +101,15 @@ cv:
         # summary: Awarded for outstanding scientific achievement
 
     Publications:
+      - title: Extracting and Emulsifying Cultural Explanation to Improve Multilingual Capability of LLMs
+        authors:
+          - Hamin Koo
+          - Jaehyung Kim
+        publisher: Annual Meeting of the Association for Computational Linguistics (ACL)
+        releaseDate: 2026
+        url: https://arxiv.org/abs/2503.05846
+        summary: We propose EMCEE (**E**xtracting synthetic **M**ultilingual **C**ont**e**xt and m**e**rging), a multilingual prompting framework that enhances LLMs on non-English queries by extracting and merging query-relevant knowledge with reasoning.
+      
       - title: "Align to Misalign: Automatic LLM Jailbreak with Meta-Optimized LLM Judges"
         authors:
           - Hamin Koo
@@ -110,15 +119,6 @@ cv:
         releaseDate: 2026
         url: https://arxiv.org/abs/2511.01375
         summary: We introduce AMIS (**A**lign to **MIS**align), a bi-level optimization framework for jointly evolving jailbreak prompts and scoring templates.
-
-      - title: Extracting and Emulsifying Cultural Explanation to Improve Multilingual Capability of LLMs
-        authors:
-          - Hamin Koo
-          - Jaehyung Kim
-        publisher: Preprint
-        releaseDate: 2025
-        url: https://arxiv.org/abs/2503.05846
-        summary: We propose EMCEE (**E**xtracting synthetic **M**ultilingual **C**ont**e**xt and m**e**rging), a multilingual prompting framework that enhances LLMs on non-English queries by extracting and merging query-relevant knowledge with reasoning.
 
       - title: Optimizing Query Generation for Enhanced Document Retrieval in RAG
         authors:
