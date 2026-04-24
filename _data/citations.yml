@@ -1,5 +1,5 @@
 metadata:
-  last_updated: '2026-03-16'
+  last_updated: '2026-04-24'
 papers:
   POt9uBgAAAAJ:9yKSN-GCB0IC:
     citations: 0
@@ -10,6 +10,6 @@ papers:
     title: 'EMCee: Improving Multilingual Capability of LLMs via Bridging Knowledge and Reasoning with Extracted Synthetic Multilingual Context'
     year: '2025'
   POt9uBgAAAAJ:u5HHmVD_uO8C:
-    citations: 25
+    citations: 27
     title: Optimizing Query Generation for Enhanced Document Retrieval in RAG
     year: '2024'
