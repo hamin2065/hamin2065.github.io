@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-[**AMIS**](https://arxiv.org/abs/2511.01375) is accepted to ICLR 2026! See you in Lio 🇧🇷
+[**AMIS**](https://arxiv.org/abs/2511.01375) is accepted to ICLR 2026! See you in Rio 🇧🇷
