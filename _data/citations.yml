@@ -1,12 +1,12 @@
 metadata:
-  last_updated: '2026-06-12'
+  last_updated: '2026-07-08'
 papers:
   POt9uBgAAAAJ:9yKSN-GCB0IC:
-    citations: 1
+    citations: 2
     title: 'Align to Misalign: Automatic LLM Jailbreak with Meta-Optimized LLM Judges'
     year: '2025'
   POt9uBgAAAAJ:qjMakFHDy7sC:
-    citations: 3
+    citations: 4
     title: 'EMCEE: Improving Multilingual Capability of LLMs via Bridging Knowledge and Reasoning with Extracted Synthetic Multilingual Context'
     year: '2025'
   POt9uBgAAAAJ:u5HHmVD_uO8C:
