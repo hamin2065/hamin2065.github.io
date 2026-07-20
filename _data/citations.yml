@@ -1,12 +1,16 @@
 metadata:
-  last_updated: '2026-07-08'
+  last_updated: '2026-07-20'
 papers:
   POt9uBgAAAAJ:9yKSN-GCB0IC:
-    citations: 2
+    citations: 3
     title: 'Align to Misalign: Automatic LLM Jailbreak with Meta-Optimized LLM Judges'
     year: '2025'
+  POt9uBgAAAAJ:UeHWp8X0CEIC:
+    citations: 0
+    title: 'Auditing the Judge: Human-Grounded Bias Discovery, Quantification, and Mitigation in LLM Judges'
+    year: Unknown Year
   POt9uBgAAAAJ:qjMakFHDy7sC:
-    citations: 4
+    citations: 3
     title: 'EMCEE: Improving Multilingual Capability of LLMs via Bridging Knowledge and Reasoning with Extracted Synthetic Multilingual Context'
     year: '2025'
   POt9uBgAAAAJ:u5HHmVD_uO8C:
