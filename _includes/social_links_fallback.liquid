@@ -1,0 +1,38 @@
+{% assign socials = site.data.socials %}
+
+{% if socials.email %}
+  <a href="mailto:{{ socials.email }}" title="Email"><i class="fa-solid fa-envelope"></i></a>
+{% endif %}
+
+{% if socials.github_username %}
+  <a href="https://github.com/{{ socials.github_username }}" title="GitHub" target="_blank" rel="noopener noreferrer">
+    <i class="fa-brands fa-github"></i>
+  </a>
+{% endif %}
+
+{% if socials.scholar_userid %}
+  <a
+    href="https://scholar.google.com/citations?user={{ socials.scholar_userid }}"
+    title="Google Scholar"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <i class="fa-brands fa-google-scholar"></i>
+  </a>
+{% endif %}
+
+{% if socials.cv_pdf %}
+  <a href="{{ socials.cv_pdf | relative_url }}" title="CV" target="_blank" rel="noopener noreferrer">
+    <i class="fa-regular fa-file-lines"></i>
+  </a>
+{% endif %}
+
+{% if socials.custom_social and socials.custom_social.url and socials.custom_social.title %}
+  <a href="{{ socials.custom_social.url }}" title="{{ socials.custom_social.title }}" target="_blank" rel="noopener noreferrer">
+    {% if socials.custom_social.logo %}
+      <img src="{{ socials.custom_social.logo }}" alt="{{ socials.custom_social.title }}">
+    {% else %}
+      <i class="fa-solid fa-link"></i>
+    {% endif %}
+  </a>
+{% endif %}

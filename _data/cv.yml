@@ -1,0 +1,132 @@
+cv:
+  name: Hamin Koo
+  label: PhD Student
+  email: hamin2065@yonsei.ac.kr
+  location: Seoul, South Korea
+  image: ""
+  # summary: A theoretical physicist, widely ranked among the greatest and most influential scientists of all time
+
+  social_networks:
+    - network: X
+      username: hamin2065
+    - network: GitHub
+      username: hamin2065
+    - network: LinkedIn
+      username: hamin2065
+
+  # address:
+  #   street: 2712 Broadway St
+  #   city: San Francisco
+  #   region: California
+  #   postalCode: CA 94115
+  #   countryCode: US
+
+  sections:
+    Education:
+      - institution: Yonsei University
+        location: South Korea
+        # url: https://www.uzh.ch/
+        area: Artificial Intelligence
+        studyType: Ph.D.
+        start_date: 2025.03
+        end_date: Current
+        score: ""
+        # courses: "Theory of Relativity"
+        highlights:
+          - Advised by Prof. Jaehyung Kim at ML3 Lab
+
+      - institution: University of California, Berkeley
+        location: United States
+        area: Computer Science
+        studyType: Visiting Student
+        start_date: 2023.01
+        end_date: 2023.05
+        # highlights:
+        #   - Description 1.
+        #   - Description 2.
+
+      - institution: Hankuk University of Foreign Studies
+        location: South Korea
+        area: Computer Engineering
+        studyType: B.S.
+        start_date: 2020.03
+        end_date: 2024.02
+        highlights:
+          - Graduated with Honors (College of Engineering)
+          - "Total GPA: 4.39/4.5"
+
+    Experience:
+      - company: University of California, Irvine
+        position: Visiting Researcher
+        start_date: 2026.09
+        end_date: Current
+        highlights:
+          - "Advisor: Prof. Sameer Singh"
+
+      - company: Yonsei University
+        position: Research Intern at ML3 Lab
+        start_date: 2024.08
+        end_date: 2025.02
+        highlights:
+          - "Advisor: Prof. Jaehyung Kim"
+          - Large Language Models (LLMs)
+
+      - company: KAIST AI Graduate School
+        position: Research Intern at MLAI Lab
+        # location: Yonsei University, South Korea
+        start_date: 2023.07
+        end_date: 2024.07
+        # summary: Teaching at Palmer Physical Laboratory (now 302 Frist Campus Center). While not a professor at Princeton, I associated with the physics professors and continued to give lectures on campus.
+        highlights:
+          - "Advisor: Prof. Sungju Hwang"
+          - Large Language Models (LLMs), Retrieval-Augmented Generation (RAG)
+
+      - company: Hankuk University of Foreign Studies
+        position: Research Intern at Machine Intelligence Lab
+        start_date: 2022.07
+        end_date: 2023.06
+        highlights:
+          - "Advisor: Prof. Byunghwan Jeon"
+          - Classification of Manufacturing products using Multi-Resnet Model
+
+    Awards:
+      - title: National Excellence Scholarship, Korea Student Aid Foundation
+        # authors:
+        #   - "Royal Swedish Academy of Sciences"
+        date: 2023 & 2024
+        # awarder: Royal Swedish Academy of Sciences
+        # url: https://www.nobelprize.org/prizes/physics/1921/einstein/biographical/
+        # summary: The Nobel Prizes are five separate prizes that, according to Alfred Nobel's will of 1895, are awarded to 'those who, during the preceding year, have conferred the greatest benefit to humankind.'
+
+      - title: Academic Excellence Scholarship, Hankuk University of Foreign Studies, Korea
+        date: 2020 & 2021
+
+    Publications:
+      - title: Extracting and Emulsifying Cultural Explanation to Improve Multilingual Capability of LLMs
+        authors:
+          - Hamin Koo
+          - Jaehyung Kim
+        publisher: Annual Meeting of the Association for Computational Linguistics (ACL)
+        releaseDate: 2026
+        url: https://arxiv.org/abs/2503.05846
+        summary: We propose EMCEE (**E**xtracting synthetic **M**ultilingual **C**ont**e**xt and m**e**rging), a multilingual prompting framework that enhances LLMs on non-English queries by extracting and merging query-relevant knowledge with reasoning.
+      
+      - title: "Align to Misalign: Automatic LLM Jailbreak with Meta-Optimized LLM Judges"
+        authors:
+          - Hamin Koo
+          - Minseon Kim
+          - Jaehyung Kim
+        publisher: International Conference on Learning Representations (ICLR)
+        releaseDate: 2026
+        url: https://arxiv.org/abs/2511.01375
+        summary: We introduce AMIS (**A**lign to **MIS**align), a bi-level optimization framework for jointly evolving jailbreak prompts and scoring templates.
+
+      - title: Optimizing Query Generation for Enhanced Document Retrieval in RAG
+        authors:
+          - Hamin Koo
+          - Minseon Kim
+          - Sungju Hwang
+        publisher: Preprint
+        releaseDate: 2024
+        url: https://arxiv.org/abs/2407.12325
+        summary: We introduce QOQA (**Q**uery **O**ptimization using **Q**uery exp**A**nsion), an LLM-based query optimization method that refines RAG queries improving document retrieval quality and reducing hallucinations.

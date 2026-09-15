@@ -1,0 +1,15 @@
+"multilingual":
+  name: "Multilingual"
+  color: "#023B74"
+
+"safety":
+  name: "Safety"
+  color: "#023B74"
+
+"RAG":
+  name: "RAG" # Display name (optional - if not provided, the key is used)
+  color: "#9f3600"
+
+"optimization":
+  name: "Optimization"
+  color: "#023B74"
