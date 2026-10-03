@@ -18,7 +18,7 @@ ninja.data = [{
           },
         },{id: "nav-publications",
           title: "Publications",
-          description: "",
+          description: "* denotes equal contribution",
           section: "Navigation",
           handler: () => {
             window.location.href = "/publications/";
@@ -46,6 +46,9 @@ ninja.data = [{
           description: "",
           section: "News",},{id: "news-i-ll-be-joining-the-uci-nlp-group-as-a-visiting-researcher-working-with-prof-sameer-singh",
           title: 'I’ll be joining the UCI NLP Group as a visiting researcher, working with...',
+          description: "",
+          section: "News",},{id: "news-hub-j-is-accepted-to-neurips-2026-paper-coming-soon",
+          title: 'HUB-J is accepted to NeurIPS 2026! Paper coming soon 🎉',
           description: "",
           section: "News",},{id: "projects-project-1",
           title: 'project 1',
