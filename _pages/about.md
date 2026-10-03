@@ -94,4 +94,4 @@ latest_posts:
 
 Hello! I am a PhD student in AI at Yonsei University, advised by Prof. [Jaehyung Kim](https://sites.google.com/view/jaehyungkim) in the [Machine and Language Learning Lab (ML3)](https://ml3.yonsei.ac.kr/).
 
-I’m interested in understanding and controlling how large language models (LLMs) behave in practice. In particular, I study emergent behaviors such as systematic biases, robustness issues, and other unintended patterns. My work focuses on building structured and data-driven methods to analyze and improve the reliability of these models across different settings.
+I’m interested in understanding and improving the reliability and alignment of large language models (LLMs) in real-world interactions. I study systematic and unintended model behaviors—including biases, safety failures, and behaviors that shape human judgment and decision-making—and develop methods to evaluate and mitigate them.
